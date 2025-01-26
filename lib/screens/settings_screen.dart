@@ -18,7 +18,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showLeading: true,
       ),
     );
-
-    
   }
 }

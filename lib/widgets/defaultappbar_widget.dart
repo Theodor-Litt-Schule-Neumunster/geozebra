@@ -9,7 +9,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     required this.title,
     this.actions,
-    this.showLeading = true, // Default value is true
+    this.showLeading = true,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 5,
         leading: showLeading
             ? IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.of(context).pop(),
               )
             : null,
@@ -30,7 +30,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            // color: Colors.white,
+            // color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
         actions: actions,
