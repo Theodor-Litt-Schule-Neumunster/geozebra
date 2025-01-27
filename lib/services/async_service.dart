@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsService {
-  /// Load a specific setting by key, with a default value if the key doesn't exist.
+  // Load a specific setting by key, with a default value if the key doesn't exist.
   static Future<T> loadSetting<T>(String key, T defaultValue) async {
     final prefs = await SharedPreferences.getInstance();
     if (T == bool) return (prefs.getBool(key) ?? defaultValue) as T;
@@ -11,7 +11,7 @@ class SettingsService {
     throw UnsupportedError('loadSetting - Unsupported type for shared preferences');
   }
 
-  /// Save a specific setting by key.
+  // Save a specific setting by key.
   static Future<void> saveSetting<T>(String key, T value) async {
     final prefs = await SharedPreferences.getInstance();
     if (value is bool) { await prefs.setBool(key, value);
