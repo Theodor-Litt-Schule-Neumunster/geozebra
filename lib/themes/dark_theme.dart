@@ -7,11 +7,11 @@ class DarkTheme {
       primaryColor: Colors.black, // Black primary color
       colorScheme: const ColorScheme.dark(
         primary: Colors.black, // Black as the primary color
-        onPrimary: Colors.white, // White text/icons on primary
+        onPrimary: Colors.white70, // White text/icons on primary
         secondary: Colors.grey, // Gray for accents
-        onSecondary: Colors.white, // Text on secondary background
+        onSecondary: Colors.white70, // Text on secondary background
         surface: Color.fromARGB(255, 12, 12, 12), // Black surfaces (e.g., app bar, cards)
-        onSurface: Colors.white, // Text/icons on surface
+        onSurface: Colors.white70, // Text/icons on surface
         error: Color(0xFFCF6679), // Standard error red for dark themes
         onError: Colors.black, // Text/icons on error
       ),
@@ -22,10 +22,10 @@ class DarkTheme {
         titleTextStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // White text for contrast
+          color: Colors.white70, // White text for contrast
         ),
         iconTheme: IconThemeData(
-          color: Colors.white, // White icons
+          color: Colors.white70, // White icons
         ),
       ),
       textTheme: const TextTheme(
@@ -42,17 +42,17 @@ class DarkTheme {
         titleLarge: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // Headings in white
+          color: Colors.white70, // Headings in white
         ),
         titleMedium: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // Subheadings in white
+          color: Colors.white70, // Subheadings in white
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color.fromARGB(255, 33, 33, 33), // Dark gray background
-        selectedItemColor: Colors.white, // White for active items
+        selectedItemColor: Colors.white70, // White for active items
         unselectedItemColor: Colors.white54, // Softer white for inactive items
         elevation: 5, // Subtle shadow for separation
         selectedIconTheme: IconThemeData(

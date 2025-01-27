@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../widgets/bottombar_widget.dart';
 
+import 'search_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -31,19 +33,33 @@ class _HomeScreen extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text('Welcome',style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                    Text('Your Name', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+                    Text('Moin',style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                    Text('Jens', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
                   ],
                 ),
                 Row(
                   children: [
                     IconButton(
                       icon: const Icon(Icons.search),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SearchScreen(),
+                          ),
+                        );
+                      },
                     ),
                     IconButton(
                       icon: const Icon(Icons.notifications),
-                      onPressed: () {},
+                      onPressed: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const NotificationsScreen(),
+                        //   ),
+                        // );
+                      },
                     ),
                   ],
                 ),

@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/GitHub/geozebra_rep/geozebra/windows"
+    "cmake.sourceDirectory": "C:/GitHub/geozebra_rep/geozebra/windows",
+    "cmake.ignoreCMakeListsMissing": true
 }

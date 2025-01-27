@@ -51,33 +51,33 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
     return Container(
       color: Theme.of(context).colorScheme.surface,
       child: ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(4),
-        topRight: Radius.circular(4),
-      ),
-      child: BottomNavigationBar(
-        currentIndex: widget.currentIndex,
-        onTap: _onItemTapped,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        selectedIconTheme: const IconThemeData(
-        size: 24,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(4),
+          topRight: Radius.circular(4),
         ),
-        unselectedIconTheme: const IconThemeData(
-        size: 20,
+        child: BottomNavigationBar(
+          currentIndex: widget.currentIndex,
+          onTap: _onItemTapped,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.fixed,
+          selectedIconTheme: const IconThemeData(
+            size: 24,
+          ),
+          unselectedIconTheme: const IconThemeData(
+            size: 20,
+          ),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "",
+            ),
+          ],
         ),
-        items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: "",
-        ),
-        ],
-      ),
       ),
     );
   }
