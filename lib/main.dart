@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:geozebra_app/screens/home_screen.dart';
 
-import 'package:geozebra_app/themes/light_theme.dart';
 import "package:geozebra_app/themes/lightcolor_theme.dart";
+import "package:geozebra_app/themes/light_theme.dart";
+import "package:geozebra_app/themes/dark_theme.dart";
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Geozebra',
       debugShowCheckedModeBanner: false,
-      theme: LightColorTheme.theme,
+      theme: LightTheme.theme,
       home: const HomeScreen(),
     );
   }

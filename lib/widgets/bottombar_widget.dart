@@ -47,31 +47,28 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 59,
-      child: BottomNavigationBar(
-        currentIndex: widget.currentIndex,
-        onTap: _onItemTapped,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        selectedIconTheme: const IconThemeData(
-          size: 24,
-        ),
-        unselectedIconTheme: const IconThemeData(
-          size: 20,
-        ),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "",
-          ),
-        ],
+    return BottomNavigationBar(
+      currentIndex: widget.currentIndex,
+      onTap: _onItemTapped,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      type: BottomNavigationBarType.fixed,
+      selectedIconTheme: const IconThemeData(
+      size: 24,
       ),
+      unselectedIconTheme: const IconThemeData(
+      size: 20,
+      ),
+      items: const [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.home),
+        label: "",
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.person),
+        label: "",
+      ),
+      ],
     );
   }
 }

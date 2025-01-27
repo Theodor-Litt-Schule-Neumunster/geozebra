@@ -1,59 +1,59 @@
 import 'package:flutter/material.dart';
 
-class LightTheme {
+class DarkTheme {
   static ThemeData get theme {
     return ThemeData(
-      brightness: Brightness.light,
-      primaryColor: Colors.white, // White primary color
-      colorScheme: const ColorScheme.light(
-        primary: Colors.white, // White as the primary color
-        onPrimary: Colors.black, // Black text/icons on primary
-        secondary: Colors.black12, // Subtle gray for accents
-        onSecondary: Colors.black, // Text on background
-        surface: Color.fromARGB(255, 245, 245, 245), // White surfaces (e.g., app bar, cards)
-        onSurface: Colors.black, // Text/icons on surface
-        error: Color(0xFFB00020), // Standard error red
-        onError: Colors.white, // Text/icons on error
+      brightness: Brightness.dark,
+      primaryColor: Colors.black, // Black primary color
+      colorScheme: const ColorScheme.dark(
+        primary: Colors.black, // Black as the primary color
+        onPrimary: Colors.white, // White text/icons on primary
+        secondary: Colors.grey, // Gray for accents
+        onSecondary: Colors.white, // Text on secondary background
+        surface: Color.fromARGB(255, 8, 8, 8), // Black surfaces (e.g., app bar, cards)
+        onSurface: Colors.white, // Text/icons on surface
+        error: Color(0xFFCF6679), // Standard error red for dark themes
+        onError: Colors.black, // Text/icons on error
       ),
-      scaffoldBackgroundColor: Colors.white, // Pure white background
+      scaffoldBackgroundColor: Colors.black, // Pure black background
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.white, // White app bar
+        backgroundColor: Colors.black, // Black app bar
         elevation: 0, // Flat design with no shadow
         titleTextStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.black, // Black text for contrast
+          color: Colors.white, // White text for contrast
         ),
         iconTheme: IconThemeData(
-          color: Colors.black, // Black icons
+          color: Colors.white, // White icons
         ),
       ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.normal,
-          color: Colors.black87,
+          color: Colors.white70, // Softer white for readability
         ),
         bodyMedium: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.normal,
-          color: Colors.black87,
+          color: Colors.white70, // Softer white for readability
         ),
         titleLarge: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Colors.black, // Headings in black
+          color: Colors.white, // Headings in white
         ),
         titleMedium: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.black, // Subheadings in black
+          color: Colors.white, // Subheadings in white
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color.fromARGB(255, 226, 226, 226), // White background
-        selectedItemColor: Colors.black, // Black for active items
-        unselectedItemColor: Colors.black54, // Gray for inactive items
+        backgroundColor: Color.fromARGB(255, 33, 33, 33), // Dark gray background
+        selectedItemColor: Colors.white, // White for active items
+        unselectedItemColor: Colors.white54, // Softer white for inactive items
         elevation: 5, // Subtle shadow for separation
         selectedIconTheme: IconThemeData(
           size: 28, // Larger size for selected icon
@@ -64,8 +64,8 @@ class LightTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black, // Black buttons
-          foregroundColor: Colors.white, // White text
+          backgroundColor: Colors.white, // White buttons
+          foregroundColor: Colors.black, // Black text
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8), // Slightly rounded corners
           ),
@@ -73,20 +73,20 @@ class LightTheme {
       ),
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Color(0xFF212121), // Dark gray fill color
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.black12), // Subtle gray border
+          borderSide: BorderSide(color: Colors.white24), // Subtle white border
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.black, width: 2), // Black focused border
+          borderSide: BorderSide(color: Colors.white, width: 2), // White focused border
         ),
-        labelStyle: TextStyle(color: Colors.black54),
-        hintStyle: TextStyle(color: Colors.black38),
+        labelStyle: TextStyle(color: Colors.white54),
+        hintStyle: TextStyle(color: Colors.white38),
       ),
       cardTheme: const CardTheme(
-        color: Colors.white,
+        color: Color(0xFF212121), // Dark gray cards
         elevation: 1, // Minimal elevation
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),

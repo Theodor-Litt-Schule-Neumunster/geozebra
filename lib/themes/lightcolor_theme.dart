@@ -7,7 +7,7 @@ class LightColorTheme {
       primaryColor: const Color.fromARGB(255, 0, 143, 219),
       colorScheme: const ColorScheme.light(
         primary: Color.fromARGB(255, 0, 141, 218),
-        onPrimary: Colors.white, // Text/icon color on primary color
+        onPrimary: Colors.black, // Text/icon color on primary color
         secondary: Color(0xFF90E0EF), // Light cyan for secondary color
         onSecondary: Colors.black, // Text/icon color on secondary
         surface: Color(0xFFEFF6FF), // Very light blue for background

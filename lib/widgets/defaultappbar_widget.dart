@@ -6,11 +6,11 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showLeading;
 
   const DefaultAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.actions,
     this.showLeading = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,12 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
             ? IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.of(context).pop(),
+                // color: Theme.of(context).colorScheme.onPrimary,
               )
             : null,
         title: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             // color: Theme.of(context).colorScheme.onPrimary,

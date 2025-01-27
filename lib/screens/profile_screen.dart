@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// import "../widgets/defaultappbar_widget.dart";
 import '../widgets/bottombar_widget.dart';
 import 'settings_screen.dart';
 
@@ -14,10 +15,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      // AppBar does not work as expected, dont care enough so this is it for now
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-
-        // AppBar does not work as expected, dont care enough so this is it for now
         child: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           elevation: 5,
@@ -87,6 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+
+
       // Temporary content
       body: const Center(
         child: Text(

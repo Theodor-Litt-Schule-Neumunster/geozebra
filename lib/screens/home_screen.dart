@@ -21,47 +21,29 @@ class _HomeScreen extends State<HomeScreen> {
           backgroundColor: Theme.of(context).colorScheme.primary,
           elevation: 5,
           flexibleSpace: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
-
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text(
-                      'Welcome',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      'Your Name',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    Text('Welcome',style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                    Text('Your Name', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
                   ],
                 ),
-
-
                 Row(
                   children: [
                     IconButton(
                       icon: const Icon(Icons.search),
-                      onPressed: () {
-                        
-                      },
+                      onPressed: () {},
                     ),
                     IconButton(
                       icon: const Icon(Icons.notifications),
-                      onPressed: () {
-                        
-                      },
+                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -72,13 +54,29 @@ class _HomeScreen extends State<HomeScreen> {
       ),
 
 
-      // Temp content, wait until designed in Figma
-      body: const Center(
-        child: Text(
-          'Startseite',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(18),
+            topRight: Radius.circular(18),
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Startseite',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ),
