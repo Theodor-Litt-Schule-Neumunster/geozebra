@@ -36,7 +36,8 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => destinationScreen,
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            destinationScreen,
         transitionDuration: const Duration(milliseconds: 150),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
@@ -47,28 +48,37 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: widget.currentIndex,
-      onTap: _onItemTapped,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      type: BottomNavigationBarType.fixed,
-      selectedIconTheme: const IconThemeData(
-      size: 24,
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      child: ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(4),
+        topRight: Radius.circular(4),
       ),
-      unselectedIconTheme: const IconThemeData(
-      size: 20,
+      child: BottomNavigationBar(
+        currentIndex: widget.currentIndex,
+        onTap: _onItemTapped,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        selectedIconTheme: const IconThemeData(
+        size: 24,
+        ),
+        unselectedIconTheme: const IconThemeData(
+        size: 20,
+        ),
+        items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: "",
+        ),
+        ],
       ),
-      items: const [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        label: "",
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.person),
-        label: "",
-      ),
-      ],
     );
   }
 }

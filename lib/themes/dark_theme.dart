@@ -10,7 +10,7 @@ class DarkTheme {
         onPrimary: Colors.white, // White text/icons on primary
         secondary: Colors.grey, // Gray for accents
         onSecondary: Colors.white, // Text on secondary background
-        surface: Color.fromARGB(255, 8, 8, 8), // Black surfaces (e.g., app bar, cards)
+        surface: Color.fromARGB(255, 12, 12, 12), // Black surfaces (e.g., app bar, cards)
         onSurface: Colors.white, // Text/icons on surface
         error: Color(0xFFCF6679), // Standard error red for dark themes
         onError: Colors.black, // Text/icons on error
