@@ -17,6 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
 
       // AppBar does not work as expected, dont care enough so this is it for now
+      //FIXME: AppBar dropdown user selection
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
