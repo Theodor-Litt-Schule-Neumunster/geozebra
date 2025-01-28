@@ -39,9 +39,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 decoration: InputDecoration(
                   hintText: 'Search...',
                   prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
                 ),
                 onChanged: (value) {},
               ),
@@ -73,6 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             leading: Icon(Icons.map),
                             title: Text('Card 1'),
                             subtitle: Text('Description for Card 1'),
+                            tileColor: Theme.of(context).colorScheme.surface,
                             onTap: () {},
                           ),
                         ),
@@ -81,6 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             leading: Icon(Icons.place),
                             title: Text('Card 2'),
                             subtitle: Text('Description for Card 2'),
+                            tileColor: Theme.of(context).colorScheme.surface,
                             onTap: () {},
                           ),
                         ),
@@ -89,6 +88,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             leading: Icon(Icons.location_city),
                             title: Text('Card 3'),
                             subtitle: Text('Description for Card 3'),
+                            tileColor: Theme.of(context).colorScheme.surface,
                             onTap: () {},
                           ),
                         ),
