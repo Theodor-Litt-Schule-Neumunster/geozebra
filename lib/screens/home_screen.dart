@@ -15,7 +15,6 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       // Was thinking about making an extra widget, but it's only used here
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
@@ -33,8 +32,12 @@ class _HomeScreen extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    Text('Moin',style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                    Text('Jens', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400)),
+                    Text('Moin',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600)),
+                    Text('Jens',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w400)),
                   ],
                 ),
                 Row(
@@ -68,7 +71,6 @@ class _HomeScreen extends State<HomeScreen> {
           ),
         ),
       ),
-
 
       body: Container(
         width: double.infinity,

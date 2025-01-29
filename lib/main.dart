@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 
 
 import 'package:geozebra_app/screens/home_screen.dart';
+import 'package:geozebra_app/screens/practice_screen.dart';
 
 import "package:geozebra_app/themes/light_theme.dart";
 import "package:geozebra_app/themes/lightcolor_theme.dart";
 import "package:geozebra_app/themes/dark_theme.dart";
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

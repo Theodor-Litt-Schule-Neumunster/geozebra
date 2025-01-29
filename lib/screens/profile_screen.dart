@@ -92,15 +92,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
       // Temporary content
-      body: const Center(
-        child: Text(
-          'Profil',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+       body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(18),
+            topRight: Radius.circular(18),
+          ),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Profil',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ),
+
       bottomNavigationBar: const BottomBarWidget(
         currentIndex: 1,
       ),
