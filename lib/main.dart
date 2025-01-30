@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Geozebra',
       debugShowCheckedModeBanner: false,
-      theme: LightTheme.theme,
+      theme: DarkTheme.theme,
       home: const HomeScreen(),
     );
   }
