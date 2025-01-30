@@ -14,31 +14,26 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(60),
-      child: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        elevation: 5,
-        leading: showLeading
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-                // color: Theme.of(context).colorScheme.onPrimary,
-              )
-            : null,
-        title: Text(
-          title,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            // color: Theme.of(context).colorScheme.onPrimary,
-          ),
+    return AppBar(
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      elevation: 5,
+      leading: showLeading
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          : null,
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
         ),
-        actions: actions,
       ),
+      actions: actions,
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(60);
+  Size get preferredSize => AppBar().preferredSize;
 }

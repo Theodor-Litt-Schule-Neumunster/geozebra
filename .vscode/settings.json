@@ -1,4 +1,5 @@
 {
     "cmake.sourceDirectory": "C:/GitHub/geozebra_rep/geozebra/windows",
-    "cmake.ignoreCMakeListsMissing": true
+    "cmake.ignoreCMakeListsMissing": true,
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

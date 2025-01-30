@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../widgets/bottombar_widget.dart';
 
 import 'search_screen.dart';
+import 'notification_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -56,12 +57,12 @@ class _HomeScreen extends State<HomeScreen> {
                     IconButton(
                       icon: const Icon(Icons.notifications),
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const NotificationsScreen(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NotificationScreen(),
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -87,12 +88,87 @@ class _HomeScreen extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Startseite',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              // Quick Actions for the user
+              // These could be a separate widget
+
+              // "Welcome" card, only show until the user has interacted
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
+                child: ListTile(
+                  leading: Icon(Icons.location_on,
+                      color: Theme.of(context).colorScheme.onPrimary),
+                  title: const Text('Willkommen!'),
+                  subtitle: const Text('Tippe um loszulegen'),
+                  onTap: () {
+                    // Handle card tap
+                  },
+                ),
+              ),
+
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListTile(
+                  leading: Icon(Icons.map,
+                      color: Theme.of(context).colorScheme.onPrimary),
+                  title: const Text('GeoGebra Rechner'),
+                  subtitle: const Text('Starte den GeoGebra Rechner'),
+                  onTap: () {
+                    // Handle card tap
+                  },
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Recent activities
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Fortsetzen',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // Handle "weiter" tap
+                    },
+                    child: Text(
+                      'Alle',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      leading: Icon(Icons.book,
+                          color: Theme.of(context).colorScheme.primary),
+                      title: Text('Learn Module ${index + 1}'),
+                      subtitle: const Text('Description of the learn module'),
+                      onTap: () {
+                        // Handle card tap
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           ),

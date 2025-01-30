@@ -27,7 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const DefaultAppBar(
-          title: "",
+          title: "Suchen",
           showLeading: true,
         ),
         body: Column(
@@ -37,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
               child: TextField(
                 focusNode: _searchFocusNode,
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: 'Eingabe...',
                   prefixIcon: Icon(Icons.search),
                 ),
                 onChanged: (value) {},
