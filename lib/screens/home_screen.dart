@@ -156,7 +156,7 @@ class _HomeScreen extends State<HomeScreen> {
                     ),
                     child: ListTile(
                       leading: Icon(Icons.book,
-                          color: Theme.of(context).colorScheme.primary),
+                          color: Theme.of(context).colorScheme.onPrimary),
                       title: Text('Learn Module ${index + 1}'),
                       subtitle: const Text('Description of the learn module'),
                       onTap: () {
