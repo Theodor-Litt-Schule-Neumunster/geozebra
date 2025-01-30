@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// import "../widgets/defaultappbar_widget.dart";
+import "../widgets/defaultappbar_widget.dart";
 import '../widgets/bottombar_widget.dart';
 import 'settings_screen.dart';
 
@@ -15,53 +15,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // AppBar does not work as expected, dont care enough so this is it for now
-      //FIXME: AppBar dropdown user selection
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        elevation: 5,
-        title: SizedBox(
-          width: 200,
-          height: 40,
-          child: Center(
-            child: DropdownButton<String>(
-              value: "Jens",
-              dropdownColor: Theme.of(context).colorScheme.primary,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              underline: Container(),
-              icon: const Icon(Icons.arrow_drop_down),
-              selectedItemBuilder: (BuildContext context) {
-                return [
-                  const Center(
-                    child: Text(
-                      "Jens",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
-                ];
-              },
-              items: [
-                DropdownMenuItem<String>(
-                  value: 'Jens',
-                  child: const Text(
-                    'Jens',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-              onChanged: (String? newValue) {},
-            ),
-          ),
-        ),
+      // Removed the dropdown since well only have one user account for now, could be added in later
+      appBar: DefaultAppBar(
+        title: "Übersicht",
+        showLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -75,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
 
-      // Temporary content
+
       body: Container(
         width: double.infinity,
         height: double.infinity,

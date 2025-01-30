@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geozebra_app/screens/practice_screen.dart';
+
+import 'package:geozebra_app/services/async_service.dart';
+// import 'package:geozebra_app/screens/practice_screen.dart';
 
 import '../widgets/bottombar_widget.dart';
 
@@ -15,6 +17,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
+  String _savedName = "Der Jens";
+
+  Future<String> _userName() async {
+    _savedName = await SettingsService.loadSetting<String>("displayname", "Der Jens");
+    setState(() {});
+
+    return _savedName;
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +45,12 @@ class _HomeScreen extends State<HomeScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Moin',
+                children: [
+                  const Text('Moin',
                       style: TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w600)),
-                  Text('Jens',
-                      style: TextStyle(
+                    Text(_userName().toString(),
+                      style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w400)),
                 ],
               ),

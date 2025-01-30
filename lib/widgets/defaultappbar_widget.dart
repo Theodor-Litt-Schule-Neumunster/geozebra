@@ -21,9 +21,9 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: showTransparent ? 0 : 5,
       leading: showLeading
           ? IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            )
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        )
           : null,
       title: Text(
         title,
