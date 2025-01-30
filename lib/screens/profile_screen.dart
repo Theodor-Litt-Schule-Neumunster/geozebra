@@ -15,84 +15,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       // AppBar does not work as expected, dont care enough so this is it for now
       //FIXME: AppBar dropdown user selection
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          elevation: 5,
-          flexibleSpace: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 200,
-                  height: 40,
-                  child: Center(
-                    child: DropdownButton<String>(
-                      value: "Jens",
-                      dropdownColor: Theme.of(context).colorScheme.primary,
-                      style: const TextStyle(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 5,
+        title: SizedBox(
+          width: 200,
+          height: 40,
+          child: Center(
+            child: DropdownButton<String>(
+              value: "Jens",
+              dropdownColor: Theme.of(context).colorScheme.primary,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              underline: Container(),
+              icon: const Icon(Icons.arrow_drop_down),
+              selectedItemBuilder: (BuildContext context) {
+                return [
+                  const Center(
+                    child: Text(
+                      "Jens",
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
-                      underline: Container(),
-                      icon: const Icon(Icons.arrow_drop_down),
-                      selectedItemBuilder: (BuildContext context) {
-                        return [
-                          const Center(
-                            child: Text(
-                              "Jens",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )
-                        ];
-                      },
-                      items: [
-                        DropdownMenuItem<String>(
-                          value: 'Jens',
-                          child: const Text(
-                            'Jens',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                      onChanged: (String? newValue) {},
+                    ),
+                  )
+                ];
+              },
+              items: [
+                DropdownMenuItem<String>(
+                  value: 'Jens',
+                  child: const Text(
+                    'Jens',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.settings),
-                      onPressed: () {
-                        Navigator.push( 
-                          context, 
-                          MaterialPageRoute(builder: (context) => const SettingsScreen()), 
-                        );
-                      },
-                    ),
-                  ],
-                ),
               ],
+              onChanged: (String? newValue) {},
             ),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
+            },
+          ),
+        ],
       ),
 
-
       // Temporary content
-       body: Container(
+      body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(

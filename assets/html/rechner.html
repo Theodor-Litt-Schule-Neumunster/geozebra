@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #ggb-element {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="ggb-element"></div>
+
+    <script>
+        var ggbApp = new GGBApplet({
+            "appName": "graphing",
+            "width": window.innerWidth,
+            "height": window.innerHeight,
+            "showToolBar": true,
+            "showAlgebraInput": true,
+            "showMenuBar": false
+        }, true);
+
+        ggbApp.inject('ggb-element');
+
+        function saveGeoGebraState() {
+            const ggb = ggbApp.getAppletObject();
+            if (!ggb) return;
+
+            let objects = ggb.getAllObjectNames();
+            let state = {};
+            objects.forEach(obj => {
+                state[obj] = ggb.getValue(obj); // Save numeric values
+            });
+
+            sendToFlutter(JSON.stringify(state)); // Send saved state to Flutter
+        }
+
+        function loadGeoGebraState(savedState) {
+            const ggb = ggbApp.getAppletObject();
+            if (!ggb) return;
+
+            try {
+                let state = JSON.parse(savedState);
+                Object.keys(state).forEach(obj => {
+                    ggb.evalCommand(`${obj} = ${state[obj]}`);
+                });
+            } catch (e) {
+                console.error("Error loading saved state:", e);
+            }
+        }
+
+        function sendToFlutter(data) {
+            if (window.FlutterChannel) {
+                window.FlutterChannel.postMessage(data);
+            }
+        }
+
+        function receiveFromFlutter(message) {
+            if (message.startsWith("{")) { // Detect if it's JSON state data
+                loadGeoGebraState(message);
+            }
+        }
+
+        window.addEventListener("beforeunload", saveGeoGebraState);
+    </script>
+</body>
+</html>

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:geozebra_app/screens/practice_screen.dart';
 
 import '../widgets/bottombar_widget.dart';
 
 import 'search_screen.dart';
 import 'notification_screen.dart';
+import 'rechner_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,59 +18,55 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Was thinking about making an extra widget, but it's only used here
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          elevation: 5,
-          flexibleSpace: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Moin',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600)),
-                    Text('Jens',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w400)),
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SearchScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.notifications),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NotificationScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 5,
+        toolbarHeight: 80,
+        flexibleSpace: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text('Moin',
+                      style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.w600)),
+                  Text('Jens',
+                      style: TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w400)),
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SearchScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.notifications),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NotificationScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -88,10 +86,6 @@ class _HomeScreen extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Quick Actions for the user
-              // These could be a separate widget
-
-              // "Welcome" card, only show until the user has interacted
               Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(
@@ -107,7 +101,6 @@ class _HomeScreen extends State<HomeScreen> {
                   },
                 ),
               ),
-
               Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(
@@ -119,13 +112,16 @@ class _HomeScreen extends State<HomeScreen> {
                   title: const Text('GeoGebra Rechner'),
                   subtitle: const Text('Starte den GeoGebra Rechner'),
                   onTap: () {
-                    // Handle card tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RechnerScreen(),
+                      ),
+                    );
                   },
                 ),
               ),
               const SizedBox(height: 24),
-
-              // Recent activities
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -135,7 +131,7 @@ class _HomeScreen extends State<HomeScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Handle "weiter" tap
+                      // Handle tap
                     },
                     child: Text(
                       'Alle',
@@ -174,7 +170,6 @@ class _HomeScreen extends State<HomeScreen> {
           ),
         ),
       ),
-
       bottomNavigationBar: const BottomBarWidget(
         currentIndex: 0,
       ),
