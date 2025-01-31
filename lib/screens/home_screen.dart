@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:geozebra_app/services/async_service.dart';
+
+import 'package:geozebra_app/services/settings_service.dart';
+// import 'package:geozebra_app/screens/practice_screen.dart';
+
 import '../widgets/bottombar_widget.dart';
 import "../widgets/card_widget.dart";
 import 'search_screen.dart';
@@ -16,14 +19,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String _savedName = "Der Jens";
 
-  Future<void> _loadUserName() async {
-    final name = await SettingsService.loadSetting<String>(
-      "displayname",
-      "Der Jens",
-    );
-    setState(() {
-      _savedName = name;
-    });
+  Future<String> _loadUserName() async {
+    _savedName = await SettingsService().getValue<String>("displayname", "Der Jens");
+    setState(() {});
+
+    return _savedName;
   }
 
   @override

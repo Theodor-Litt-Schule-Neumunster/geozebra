@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/defaultappbar_widget.dart';
-import '../services/async_service.dart';
+import '../services/settings_service.dart';
 import '../providers/settings_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -27,9 +27,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _loadSettings() async {
-    String username = await SettingsService.loadSetting<String>("username", "");
+    String username = await SettingsService().getValue<String>("username", "");
     String selectedTheme =
-        await SettingsService.loadSetting<String>("theme", "light");
+        await SettingsService().getValue<String>("theme", "light");
 
     String displayTheme;
     switch (selectedTheme) {
@@ -54,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _updateUsername(String value) async {
-    await SettingsService.saveSetting("displayname", value);
+    await SettingsService().setValue("displayname", value);
     Provider.of<SettingsProvider>(context, listen: false).setUsername(value);
 
     setState(() {
@@ -80,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       themeKey = "light";
   }
 
-  await SettingsService.saveSetting("theme", themeKey);
+  await SettingsService().setValue("theme", themeKey);
   Provider.of<SettingsProvider>(context, listen: false).setTheme(themeKey);
 
   setState(() {

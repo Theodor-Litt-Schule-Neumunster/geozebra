@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geozebra_app/themes/light_theme.dart';
 import 'package:geozebra_app/themes/lightcolor_theme.dart';
 import 'package:geozebra_app/themes/dark_theme.dart';
-import 'package:geozebra_app/services/async_service.dart';
+import 'package:geozebra_app/services/settings_service.dart';
 
 class SettingsProvider extends ChangeNotifier {
   ThemeData _theme = LightTheme.theme;
@@ -14,13 +14,13 @@ class SettingsProvider extends ChangeNotifier {
 
 
   void setUsername(String username) {
-    SettingsService.saveSetting("username", username);
+    SettingsService().setValue("username", username);
     _username = username;
     notifyListeners();
   }
 
   void setTheme(String themeKey) {
-    SettingsService.saveSetting("theme", themeKey);
+    SettingsService().setValue("theme", themeKey);
     if (themeKey == "light") {
       _theme = LightTheme.theme;
     } else if (themeKey == "lightColor") {

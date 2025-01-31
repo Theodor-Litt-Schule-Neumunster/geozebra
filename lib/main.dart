@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:geozebra_app/screens/home_screen.dart';
 import 'package:geozebra_app/providers/settings_provider.dart';
-import 'package:geozebra_app/services/async_service.dart';
+import 'package:geozebra_app/services/settings_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  String savedTheme = await SettingsService.loadSetting<String>("theme", "light");
+  String savedTheme = await SettingsService().getValue<String>("theme", "light");
   runApp(MyApp(savedTheme: savedTheme));
 }
 
