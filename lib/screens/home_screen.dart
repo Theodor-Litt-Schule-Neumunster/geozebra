@@ -52,17 +52,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Moin',
+                          Text(
+                            'Moin!',
                             style: TextStyle(
-                              fontSize: 20,
+                                fontSize: _savedName.isNotEmpty ? 20 : 26,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
+
                           Text(
                             _savedName,
-                            style: const TextStyle(
-                              fontSize: 14,
+                            style: TextStyle(
+                              fontSize: _savedName.isNotEmpty ? 14 : 0,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
