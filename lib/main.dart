@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:geozebra_app/screens/home_screen.dart';
-import 'package:geozebra_app/providers/theme_provider.dart';
+import 'package:geozebra_app/providers/settings_provider.dart';
 import 'package:geozebra_app/services/async_service.dart';
 
 void main() async {
@@ -14,15 +14,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   final String savedTheme;
 
-  const MyApp({super.key, 
-  required this.savedTheme
-  });
+  const MyApp({super.key, required this.savedTheme});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ThemeProvider()..setTheme(savedTheme),
-      child: Consumer<ThemeProvider>(
+      create: (_) => SettingsProvider()..setTheme(savedTheme),
+      child: Consumer<SettingsProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
             title: "GeoZebra",

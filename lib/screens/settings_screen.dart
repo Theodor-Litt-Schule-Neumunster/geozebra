@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/defaultappbar_widget.dart';
 import '../services/async_service.dart';
-import '../providers/theme_provider.dart';
+import '../providers/settings_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -55,6 +55,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _updateUsername(String value) async {
     await SettingsService.saveSetting("displayname", value);
+    Provider.of<SettingsProvider>(context, listen: false).setUsername(value);
+
     setState(() {
       _username = value;
       _usernameController.text = value;
@@ -79,8 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   await SettingsService.saveSetting("theme", themeKey);
-
-  Provider.of<ThemeProvider>(context, listen: false).setTheme(themeKey);
+  Provider.of<SettingsProvider>(context, listen: false).setTheme(themeKey);
 
   setState(() {
     _selectedTheme = value;
@@ -133,6 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
+
             const SizedBox(height: 20),
             DropdownButtonFormField<String>(
               value: _selectedTheme,

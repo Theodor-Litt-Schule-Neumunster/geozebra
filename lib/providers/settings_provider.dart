@@ -4,16 +4,23 @@ import 'package:geozebra_app/themes/lightcolor_theme.dart';
 import 'package:geozebra_app/themes/dark_theme.dart';
 import 'package:geozebra_app/services/async_service.dart';
 
-class ThemeProvider extends ChangeNotifier {
+class SettingsProvider extends ChangeNotifier {
   ThemeData _theme = LightTheme.theme;
   ThemeData get theme => _theme;
 
-  void setTheme(String themeKey) {
-    SettingsService.saveSetting("theme", themeKey);
-    _setThemeFromKey(themeKey, notify: true);
+  String _username = "";
+  String get username => _username;
+
+
+
+  void setUsername(String username) {
+    SettingsService.saveSetting("username", username);
+    _username = username;
+    notifyListeners();
   }
 
-  void _setThemeFromKey(String themeKey, {bool notify = true}) {
+  void setTheme(String themeKey) {
+    SettingsService.saveSetting("theme", themeKey);
     if (themeKey == "light") {
       _theme = LightTheme.theme;
     } else if (themeKey == "lightColor") {
@@ -21,9 +28,6 @@ class ThemeProvider extends ChangeNotifier {
     } else if (themeKey == "dark") {
       _theme = DarkTheme.theme;
     }
-
-    if (notify) {
-      notifyListeners();
-    }
+    notifyListeners();
   }
 }
