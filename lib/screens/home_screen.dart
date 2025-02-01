@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:geozebra_app/services/settings_service.dart';
-// import 'package:geozebra_app/screens/practice_screen.dart';
-
 import '../widgets/bottombar_widget.dart';
 import "../widgets/card_widget.dart";
 import 'search_screen.dart';
 import 'notification_screen.dart';
 import 'rechner_screen.dart';
+import '../providers/lesson_provider.dart';
+import '../widgets/progress_widget.dart';
+import 'lessons_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String _savedName = "Der Jens";
 
   Future<String> _loadUserName() async {
-    _savedName = await SettingsService().getValue<String>("displayname", "Der Jens");
+    _savedName =
+        await SettingsService().getValue<String>("displayname", "Der Jens");
     setState(() {});
-
     return _savedName;
   }
 
@@ -30,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadUserName();
+    Provider.of<LessonProvider>(context, listen: false).loadLessons();
   }
 
   @override
@@ -55,11 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             'Moin!',
                             style: TextStyle(
-                                fontSize: _savedName.isNotEmpty ? 20 : 26,
+                              fontSize: _savedName.isNotEmpty ? 20 : 26,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-
                           Text(
                             _savedName,
                             style: TextStyle(
@@ -178,19 +180,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                
-                ScreenCard(
-                  iconData: Icons.abc,
-                  title: 'ABC',
-                  subtitle: 'ABC',
-                  onTap: () {},
-                ),
 
-                ScreenCard(
-                  iconData: Icons.abc,
-                  title: 'ABC',
-                  subtitle: 'ABC',
-                  onTap: () {},
+                Consumer<LessonProvider>(
+                  builder: (context, lessonProvider, child) {
+                    final activeLessons = lessonProvider.lessons
+                        .where((lesson) =>
+                            lessonProvider.getLessonProgress() > 0 &&
+                            lessonProvider.getLessonProgress() < 1)
+                        .toList();
+
+                    if (activeLessons.isEmpty) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20.0),
+                          child: Text("Deine Fortschritte werden hier angezeigt"),
+                        ),
+                      );
+                    }
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: activeLessons.length,
+                      itemBuilder: (context, index) {
+                        final lesson = activeLessons[index];
+                        return ProgressWidget(lesson);
+                      },
+                    );
+                  },
                 ),
               ],
             ),

@@ -24,7 +24,6 @@ class _RechnerScreen extends State<RechnerScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (String url) async {
-            debugPrint("Page finished loading: $url");
             await restoreGeoGebraState(); // Load saved state when page loads
           },
         ),
@@ -32,7 +31,6 @@ class _RechnerScreen extends State<RechnerScreen> {
       ..addJavaScriptChannel(
         'FlutterChannel',
         onMessageReceived: (JavaScriptMessage message) async {
-          debugPrint("Received message from JavaScript: ${message.message}");
           await saveGeoGebraState(message.message);
         },
       )
@@ -41,14 +39,12 @@ class _RechnerScreen extends State<RechnerScreen> {
 
   Future<void> saveGeoGebraState(String state) async {
     final prefs = await SharedPreferences.getInstance();
-    debugPrint("Saving GeoGebra state: $state");
     await prefs.setString(stateKey, state);
   }
 
   Future<void> restoreGeoGebraState() async {
     final prefs = await SharedPreferences.getInstance();
     String? savedState = prefs.getString(stateKey);
-    debugPrint("Restoring GeoGebra state: $savedState");
 
     if (savedState != null && savedState.isNotEmpty) {
       controller.runJavaScript("receiveFromFlutter('$savedState');");
@@ -56,7 +52,6 @@ class _RechnerScreen extends State<RechnerScreen> {
   }
 
   Future<void> _handleBackPress() async {
-    debugPrint("Back button pressed, saving state...");
     controller.runJavaScript("saveGeoGebraState();");
     await Future.delayed(Duration(milliseconds: 500)); // Allow time for JavaScript execution
     Navigator.of(context).pop();
@@ -66,7 +61,6 @@ class _RechnerScreen extends State<RechnerScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        debugPrint("WillPopScope triggered");
         await _handleBackPress();
         return false;
       },
@@ -78,7 +72,6 @@ class _RechnerScreen extends State<RechnerScreen> {
             IconButton(
               icon: Icon(Icons.save),
               onPressed: () async {
-                debugPrint("Save button pressed");
                 controller.runJavaScript("saveGeoGebraState();");
               },
             ),

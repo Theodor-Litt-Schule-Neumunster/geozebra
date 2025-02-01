@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-// import '../widgets/bottombar_widget.dart';
+import 'package:provider/provider.dart';
+import '../providers/lesson_provider.dart';
+import '../screens/lessondetail_screen.dart';
 
 class LessonsScreen extends StatefulWidget {
   const LessonsScreen({super.key});
@@ -11,28 +12,42 @@ class LessonsScreen extends StatefulWidget {
 
 class _LessonsScreenState extends State<LessonsScreen> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<LessonProvider>(context, listen: false).loadLessons();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Geozebra"),
+      appBar: AppBar(title: const Text("Lessons")),
+      body: Consumer<LessonProvider>(
+        builder: (context, lessonProvider, child) {
+          if (lessonProvider.lessons.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return ListView.builder(
+            itemCount: lessonProvider.lessons.length,
+            itemBuilder: (context, index) {
+              final lesson = lessonProvider.lessons[index];
+              return ListTile(
+                title: Text(lesson.title),
+                subtitle: Text("${lesson.tasks.length} tasks"),
+                trailing: Icon(Icons.arrow_forward),
+                onTap: () {
+                  lessonProvider.selectLesson(lesson);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LessonDetailScreen(),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
       ),
-
-      // Temp content, wait until designed in Figma
-      body: const Center(
-        child: Text(
-          'Aufgaben',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      
-      // Should it be in the bottom bar? If yes -> uncomment & change currentIndex of profile_screen.dart to 2, also add a new case in widgets/bottombar_widget.dart
-      // bottomNavigationBar: const BottomBarWidget(
-      //   currentIndex: 1,
-      // ),
     );
   }
 }
