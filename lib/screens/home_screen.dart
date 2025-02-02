@@ -9,7 +9,6 @@ import 'notification_screen.dart';
 import 'rechner_screen.dart';
 import '../providers/lesson_provider.dart';
 import '../widgets/progress_widget.dart';
-import 'lessons_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
