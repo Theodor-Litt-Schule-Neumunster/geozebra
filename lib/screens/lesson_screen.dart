@@ -1,101 +1,114 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:provider/provider.dart';
-import '../providers/lesson_provider.dart';
-import '../services/geogebra_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LessonScreen extends StatefulWidget {
-  final int lessonId;
+import '../widgets/defaultappbar_widget.dart';
 
-  const LessonScreen({super.key, required this.lessonId});
+class GeoGebraTaskScreen extends StatefulWidget {
+  const GeoGebraTaskScreen({super.key});
 
   @override
-  State<LessonScreen> createState() => _LessonScreenState();
+  State<GeoGebraTaskScreen> createState() => _GeoGebraTaskScreenState();
 }
 
-class _LessonScreenState extends State<LessonScreen> {
-  WebViewController? _webViewController;
+class _GeoGebraTaskScreenState extends State<GeoGebraTaskScreen> {
+  late final WebViewController controller;
+  static const String stateKey = "geogebra_state";
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
-      lessonProvider.loadLessons(); // Ensure lessons are loaded
-    });
-
-    _webViewController = WebViewController()
+    controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.transparent)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (String url) async {
+            await Future.delayed(Duration(seconds: 1));
+            await restoreGeoGebraState();
+          },
+        ),
+      )
       ..addJavaScriptChannel(
         'FlutterChannel',
-        onMessageReceived: (JavaScriptMessage message) {
-          _handleTaskCompletion(message.message);
+        onMessageReceived: (JavaScriptMessage message) async {
+          await saveGeoGebraState(message.message);
         },
       )
-      ..loadRequest(Uri.parse('file:///android_asset/flutter_assets/assets/html/rechner.html'));
+      ..loadRequest(Uri.parse(
+          'file:///android_asset/flutter_assets/assets/html/geogebra_task.html'));
   }
 
-  void _handleTaskCompletion(String message) {
-    final lessonProvider = Provider.of<LessonProvider>(context, listen: false);
-    final lesson = lessonProvider.getLesson(widget.lessonId);
+  Future<void> saveGeoGebraState(String state) async {
+    final prefs = await SharedPreferences.getInstance();
 
-    if (lesson == null) {
-      print("❌ Error: Lesson not found.");
-      return;
+    if (state.isNotEmpty) {
+      String encodedState = Uri.encodeComponent(state);
+      await prefs.setString(stateKey, encodedState);
     }
+  }
 
-    for (var task in lesson.tasks) {
-      if (!task.completed && GeogebraService.validateTask(task.id, message)) {
-        lessonProvider.markTaskComplete(task.id);
+  Future<void> restoreGeoGebraState() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? savedState = prefs.getString(stateKey);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("✅ ${task.title} completed!")),
-        );
+    if (savedState != null && savedState.isNotEmpty) {
+      String escapedState =
+          savedState.replaceAll("'", "\\'").replaceAll("\n", "");
 
-        setState(() {}); // Update UI
-      }
+      controller.runJavaScript(
+          "receiveFromFlutter(decodeURIComponent('$escapedState'));");
+    }
+  }
+
+  void _checkUserTask() async {
+    String result = await controller.runJavaScriptReturningResult("checkTask();") as String;
+    print("User's Input: $result");
+
+    if (result.contains("2, 2")) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Task completed! 🎉")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Try again! ❌")),
+      );
     }
   }
 
   @override
+  void dispose() {
+    controller.runJavaScript("saveGeoGebraState();");
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final lessonProvider = Provider.of<LessonProvider>(context);
-    final lesson = lessonProvider.getLesson(widget.lessonId);
-
-    if (lesson == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text("Lesson Not Found")),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
-
     return Scaffold(
-      appBar: AppBar(title: Text(lesson.title)),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: _webViewController != null
-                ? WebViewWidget(controller: _webViewController!)
-                : const Center(child: CircularProgressIndicator()),
+      appBar: DefaultAppBar(
+        title: "GeoGebra Task",
+        showLeading: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: _checkUserTask, // Check user input
           ),
-          Expanded(
-            flex: 1,
-            child: ListView.builder(
-              itemCount: lesson.tasks.length,
-              itemBuilder: (context, index) {
-                final task = lesson.tasks[index];
-                return ListTile(
-                  title: Text(task.title),
-                  trailing: task.completed
-                      ? const Icon(Icons.check_circle, color: Colors.green)
-                      : const Icon(Icons.hourglass_empty),
-                );
-              },
-            ),
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () async {
+              controller.runJavaScript("saveGeoGebraState();");
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () async {
+              controller.runJavaScript("receiveFromFlutter('RESET');");
+              await saveGeoGebraState("");
+            },
           ),
         ],
       ),
+      body: WebViewWidget(controller: controller),
     );
   }
 }

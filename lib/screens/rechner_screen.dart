@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-// import 'dart:convert';
 
 import '../widgets/defaultappbar_widget.dart';
 
@@ -14,71 +12,44 @@ class RechnerScreen extends StatefulWidget {
 
 class _RechnerScreen extends State<RechnerScreen> {
   late final WebViewController controller;
-  static const String stateKey = "geogebra_state";
 
   @override
   void initState() {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (String url) async {
-            await restoreGeoGebraState(); // Load saved state when page loads
-          },
-        ),
-      )
-      ..addJavaScriptChannel(
-        'FlutterChannel',
-        onMessageReceived: (JavaScriptMessage message) async {
-          await saveGeoGebraState(message.message);
-        },
-      )
-      ..loadRequest(Uri.parse('file:///android_asset/flutter_assets/assets/html/rechner.html'));
+      ..setBackgroundColor(Colors.transparent)
+
+      ..loadRequest(Uri.parse(
+          'file:///android_asset/flutter_assets/assets/html/geogebra_task.html'));
+          // 'https://www.google.com/search?q=calculator'));
   }
 
-  Future<void> saveGeoGebraState(String state) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(stateKey, state);
-  }
-
-  Future<void> restoreGeoGebraState() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? savedState = prefs.getString(stateKey);
-
-    if (savedState != null && savedState.isNotEmpty) {
-      controller.runJavaScript("receiveFromFlutter('$savedState');");
-    }
-  }
-
-  Future<void> _handleBackPress() async {
-    controller.runJavaScript("saveGeoGebraState();");
-    await Future.delayed(Duration(milliseconds: 500)); // Allow time for JavaScript execution
-    Navigator.of(context).pop();
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        await _handleBackPress();
-        return false;
-      },
-      child: Scaffold(
-        appBar: DefaultAppBar(
-          title: "Rechner",
-          showLeading: true,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.save),
-              onPressed: () async {
-                controller.runJavaScript("saveGeoGebraState();");
-              },
-            ),
-          ],
-        ),
-        body: WebViewWidget(controller: controller),
+    return Scaffold(
+      appBar: DefaultAppBar(
+        title: "Rechner",
+        showLeading: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: (){
+            },
+          ),
+        ],
       ),
+      body: WebViewWidget(controller: controller),
     );
   }
 }
