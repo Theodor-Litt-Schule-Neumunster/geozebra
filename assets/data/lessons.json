@@ -2,7 +2,6 @@
     {
       "title": "Basic Geometry",
       "description": "Learn about angles and triangles.",
-      "geogebra_url": "https://www.geogebra.org/m/nfn67fyh",
       "difficulty": 1,
       "required_previous_lesson": null,
       "tasks": [
@@ -12,12 +11,14 @@
           "correct_answer": "Triangle A",
           "is_bonus": false
         },
+
         {
           "title": "Calculate the Hypotenuse",
           "task_type": "input",
           "correct_answer": "5",
           "is_bonus": false
         },
+        
         {
           "title": "Draw a Right Triangle in GeoGebra",
           "task_type": "interaction",
