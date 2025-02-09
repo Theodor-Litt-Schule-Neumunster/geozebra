@@ -4,8 +4,8 @@ import 'package:geozebra_app/screens/home_screen.dart';
 import 'package:geozebra_app/providers/settings_provider.dart';
 import 'package:geozebra_app/services/settings_service.dart';
 
-import 'screens/lesson_screen.dart';
-import 'screens/rechner_screen.dart';
+// import 'screens/lesson_screen.dart';
+// import 'screens/rechner_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             title: "GeoZebra",
             debugShowCheckedModeBanner: false,
             theme: themeProvider.theme,
-            home: RechnerScreen(),
+            home: HomeScreen(),
           );
         },
       ),

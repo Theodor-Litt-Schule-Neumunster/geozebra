@@ -5,6 +5,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final bool showLeading;
   final bool showTransparent;
+  final bool automaticallyImplyLeading;
 
   const DefaultAppBar({
     super.key,
@@ -12,6 +13,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.showLeading = true,
     this.showTransparent = false,
+    this.automaticallyImplyLeading = true,
   });
 
   @override
@@ -19,6 +21,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: showTransparent ? Colors.transparent : Theme.of(context).colorScheme.primary,
       elevation: showTransparent ? 0 : 5,
+      automaticallyImplyLeading: automaticallyImplyLeading,
       leading: showLeading
           ? IconButton(
           icon: const Icon(Icons.arrow_back),

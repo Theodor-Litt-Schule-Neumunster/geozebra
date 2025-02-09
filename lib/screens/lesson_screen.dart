@@ -1,114 +1,156 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../models/class_model.dart';
+// import "../widgets/defaultappbar_widget.dart";
 
-import '../widgets/defaultappbar_widget.dart';
-
-class GeoGebraTaskScreen extends StatefulWidget {
-  const GeoGebraTaskScreen({super.key});
+class LessonScreen extends StatefulWidget {
+  final Lesson lesson;
+  const LessonScreen({super.key, required this.lesson});
 
   @override
-  State<GeoGebraTaskScreen> createState() => _GeoGebraTaskScreenState();
+  State<LessonScreen> createState() => _LessonScreenState();
 }
 
-class _GeoGebraTaskScreenState extends State<GeoGebraTaskScreen> {
+class _LessonScreenState extends State<LessonScreen> {
   late final WebViewController controller;
-  static const String stateKey = "geogebra_state";
+  String nextTaskDescription = "Loading tasks...";
 
   @override
   void initState() {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.transparent)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..loadFlutterAsset('assets/html/rechner.html')
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageFinished: (String url) async {
-            await Future.delayed(Duration(seconds: 1));
-            await restoreGeoGebraState();
+          onPageFinished: (String url) {
+            sendTasksToWebView();
           },
         ),
-      )
-      ..addJavaScriptChannel(
-        'FlutterChannel',
-        onMessageReceived: (JavaScriptMessage message) async {
-          await saveGeoGebraState(message.message);
-        },
-      )
-      ..loadRequest(Uri.parse(
-          'file:///android_asset/flutter_assets/assets/html/geogebra_task.html'));
-  }
-
-  Future<void> saveGeoGebraState(String state) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    if (state.isNotEmpty) {
-      String encodedState = Uri.encodeComponent(state);
-      await prefs.setString(stateKey, encodedState);
-    }
-  }
-
-  Future<void> restoreGeoGebraState() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? savedState = prefs.getString(stateKey);
-
-    if (savedState != null && savedState.isNotEmpty) {
-      String escapedState =
-          savedState.replaceAll("'", "\\'").replaceAll("\n", "");
-
-      controller.runJavaScript(
-          "receiveFromFlutter(decodeURIComponent('$escapedState'));");
-    }
-  }
-
-  void _checkUserTask() async {
-    String result = await controller.runJavaScriptReturningResult("checkTask();") as String;
-    print("User's Input: $result");
-
-    if (result.contains("2, 2")) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Task completed! 🎉")),
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Try again! ❌")),
-      );
-    }
   }
 
-  @override
-  void dispose() {
-    controller.runJavaScript("saveGeoGebraState();");
-    super.dispose();
+  void sendTasksToWebView() {
+    List<Map<String, dynamic>> tasks = widget.lesson.tasks
+        .map((task) => {
+              "id": task.id,
+              "description": task.description,
+              "condition": task.condition
+            })
+        .toList();
+
+    controller.runJavaScript("""
+      window.postMessage({ type: 'loadTasks', tasks: ${jsonEncode(tasks)} }, '*');
+    """);
+
+    updateNextTask();
+  }
+
+  // FIXME: For some f´in reason, this shi* is NOT working correctly
+  void updateNextTask() async {
+    for (var task in widget.lesson.tasks) {
+      String result = await controller.runJavaScriptReturningResult("""
+        (() => {
+          try {
+            let ggb = window.ggbApp.getAppletObject();
+            return (${task.condition}) ? "completed" : "incomplete";
+          } catch (e) { return "error"; }
+        })();
+      """) as String;
+
+      if (result.contains("incomplete")) {
+        setState(() {
+          nextTaskDescription = task.description;
+        });
+        return;
+      }
+    }
+    setState(() {
+      nextTaskDescription = "All tasks completed!";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(
-        title: "GeoGebra Task",
-        showLeading: true,
+      appBar: AppBar(
+        title: Text(widget.lesson.lessonTitle),
         actions: [
           IconButton(
-            icon: Icon(Icons.check),
-            onPressed: _checkUserTask, // Check user input
-          ),
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () async {
-              controller.runJavaScript("saveGeoGebraState();");
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () async {
-              controller.runJavaScript("receiveFromFlutter('RESET');");
-              await saveGeoGebraState("");
+            icon: const Icon(Icons.save),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    // TODO: Implement data saving
+                    // FIXME: Change button color depending on theme, currently only white
+                    title: Text("Data saving not implemented"),
+                    content: Text("Quit?"),
+                    actions: [
+                      TextButton(
+                        child: Text("No"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: Text("Yes"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context)
+                              .pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
             },
           ),
         ],
+        automaticallyImplyLeading: false,
       ),
-      body: WebViewWidget(controller: controller),
+      endDrawer: Drawer(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                children: widget.lesson.tasks
+                    .map((task) => ListTile(title: Text(task.description)))
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+
+
+      // TODO: Implement theme switching for GeoGebra
+      body: Stack(
+        children: [
+          WebViewWidget(controller: controller),
+          Positioned(
+            top: 2,
+            right: 2,
+            child: Container(
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(141, 0, 0, 0),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              child: Text(
+                nextTaskDescription,
+                textAlign: TextAlign.right,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

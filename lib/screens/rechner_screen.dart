@@ -1,55 +1,57 @@
-import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+// FIXME: Implement all this shit
 
-import '../widgets/defaultappbar_widget.dart';
+// import 'package:flutter/material.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 
-class RechnerScreen extends StatefulWidget {
-  const RechnerScreen({super.key});
+// import '../widgets/defaultappbar_widget.dart';
 
-  @override
-  State<RechnerScreen> createState() => _RechnerScreen();
-}
+// class RechnerScreen extends StatefulWidget {
+//   const RechnerScreen({super.key});
 
-class _RechnerScreen extends State<RechnerScreen> {
-  late final WebViewController controller;
+//   @override
+//   State<RechnerScreen> createState() => _RechnerScreen();
+// }
 
-  @override
-  void initState() {
-    super.initState();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.transparent)
+// class _RechnerScreen extends State<RechnerScreen> {
+//   late final WebViewController controller;
 
-      ..loadRequest(Uri.parse(
-          'file:///android_asset/flutter_assets/assets/html/geogebra_task.html'));
-          // 'https://www.google.com/search?q=calculator'));
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     controller = WebViewController()
+//       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+//       ..setBackgroundColor(Colors.transparent)
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+//       ..loadRequest(Uri.parse(
+//           'file:///android_asset/flutter_assets/assets/html/geogebra_task.html'));
+//           // 'https://www.google.com/search?q=calculator'));
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DefaultAppBar(
-        title: "Rechner",
-        showLeading: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () {
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: (){
-            },
-          ),
-        ],
-      ),
-      body: WebViewWidget(controller: controller),
-    );
-  }
-}
+//   @override
+//   void dispose() {
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: DefaultAppBar(
+//         title: "Rechner",
+//         showLeading: true,
+//         actions: [
+//           IconButton(
+//             icon: Icon(Icons.save),
+//             onPressed: () {
+//             },
+//           ),
+//           IconButton(
+//             icon: Icon(Icons.refresh),
+//             onPressed: (){
+//             },
+//           ),
+//         ],
+//       ),
+//       body: WebViewWidget(controller: controller),
+//     );
+//   }
+// }
