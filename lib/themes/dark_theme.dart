@@ -4,55 +4,55 @@ class DarkTheme {
   static ThemeData get theme {
     return ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Colors.black, // Black primary color
+      primaryColor: Color(0xFF6A5AE0), // Purple primary color
       colorScheme: const ColorScheme.dark(
-        primary: Colors.black, // Black as the primary color
-        onPrimary: Colors.white70, // White text/icons on primary
-        secondary: Colors.grey, // Gray for accents
-        onSecondary: Colors.white70, // Text on secondary background
-        surface: Color.fromARGB(255, 12, 12, 12), // Black surfaces (e.g., app bar, cards)
-        onSurface: Colors.white70, // Text/icons on surface
+        primary: Color(0xFF6A5AE0), // Purple as the primary color
+        onPrimary: Colors.white, // White text/icons on primary
+        secondary: Color(0xFF8E8E93), // Gray for accents
+        onSecondary: Colors.white, // Text on secondary background
+        surface: Color.fromARGB(255, 31, 31, 31), // Dark gray surfaces
+        onSurface: Colors.white, // White text/icons on surface
         error: Color(0xFFCF6679), // Standard error red for dark themes
         onError: Colors.black, // Text/icons on error
       ),
-      scaffoldBackgroundColor: Colors.black, // Pure black background
+      scaffoldBackgroundColor: Color.fromARGB(255, 25, 25, 25), // Dark background
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.black, // Black app bar
+        backgroundColor: Color.fromARGB(255, 25, 25, 25), // Dark gray app bar
         elevation: 0, // Flat design with no shadow
         titleTextStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white70, // White text for contrast
+          color: Colors.white, // White text for contrast
         ),
         iconTheme: IconThemeData(
-          color: Colors.white70, // White icons
+          color: Colors.white, // White icons
         ),
       ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.normal,
-          color: Colors.white70, // Softer white for readability
+          color: Colors.white, // White for readability
         ),
         bodyMedium: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.normal,
-          color: Colors.white70, // Softer white for readability
+          color: Colors.white, // White for readability
         ),
         titleLarge: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Colors.white70, // Headings in white
+          color: Colors.white, // Headings in white
         ),
         titleMedium: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white70, // Subheadings in white
+          color: Colors.white, // Subheadings in white
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color.fromARGB(255, 33, 33, 33), // Dark gray background
-        selectedItemColor: Colors.white70, // White for active items
+        backgroundColor: Color(0xFF1C1C1E), // Dark gray background
+        selectedItemColor: Color(0xFF6A5AE0), // Purple for active items
         unselectedItemColor: Colors.white54, // Softer white for inactive items
         elevation: 5, // Subtle shadow for separation
         selectedIconTheme: IconThemeData(
@@ -64,32 +64,32 @@ class DarkTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white, // White buttons
-          foregroundColor: Colors.black, // Black text
+          backgroundColor: Color(0xFF6A5AE0), // Purple buttons
+          foregroundColor: Colors.white, // White text
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+            borderRadius: BorderRadius.circular(12), // Rounded corners
           ),
         ),
       ),
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
-        fillColor: Color(0xFF212121), // Dark gray fill color
+        fillColor: Color(0xFF2C2C2E), // Dark gray fill color
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.white24), // Subtle white border
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: Color(0xFF6A5AE0)), // Purple border
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.white, width: 2), // White focused border
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide(color: Color(0xFF6A5AE0), width: 2), // Purple focused border
         ),
-        labelStyle: TextStyle(color: Colors.white54),
-        hintStyle: TextStyle(color: Colors.white38),
+        labelStyle: TextStyle(color: Colors.white70),
+        hintStyle: TextStyle(color: Colors.white54),
       ),
       cardTheme: const CardTheme(
-        color: Color(0xFF212121), // Dark gray cards
-        elevation: 1, // Minimal elevation
+        color: Color(0xFF2C2C2E), // Dark gray cards
+        elevation: 2, // Minimal elevation
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
       ),
     );
