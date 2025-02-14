@@ -48,7 +48,7 @@ class DarkTheme {
           fontSize: 18,
           fontWeight: FontWeight.bold,
           color: Colors.white, // Subheadings in white
-        ),
+        )
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color(0xFF1C1C1E), // Dark gray background
