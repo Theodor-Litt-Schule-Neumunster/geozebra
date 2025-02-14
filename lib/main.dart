@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:geozebra_app/screens/home_screen.dart';
 import 'package:geozebra_app/providers/settings_provider.dart';
 import 'package:geozebra_app/services/settings_service.dart';
+import 'package:geozebra_app/providers/notifications_provider.dart';
 
 // import 'screens/lesson_screen.dart';
 // import 'screens/rechner_screen.dart';
@@ -10,6 +11,8 @@ import 'package:geozebra_app/services/settings_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String savedTheme = await SettingsService().getValue<String>("theme", "light");
+
+  NotificationsProvider().initialize();
 
   runApp(MyApp(savedTheme: savedTheme));
 }
