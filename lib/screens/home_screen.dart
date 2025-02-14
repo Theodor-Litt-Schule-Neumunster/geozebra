@@ -7,17 +7,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
       body: Center(
-        child: ElevatedButton(onPressed: NotificationsProvider(), child: child)
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('Welcome to GeoZebra!'),
-            Text('This is the home screen.'),
-          ],
+        child: ElevatedButton(
+          onPressed: () {
+            NotificationsProvider().showNotification(
+              title: "Test Notification",
+              body: "This is a test notification.",
+            );
+          },
+          child: Text("Show Notification"),
         ),
       ),
     );

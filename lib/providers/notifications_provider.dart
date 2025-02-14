@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class NotificationsProvider extends ChangeNotifier {
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  bool _initialized = false;
+  final bool _initialized = false;
   bool get initialized => _initialized;
 
   Future<void> initialize() async {
