@@ -33,6 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme =
+        Theme.of(context).brightness == Brightness.dark ? 'Dark' : 'Light';
+
     return Scaffold(
       body: NestedScrollView(
         floatHeaderSlivers: true,
