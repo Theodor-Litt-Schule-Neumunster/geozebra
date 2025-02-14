@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../models/class_model.dart';
-// import "../widgets/defaultappbar_widget.dart";
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;
@@ -37,18 +36,16 @@ class _LessonScreenState extends State<LessonScreen> {
         .map((task) => {
               "id": task.id,
               "description": task.description,
-              "condition": task.condition
+              "condition": task.condition,
             })
         .toList();
 
-    controller.runJavaScript("""
-      window.postMessage({ type: 'loadTasks', tasks: ${jsonEncode(tasks)} }, '*');
-    """);
+    controller.runJavaScript(
+        """window.postMessage({ type: 'loadTasks', tasks: ${jsonEncode(tasks)} }, '*');""");
 
     updateNextTask();
   }
 
-  // FIXME: For some f´in reason, this shi* is NOT working correctly
   void updateNextTask() async {
     for (var task in widget.lesson.tasks) {
       String result = await controller.runJavaScriptReturningResult("""
@@ -85,23 +82,18 @@ class _LessonScreenState extends State<LessonScreen> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    // TODO: Implement data saving
-                    // FIXME: Change button color depending on theme, currently only white
                     title: Text("Data saving not implemented"),
                     content: Text("Quit?"),
                     actions: [
                       TextButton(
                         child: Text("No"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
                       TextButton(
                         child: Text("Yes"),
                         onPressed: () {
                           Navigator.of(context).pop();
-                          Navigator.of(context)
-                              .pop();
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],
@@ -118,34 +110,64 @@ class _LessonScreenState extends State<LessonScreen> {
           children: [
             Expanded(
               child: ListView(
-                children: widget.lesson.tasks
-                    .map((task) => ListTile(title: Text(task.description)))
-                    .toList(),
+                children: widget.lesson.tasks.map(
+                      (task) => ExpansionTile(
+                        leading: Icon(Icons.radio_button_unchecked_outlined, color: Theme.of(context).colorScheme.onPrimary),
+                        title: Text(task.shortDescription, style: TextStyle(fontSize: 16)),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(task.description),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Lösungshinweise"),
+                                    content: Text("No hints available."),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Close", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+                                        onPressed: () => Navigator.of(context).pop(),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Text("Lösungshinweise", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+                          ),
+                        ],
+                      ),
+                    ).toList(),
               ),
             ),
           ],
         ),
       ),
-
-
-      // TODO: Implement theme switching for GeoGebra
+      
       body: Stack(
         children: [
           WebViewWidget(controller: controller),
           Positioned(
-            top: 2,
-            right: 2,
+            top: 10,
+            right: 10,
             child: Container(
               alignment: Alignment.centerRight,
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(141, 0, 0, 0),
-                borderRadius: BorderRadius.circular(2),
+                color: Colors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
                 nextTaskDescription,
                 textAlign: TextAlign.right,
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
