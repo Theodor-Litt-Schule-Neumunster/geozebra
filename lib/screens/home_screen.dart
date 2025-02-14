@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:local_notifications/local_notifications.dart';
+import 'package:geozebra_app/providers/notifications_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Home'),
       ),
       body: Center(
-        child: ElevatedButton(onPressed: NotificationsProvider(), child: child) // FIXME
+        child: ElevatedButton(onPressed: NotificationsProvider(), child: child)
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
