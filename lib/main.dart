@@ -4,6 +4,7 @@ import 'package:geozebra_app/screens/home_screen.dart';
 import 'package:geozebra_app/providers/settings_provider.dart';
 import 'package:geozebra_app/services/settings_service.dart';
 import 'package:geozebra_app/providers/notifications_provider.dart';
+import 'package:flutter/services.dart';
 
 // import 'screens/lesson_screen.dart';
 // import 'screens/rechner_screen.dart';
@@ -11,6 +12,7 @@ import 'package:geozebra_app/providers/notifications_provider.dart';
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);  // Add this
     String savedTheme = await SettingsService().getValue<String>("theme", "light");
     await NotificationsProvider().initialize();
     runApp(MyApp(savedTheme: savedTheme));
