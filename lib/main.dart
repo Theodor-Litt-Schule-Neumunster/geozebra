@@ -9,12 +9,22 @@ import 'package:geozebra_app/providers/notifications_provider.dart';
 // import 'screens/rechner_screen.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  String savedTheme = await SettingsService().getValue<String>("theme", "light");
-
-  NotificationsProvider().initialize();
-
-  runApp(MyApp(savedTheme: savedTheme));
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    String savedTheme = await SettingsService().getValue<String>("theme", "light");
+    await NotificationsProvider().initialize();
+    runApp(MyApp(savedTheme: savedTheme));
+  } catch (e) {
+    print('Initialization error: $e');
+    // Provide a fallback
+    runApp(const MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text('App failed to initialize'),
+        ),
+      ),
+    ));
+  }
 }
 
 class MyApp extends StatelessWidget {

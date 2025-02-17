@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geozebra_app/providers/notifications_provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
