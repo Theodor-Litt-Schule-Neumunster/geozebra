@@ -3,8 +3,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'dart:html' as html;
 
-class NotificationsProvider extends ChangeNotifier {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+class NotificationsProvider {
+  static final NotificationsProvider _instance = NotificationsProvider._internal();
+  factory NotificationsProvider() => _instance;
+  NotificationsProvider._internal();
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = 
       FlutterLocalNotificationsPlugin();
 
   Future<void> initialize() async {
@@ -18,8 +22,8 @@ class NotificationsProvider extends ChangeNotifier {
 
       await flutterLocalNotificationsPlugin.initialize(
         initializationSettings,
-        onDidReceiveNotificationResponse: (NotificationResponse details) {
-          // Handle notification tap
+        onDidReceiveNotificationResponse: (NotificationResponse details) async {
+          debugPrint('Notification clicked');
         },
       );
     }
@@ -37,24 +41,28 @@ class NotificationsProvider extends ChangeNotifier {
       }
     } else {
       // Mobile notification
-      const AndroidNotificationDetails androidPlatformChannelSpecifics =
-          AndroidNotificationDetails(
-        'your_channel_id',
-        'your_channel_name',
-        channelDescription: 'your_channel_description',
-        importance: Importance.max,
-        priority: Priority.high,
-      );
+      try {
+        const AndroidNotificationDetails androidPlatformChannelSpecifics =
+            AndroidNotificationDetails(
+          'default_channel', // channel Id
+          'Default Channel', // channel Name
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: true,
+        );
 
-      const NotificationDetails platformChannelSpecifics =
-          NotificationDetails(android: androidPlatformChannelSpecifics);
+        const NotificationDetails platformChannelSpecifics =
+            NotificationDetails(android: androidPlatformChannelSpecifics);
 
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        title,
-        body,
-        platformChannelSpecifics,
-      );
+        await flutterLocalNotificationsPlugin.show(
+          0,
+          title,
+          body,
+          platformChannelSpecifics,
+        );
+      } catch (e) {
+        debugPrint('Error showing notification: $e');
+      }
     }
   }
 }

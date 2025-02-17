@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geozebra_app/providers/notifications_provider.dart';
+import 'dart:io';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,12 +18,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _requestPermissions() async {
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+    if (Platform.isAndroid) {
+      final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+          FlutterLocalNotificationsPlugin();
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+
+      final bool? granted = await androidImplementation?.requestPermission();
+      debugPrint('Notification permission granted: $granted');
+    }
   }
 
   @override
@@ -39,13 +44,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            NotificationsProvider().showNotification(
-              title: "Test Notification",
-              body: "This is a test notification.",
-            );
+          onPressed: () async {
+            try {
+              await NotificationsProvider().showNotification(
+                title: "Test Notification",
+                body: "This is a test notification.",
+              );
+              debugPrint('Notification sent successfully');
+            } catch (e) {
+              debugPrint('Error sending notification: $e');
+            }
           },
-          child: Text("Show Notification"),
+          child: const Text("Show Notification"),
         ),
       ),
     );

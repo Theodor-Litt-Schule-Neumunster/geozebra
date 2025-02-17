@@ -12,9 +12,11 @@ import 'package:flutter/services.dart';
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+    debugPrint('Flutter binding initialized');
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);  // Add this
     String savedTheme = await SettingsService().getValue<String>("theme", "light");
     await NotificationsProvider().initialize();
+    debugPrint('Notifications initialized');
     runApp(MyApp(savedTheme: savedTheme));
   } catch (e) {
     debugPrint('Initialization error: $e');
