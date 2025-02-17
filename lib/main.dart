@@ -17,7 +17,7 @@ void main() async {
     await NotificationsProvider().initialize();
     runApp(MyApp(savedTheme: savedTheme));
   } catch (e) {
-    print('Initialization error: $e');
+    debugPrint('Initialization error: $e');
     runApp(const MaterialApp(
       home: Scaffold(
         body: Center(
