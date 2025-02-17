@@ -18,7 +18,6 @@ void main() async {
     runApp(MyApp(savedTheme: savedTheme));
   } catch (e) {
     print('Initialization error: $e');
-    // Provide a fallback
     runApp(const MaterialApp(
       home: Scaffold(
         body: Center(

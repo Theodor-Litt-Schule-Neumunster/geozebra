@@ -1,22 +1,19 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 class SettingsService {
-  final prefs = SharedPreferences.getInstance();
-
-  Future<T> getValue<T>(String settingKey, T defaultValue) async {
-    var lPrefs = await prefs;
-
-    return switch (T) {
-      const (bool) => (lPrefs.getBool(settingKey) ?? defaultValue) as T,
-      const (int) => (lPrefs.getInt(settingKey) ?? defaultValue) as T,
-      const (double) => (lPrefs.getDouble(settingKey) ?? (lPrefs.getInt(settingKey)?.toDouble()) ?? defaultValue) as T,
-      const (String) => (lPrefs.getString(settingKey) ?? defaultValue) as T,
-      _ => throw UnsupportedError('Unsupported type: ${T.toString()}')
-    };
+  Future<T> getValue<T>(String key, T defaultValue) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return (prefs.get(key) ?? defaultValue) as T;
+    } catch (e) {
+      debugPrint('Error reading settings: $e');
+      return defaultValue;
+    }
   }
 
   setValue<T>(String settingKey, T value) async {
-    var lPrefs = await prefs;
+    var lPrefs = await SharedPreferences.getInstance();
 
     return switch (T) {
       const (bool) => lPrefs.setBool(settingKey, value as bool),

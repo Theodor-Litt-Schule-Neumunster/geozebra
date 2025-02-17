@@ -31,6 +31,11 @@
 
   <title>geozebra_app</title>
   <link rel="manifest" href="manifest.json">
+  <script>
+    if (typeof Notification !== 'undefined') {
+      Notification.requestPermission();
+    }
+  </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
