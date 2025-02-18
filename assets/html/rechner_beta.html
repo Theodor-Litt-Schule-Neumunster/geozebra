@@ -31,9 +31,8 @@
 
         function receiveTasksFromFlutter(tasksJson) {
             try {
-                let tasks = JSON.parse(tasksJson);
-                currentTasks = tasks;
-                console.log("📥 Empfangen von Flutter:", tasks);
+                currentTasks = JSON.parse(tasksJson);
+                console.log("📥 Aufgaben von Flutter empfangen:", currentTasks);
             } catch (error) {
                 console.error("❌ Fehler beim Parsen der Aufgaben:", error);
             }
@@ -48,7 +47,7 @@
             }
 
             let objects = ggbAPI.getAllObjectNames();
-            console.log("📝 GeoGebra-Objekte gefunden:", objects);
+            console.log("📝 Gefundene GeoGebra-Objekte:", objects);
 
             currentTasks.forEach(task => {
                 let correct = false;
@@ -59,7 +58,6 @@
                             if (ggbAPI.getObjectType(obj) === "point") {
                                 let x = ggbAPI.getXcoord(obj);
                                 let y = ggbAPI.getYcoord(obj);
-                                console.log(`🔍 Prüfe Punkt ${obj}: (${x}, ${y})`);
                                 task.condition.solutions.forEach(solution => {
                                     if (Math.abs(x - solution.x) < 0.01 && Math.abs(y - solution.y) < 0.01) {
                                         correct = true;
@@ -80,10 +78,11 @@
         function sendTaskStatusToFlutter() {
             let status = getTaskStatus();
             console.log("📤 Sende an Flutter:", status);
-            if (window.flutter_inappwebview) {
-                window.flutter_inappwebview.callHandler("taskCompleted", JSON.stringify(status));
+            if (window.taskCompleted) {
+                window.taskCompleted.postMessage(JSON.stringify(status));
             }
         }
+
 
         var ggbApp = new GGBApplet({
             "appName": "graphing",

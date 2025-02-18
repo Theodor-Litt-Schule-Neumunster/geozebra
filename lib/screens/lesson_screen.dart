@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import '../models/class_model.dart';
 
 class LessonScreen extends StatefulWidget {
@@ -12,22 +12,75 @@ class LessonScreen extends StatefulWidget {
   State<LessonScreen> createState() => _LessonScreenState();
 }
 
-class _LessonScreenState extends State<LessonScreen> {
-  InAppWebViewController? webViewController;
+class _LessonScreenState extends State<LessonScreen>
+    with SingleTickerProviderStateMixin {
+  late final WebViewController _controller;
+  bool isLoading = true;
+  bool minLoadingTimePassed = false;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
   Map<String, bool> taskStatus = {};
   Timer? _taskCheckTimer;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _startTaskCheckLoop();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 600),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    );
+
+    Timer(Duration(seconds: 2), () {
+      setState(() {
+        minLoadingTimePassed = true;
+      });
     });
+
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (url) {
+            if (minLoadingTimePassed) {
+              _animationController.forward().then((_) {
+                setState(() {
+                  isLoading = false;
+                });
+              });
+              sendAllTasksToWebView();
+              _startTaskCheckLoop();
+            } else {
+              Timer(Duration(milliseconds: 500), () {
+                _animationController.forward().then((_) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                });
+                sendAllTasksToWebView();
+                _startTaskCheckLoop();
+              });
+            }
+          },
+        ),
+      )
+      ..addJavaScriptChannel(
+        "taskCompleted",
+        onMessageReceived: (message) {
+          _updateTaskStatus(message.message);
+        },
+      )
+      ..loadFlutterAsset("assets/html/rechner_beta.html");
   }
 
   @override
   void dispose() {
     _taskCheckTimer?.cancel();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -40,37 +93,29 @@ class _LessonScreenState extends State<LessonScreen> {
             })
         .toList());
 
-    webViewController?.evaluateJavascript(
-        source: "receiveTasksFromFlutter('$tasksJson');");
+    _controller.runJavaScript("receiveTasksFromFlutter('$tasksJson');");
   }
 
   void _startTaskCheckLoop() {
     _taskCheckTimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      _checkTaskCompletion();
+      _controller.runJavaScript("sendTaskStatusToFlutter();");
     });
   }
 
-  Future<void> _checkTaskCompletion() async {
-    if (webViewController == null) return;
+  void _updateTaskStatus(String jsonStatus) {
+    try {
+      print("🔄 Received task status update: $jsonStatus");
+      final Map<String, dynamic> status = jsonDecode(jsonStatus);
 
-    final result = await webViewController?.evaluateJavascript(source: """
-      (function() {
-          if (typeof getTaskStatus === "function") {
-              return JSON.stringify(getTaskStatus());
-          }
-          return "{}";
-      })();
-  """);
+      setState(() {
+        taskStatus.clear();
+        taskStatus
+            .addAll(status.map((key, value) => MapEntry(key, value == true)));
+      });
 
-    if (result != null && result is String && result.isNotEmpty) {
-      try {
-        final Map<String, dynamic> status = jsonDecode(result);
-        setState(() {
-          taskStatus = status.map((key, value) => MapEntry(key, value == true));
-        });
-      } catch (e) {
-        // Handle error
-      }
+      print("✅ Updated taskStatus: $taskStatus");
+    } catch (e) {
+      print("❌ Error parsing task status: $e");
     }
   }
 
@@ -78,45 +123,54 @@ class _LessonScreenState extends State<LessonScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.lesson.lessonTitle)),
-      endDrawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: Text("Aufgaben", style: TextStyle(fontSize: 22)),
-            ),
-            ...widget.lesson.tasks.map((task) {
-              return ListTile(
-                title: Text(task.shortDescription),
-                subtitle: Text(
-                  taskStatus[task.id] == true
-                      ? "✅ Aufgabe abgeschlossen!"
-                      : "⏳ Aufgabe wird geprüft...",
-                  style: TextStyle(
-                      color: taskStatus[task.id] == true
-                          ? Colors.green
-                          : Colors.red),
-                ),
-              );
-            }),
-          ],
+      endDrawer: Builder(
+        builder: (context) => Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                  child: Text("Aufgaben", style: TextStyle(fontSize: 22))),
+              ...widget.lesson.tasks.map((task) {
+                return ListTile(
+                  title: Text(task.shortDescription),
+                  subtitle: Text(
+                    taskStatus[task.id] == true
+                        ? "✅ Aufgabe abgeschlossen!"
+                        : "⏳ Aufgabe wird geprüft...",
+                    style: TextStyle(
+                        color: taskStatus[task.id] == true
+                            ? Colors.green
+                            : Colors.red),
+                  ),
+                );
+              }).toList(),
+            ],
+          ),
         ),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: InAppWebView(
-              initialFile: "assets/html/rechner_beta.html",
-              initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(javaScriptEnabled: true),
+          WebViewWidget(controller: _controller),
+          if (isLoading)
+            FadeTransition(
+              opacity: _fadeAnimation,
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.calculate_rounded,
+                        size: 80, color: Colors.blueAccent),
+                    SizedBox(height: 20),
+                    Text("Loading GeoGebra...",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 20),
+                    CircularProgressIndicator(
+                        strokeWidth: 3, color: Colors.blueAccent),
+                  ],
+                ),
               ),
-              onWebViewCreated: (controller) {
-                webViewController = controller;
-                Future.delayed(Duration(seconds: 2), () {
-                  sendAllTasksToWebView();
-                });
-              },
             ),
-          ),
         ],
       ),
     );
