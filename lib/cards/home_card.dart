@@ -7,12 +7,12 @@ class ScreenCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const ScreenCard({
-    Key? key,
+    super.key,
     required this.iconData,
     required this.title,
     required this.subtitle,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
