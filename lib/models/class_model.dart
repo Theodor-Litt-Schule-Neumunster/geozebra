@@ -2,7 +2,7 @@ class Task {
   final String id;
   final String description;
   final String shortDescription;
-  final String condition;
+  final Map<String, dynamic> condition; // ✅ Now supports structured conditions
 
   Task({
     required this.id,
@@ -13,19 +13,19 @@ class Task {
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
-      id: json['id'],
-      description: json['description'],
-      shortDescription: json['shortDescription'] ?? json['description'],
-      condition: json['condition'],
+      id: json['taskId'] ?? json['id'],
+      description: json['taskDescription'] ?? json['description'],
+      shortDescription: json['taskShortDescription'] ?? json['shortDescription'] ?? json['description'],
+      condition: json['taskCondition'] ?? {}, // ✅ Now correctly parses conditions
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'description': description,
-      'shortDescription': shortDescription,
-      'condition': condition,
+      'taskId': id,
+      'taskDescription': description,
+      'taskShortDescription': shortDescription,
+      'taskCondition': condition,
     };
   }
 }
@@ -74,14 +74,14 @@ class ClassModel {
 
   factory ClassModel.fromJson(Map<String, dynamic> json) {
     return ClassModel(
-      className: json['className'],
+      className: json['classTitle'] ?? json['className'],
       lessons: (json['lessons'] as List).map((lesson) => Lesson.fromJson(lesson)).toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'className': className,
+      'classTitle': className,
       'lessons': lessons.map((lesson) => lesson.toJson()).toList(),
     };
   }

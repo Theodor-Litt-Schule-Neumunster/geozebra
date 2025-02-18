@@ -1,52 +1,22 @@
 {
-    "className": "Basic Geogebra Knowledge",
-    "lessons": [
-      {
-        "lessonId": "lesson1",
-        "lessonTitle": "Adding Points",
-        "description": "Learn how to add points in GeoGebra.",
-        "shortDescription": "Learn how to add points in GeoGebra.",
-        "tasks": [
-          {
-            "id": "A",
-            "description": "Set point A at (2,3)",
-            "shortDescription": "Set point A at (2,3)",
-            "condition": "return ggb.getXcoord('A') === 2 && ggb.getYcoord('A') === 3;"
-          },
-          {
-            "id": "B",
-            "description": "Set point B at (-1,5)",
-            "shortDescription": "Set point B at (-1,5)",
-            "condition": "return ggb.getXcoord('B') === -1 && ggb.getYcoord('B') === 5;"
-          },
-          {
-            "id": "C",
-            "description": "Draw a line through A and B",
-            "shortDescription": "Draw a line through A and B",
-            "condition": "return ggb.exists('g') && ggb.getValueString('g').includes('A') && ggb.getValueString('g').includes('B');"
-          }
-        ]
-      },
-      {
-        "lessonId": "lesson2",
-        "lessonTitle": "Working with Functions",
-        "description": "Explore basic function graphing in GeoGebra.",
-        "shortDescription": "Explore basic function graphing in GeoGebra.",
-        "tasks": [
-          {
-            "id": "A",
-            "description": "Create the function f(x) = x^2",
-            "shortDescription": "Create the function f(x) = x^2",
-            "condition": "return ggb.exists('f') && ggb.getDefinitionString('f') === 'x^2';"
-          },
-          {
-            "id": "B",
-            "description": "Find the intersection with y=4",
-            "shortDescription": "Find the intersection with y=4",
-            "condition": "return ggb.exists('I') && ggb.getYcoord('I') === 4;"
-          }
-        ]
-      }
-    ]
-  }
-  
+  "classId": "geogebramixedtasks",
+  "classTitle": "GeoGebra Mixed Tasks",
+  "classDescription": "A combination of basic and advanced GeoGebra tasks with multiple solutions.",
+  "classShortDescription": "Basic and advanced GeoGebra tasks with multiple solutions.",
+  "lessons": [
+    {
+      "lessonId": "geogebramixedtasks_task1",
+      "lessonTitle": "Basic GeoGebra Tasks",
+      "description": "Learn how to add points and draw lines.",
+      "shortDescription": "Basic GeoGebra concepts.",
+      "tasks": [
+        {
+          "taskId": "geogebramixedtasks_task2",
+          "taskDescription": "Set point A at (2,3)",
+          "taskShortDescription": "Set point A at (2,3)",
+          "taskCondition": { "type": "point", "solutions": [{ "x": 2, "y": 3 }] }
+        }
+      ]
+    }
+  ]
+}

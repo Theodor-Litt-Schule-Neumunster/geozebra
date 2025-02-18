@@ -1,174 +1,120 @@
-import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:convert';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../models/class_model.dart';
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;
-  const LessonScreen({super.key, required this.lesson});
+  const LessonScreen({Key? key, required this.lesson}) : super(key: key);
 
   @override
   State<LessonScreen> createState() => _LessonScreenState();
 }
 
 class _LessonScreenState extends State<LessonScreen> {
-  late final WebViewController controller;
-  String nextTaskDescription = "Loading tasks...";
+  InAppWebViewController? webViewController;
+  Map<String, bool> taskStatus = {};
+  Timer? _taskCheckTimer;
 
   @override
   void initState() {
     super.initState();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..loadFlutterAsset('assets/html/rechner.html')
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (String url) {
-            sendTasksToWebView();
-          },
-        ),
-      );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startTaskCheckLoop();
+    });
   }
 
-  void sendTasksToWebView() {
-    List<Map<String, dynamic>> tasks = widget.lesson.tasks
+  @override
+  void dispose() {
+    _taskCheckTimer?.cancel();
+    super.dispose();
+  }
+
+  void sendAllTasksToWebView() {
+    final tasksJson = jsonEncode(widget.lesson.tasks
         .map((task) => {
-              "id": task.id,
-              "description": task.description,
-              "condition": task.condition,
+              "taskId": task.id,
+              "taskDescription": task.description,
+              "condition": task.condition
             })
-        .toList();
+        .toList());
 
-    controller.runJavaScript(
-        """window.postMessage({ type: 'loadTasks', tasks: ${jsonEncode(tasks)} }, '*');""");
-
-    updateNextTask();
+    webViewController?.evaluateJavascript(
+        source: "receiveTasksFromFlutter('$tasksJson');");
   }
 
-  void updateNextTask() async {
-    for (var task in widget.lesson.tasks) {
-      String result = await controller.runJavaScriptReturningResult("""
-        (() => {
-          try {
-            let ggb = window.ggbApp.getAppletObject();
-            return (${task.condition}) ? "completed" : "incomplete";
-          } catch (e) { return "error"; }
-        })();
-      """) as String;
+  void _startTaskCheckLoop() {
+    _taskCheckTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _checkTaskCompletion();
+    });
+  }
 
-      if (result.contains("incomplete")) {
+  Future<void> _checkTaskCompletion() async {
+    if (webViewController == null) return;
+
+    final result = await webViewController?.evaluateJavascript(source: """
+      (function() {
+          if (typeof getTaskStatus === "function") {
+              return JSON.stringify(getTaskStatus());
+          }
+          return "{}";
+      })();
+  """);
+
+    if (result != null && result is String && result.isNotEmpty) {
+      try {
+        final Map<String, dynamic> status = jsonDecode(result);
         setState(() {
-          nextTaskDescription = task.description;
+          taskStatus = status.map((key, value) => MapEntry(key, value == true));
         });
-        return;
+      } catch (e) {
+        // Handle error
       }
     }
-    setState(() {
-      nextTaskDescription = "All tasks completed!";
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.lesson.lessonTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text("Data saving not implemented"),
-                    content: Text("Quit?"),
-                    actions: [
-                      TextButton(
-                        child: Text("No"),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      TextButton(
-                        child: Text("Yes"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
-        ],
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppBar(title: Text(widget.lesson.lessonTitle)),
       endDrawer: Drawer(
-        child: Column(
+        child: ListView(
           children: [
-            Expanded(
-              child: ListView(
-                children: widget.lesson.tasks.map(
-                      (task) => ExpansionTile(
-                        leading: Icon(Icons.radio_button_unchecked_outlined, color: Theme.of(context).colorScheme.onPrimary),
-                        title: Text(task.shortDescription, style: TextStyle(fontSize: 16)),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(task.description),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Lösungshinweise"),
-                                    content: Text("No hints available."),
-                                    actions: [
-                                      TextButton(
-                                        child: Text("Close", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
-                                        onPressed: () => Navigator.of(context).pop(),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Text("Lösungshinweise", style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
-                          ),
-                        ],
-                      ),
-                    ).toList(),
-              ),
+            DrawerHeader(
+              child: Text("Aufgaben", style: TextStyle(fontSize: 22)),
             ),
+            ...widget.lesson.tasks.map((task) {
+              return ListTile(
+                title: Text(task.shortDescription),
+                subtitle: Text(
+                  taskStatus[task.id] == true
+                      ? "✅ Aufgabe abgeschlossen!"
+                      : "⏳ Aufgabe wird geprüft...",
+                  style: TextStyle(
+                      color: taskStatus[task.id] == true
+                          ? Colors.green
+                          : Colors.red),
+                ),
+              );
+            }).toList(),
           ],
         ),
       ),
-      
-      body: Stack(
+      body: Column(
         children: [
-          WebViewWidget(controller: controller),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: Container(
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(10),
+          Expanded(
+            child: InAppWebView(
+              initialFile: "assets/html/lesson_rechner.html",
+              initialOptions: InAppWebViewGroupOptions(
+                crossPlatform: InAppWebViewOptions(javaScriptEnabled: true),
               ),
-              child: Text(
-                nextTaskDescription,
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
+              onWebViewCreated: (controller) {
+                webViewController = controller;
+                Future.delayed(Duration(seconds: 2), () {
+                  sendAllTasksToWebView();
+                });
+              },
             ),
           ),
         ],
