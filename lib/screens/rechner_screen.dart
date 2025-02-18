@@ -12,8 +12,8 @@ class RechnerScreen extends StatefulWidget {
 class _RechnerScreenState extends State<RechnerScreen>
     with SingleTickerProviderStateMixin {
   late final WebViewController _controller;
-  bool isLoading = true; // Track loading state
-  bool minLoadingTimePassed = false; // Track minimum loading duration
+  bool isLoading = true;
+  bool minLoadingTimePassed = false;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -21,21 +21,21 @@ class _RechnerScreenState extends State<RechnerScreen>
   void initState() {
     super.initState();
 
-    // Set up fade animation for loading screen
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 600), // Smooth fade-out
+      duration: Duration(milliseconds: 600),
     );
     _fadeAnimation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeOut,
     );
 
-    // Ensure loading screen is visible for at least 2 seconds
-    Timer(Duration(seconds: 2), () {
-      setState(() {
-        minLoadingTimePassed = true;
-      });
+    Timer(Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          minLoadingTimePassed = true;
+        });
+      }
     });
 
     _controller = WebViewController()
@@ -46,17 +46,23 @@ class _RechnerScreenState extends State<RechnerScreen>
             // Start fade-out animation if both conditions are met
             if (minLoadingTimePassed) {
               _animationController.forward().then((_) {
-                setState(() {
-                  isLoading = false;
-                });
-              });
-            } else {
-              Timer(Duration(milliseconds: 500), () {
-                _animationController.forward().then((_) {
+                if (mounted) {
                   setState(() {
                     isLoading = false;
                   });
-                });
+                }
+              });
+            } else {
+              Timer(Duration(milliseconds: 500), () {
+                if (mounted) {
+                  _animationController.forward().then((_) {
+                    if (mounted) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  });
+                }
               });
             }
           },
@@ -77,58 +83,57 @@ class _RechnerScreenState extends State<RechnerScreen>
       appBar: AppBar(title: Text("GeoGebra")),
       body: Stack(
         children: [
-          // WebView (Hidden when loading)
           WebViewWidget(controller: _controller),
 
-          // Loading Screen with Fade-Out Animation
           if (isLoading)
             FadeTransition(
               opacity: _fadeAnimation,
               child: Container(
                 color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TweenAnimationBuilder<double>(
-                      duration: Duration(seconds: 1),
-                      tween: Tween(begin: 0, end: 1),
-                      builder: (context, value, child) {
-                        return Transform.scale(
-                          scale: value,
-                          child: child,
-                        );
-                      },
-                      child: Icon(Icons.calculate_rounded,
-                          size: 80, color: Colors.blueAccent),
-                    ),
-
-                    SizedBox(height: 20),
-
-                    TweenAnimationBuilder<int>(
-                      duration: Duration(seconds: 3),
-                      tween: IntTween(begin: 0, end: 3),
-                      builder: (context, value, child) {
-                        String dots = "." * (value % 4);
-                        return Text(
-                          "Loading GeoGebra$dots",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        );
-                      },
-                      onEnd: () => setState(() {}),
-                    ),
-
-                    SizedBox(height: 20),
-
-                    // Subtle Progress Indicator
-                    SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 3,
-                        color: Colors.blueAccent,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TweenAnimationBuilder<double>(
+                        duration: Duration(seconds: 1),
+                        tween: Tween(begin: 0, end: 1),
+                        builder: (context, value, child) {
+                          return Transform.scale(
+                            scale: value,
+                            child: child,
+                          );
+                        },
+                        child: Icon(Icons.calculate_rounded,
+                            size: 80, color: Colors.blueAccent),
                       ),
-                    ),
-                  ],
+
+                      SizedBox(height: 20),
+
+                      TweenAnimationBuilder<int>(
+                        duration: Duration(seconds: 3),
+                        tween: IntTween(begin: 0, end: 3),
+                        builder: (context, value, child) {
+                          String dots = "." * (value % 4);
+                          return Text(
+                            "Loading GeoGebra$dots",
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          );
+                        },
+                        onEnd: () => setState(() {}),
+                      ),
+
+                      SizedBox(height: 20),
+
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

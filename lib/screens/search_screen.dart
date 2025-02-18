@@ -126,53 +126,59 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemCount: filteredClasses.length,
                 itemBuilder: (context, index) {
                   return Card(
-                  elevation: 1,
-                  shape: Theme.of(context).cardTheme.shape,
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 16),
-                    title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                        child: Text(
-                          filteredClasses[index].className,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                        ),
-                        const SizedBox(width: 12),
-                        Wrap(
-                        spacing: 12,
+                    elevation: 1,
+                    shape: Theme.of(context).cardTheme.shape,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.play_circle_fill, color: Theme.of(context).colorScheme.onSurface),
-                          Icon(Icons.bookmark_border, color: Theme.of(context).colorScheme.onSurface),
-                          Icon(Icons.numbers, color: Theme.of(context).colorScheme.onSurface),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  filteredClasses[index].className,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ),
+                              Wrap(
+                                spacing: 0,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.bookmark_border,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface),
+                                    onPressed: () {
+                                      // TODO: Implement bookmark action
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            filteredClasses[index].classShortDescription,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ],
-                        ),
-                      ],
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                      filteredClasses[index].classShortDescription,
-                      style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ClassScreen(classModel: filteredClasses[index]),
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) =>
-                        ClassScreen(classModel: filteredClasses[index]),
-                      ),
-                    );
-                    },
-                  ),
                   );
                 },
               ),

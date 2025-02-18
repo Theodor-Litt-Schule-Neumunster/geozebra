@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../models/class_model.dart';
+import '../widgets/defaultappbar_widget.dart';
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;
@@ -35,10 +36,12 @@ class _LessonScreenState extends State<LessonScreen>
       curve: Curves.easeOut,
     );
 
-    Timer(Duration(seconds: 2), () {
-      setState(() {
-        minLoadingTimePassed = true;
-      });
+    Timer(Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          minLoadingTimePassed = true;
+        });
+      }
     });
 
     _controller = WebViewController()
@@ -48,18 +51,22 @@ class _LessonScreenState extends State<LessonScreen>
           onPageFinished: (url) {
             if (minLoadingTimePassed) {
               _animationController.forward().then((_) {
-                setState(() {
-                  isLoading = false;
-                });
+                if (mounted) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
               });
               sendAllTasksToWebView();
               _startTaskCheckLoop();
             } else {
               Timer(Duration(milliseconds: 500), () {
                 _animationController.forward().then((_) {
-                  setState(() {
-                    isLoading = false;
-                  });
+                  if (mounted) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                  }
                 });
                 sendAllTasksToWebView();
                 _startTaskCheckLoop();
@@ -122,7 +129,7 @@ class _LessonScreenState extends State<LessonScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.lesson.lessonTitle)),
+      appBar: DefaultAppBar(title: widget.lesson.lessonTitle),
       endDrawer: Builder(
         builder: (context) => Drawer(
           child: ListView(
@@ -155,19 +162,21 @@ class _LessonScreenState extends State<LessonScreen>
               opacity: _fadeAnimation,
               child: Container(
                 color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.calculate_rounded,
-                        size: 80, color: Colors.blueAccent),
-                    SizedBox(height: 20),
-                    Text("Loading GeoGebra...",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 20),
-                    CircularProgressIndicator(
-                        strokeWidth: 3, color: Colors.blueAccent),
-                  ],
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.calculate_rounded,
+                          size: 80, color: Colors.blueAccent),
+                      SizedBox(height: 20),
+                      Text("Loading GeoGebra...",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 20),
+                      CircularProgressIndicator(
+                          strokeWidth: 3, color: Colors.blueAccent),
+                    ],
+                  ),
                 ),
               ),
             ),
