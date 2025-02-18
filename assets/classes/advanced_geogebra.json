@@ -1,0 +1,22 @@
+{
+  "classId": "advancedgeogebra",
+  "classTitle": "Advanced GeoGebra Tasks",
+  "classDescription": "A combination of basic and advanced GeoGebra tasks with multiple solutions.",
+  "classShortDescription": "Basic and advanced GeoGebra tasks with multiple solutions.",
+  "lessons": [
+    {
+      "lessonId": "advancedgeogebra_lesson1",
+      "lessonTitle": "Basic GeoGebra Tasks",
+      "description": "Learn how to add points and draw lines.",
+      "shortDescription": "Basic GeoGebra concepts.",
+      "tasks": [
+        {
+          "taskId": "advancedgeogebra_lesson1_task1",
+          "taskDescription": "Set point A at (13,53)",
+          "taskShortDescription": "Set point A at (13,53)",
+          "taskCondition": { "type": "point", "solutions": [{ "x": 13, "y": 53 }] }
+        }
+      ]
+    }
+  ]
+}

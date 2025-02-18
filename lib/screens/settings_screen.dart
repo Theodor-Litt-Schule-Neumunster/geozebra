@@ -18,7 +18,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _selectedTheme = "Light";
   bool _isEditingUsername = false;
 
-  final List<String> _themes = ["Light", "Light Color", "Dark"];
+  final List<String> _themes = ["Light", "Light Color", "Dark", "Dark Color"];
 
   @override
   void initState() {
@@ -41,6 +41,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         break;
       case "dark":
         displayTheme = "Dark";
+        break;
+      case "darkColor":
+        displayTheme = "Dark Color";
         break;
       default:
         displayTheme = "Light";
@@ -65,29 +68,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _updateTheme(String value) async {
-  String themeKey;
-  switch (value) {
-    case "Light":
-      themeKey = "light";
-      break;
-    case "Light Color":
-      themeKey = "lightColor";
-      break;
-    case "Dark":
-      themeKey = "dark";
-      break;
-    default:
-      themeKey = "light";
+    String themeKey;
+    switch (value) {
+      case "Light":
+        themeKey = "light";
+        break;
+      case "Light Color":
+        themeKey = "lightColor";
+        break;
+      case "Dark":
+        themeKey = "dark";
+        break;
+      case "Dark Color":
+        themeKey = "darkColor";
+        break;
+      default:
+        themeKey = "light";
+    }
+
+    await SettingsService().setValue("theme", themeKey);
+    Provider.of<SettingsProvider>(context, listen: false).setTheme(themeKey);
+
+    setState(() {
+      _selectedTheme = value;
+    });
   }
-
-  await SettingsService().setValue("theme", themeKey);
-  Provider.of<SettingsProvider>(context, listen: false).setTheme(themeKey);
-
-  setState(() {
-    _selectedTheme = value;
-  });
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +139,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 20),
             DropdownButtonFormField<String>(
               value: _selectedTheme,

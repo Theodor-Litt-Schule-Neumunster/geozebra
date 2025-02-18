@@ -24,10 +24,26 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> _loadClasses() async {
-    String jsonString = await rootBundle.loadString('assets/classes/basic_geogebra.json');
-    Map<String, dynamic> jsonData = jsonDecode(jsonString);
+    List<String> classFiles = [
+      'assets/classes/basic_geogebra.json',
+      'assets/classes/advanced_geogebra.json',
+      'assets/classes/intermediate_geogebra.json',
+    ];
+
+    List<ClassModel> loadedClasses = [];
+
+    for (String file in classFiles) {
+      try {
+        String jsonString = await rootBundle.loadString(file);
+        Map<String, dynamic> jsonData = jsonDecode(jsonString);
+        loadedClasses.add(ClassModel.fromJson(jsonData));
+      } catch (e) {
+        debugPrint("Error loading file $file: $e");
+      }
+    }
+
     setState(() {
-      allClasses = [ClassModel.fromJson(jsonData)];
+      allClasses = loadedClasses;
       filteredClasses = allClasses;
     });
   }
@@ -35,7 +51,8 @@ class _SearchScreenState extends State<SearchScreen> {
   void _filterClasses(String query) {
     setState(() {
       filteredClasses = allClasses
-          .where((cls) => cls.className.toLowerCase().contains(query.toLowerCase()))
+          .where((cls) =>
+              cls.className.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -44,40 +61,71 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: DefaultAppBar(title: "Suchen", showLeading: true),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                labelText: "Suchen...",
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        child: Column(
+          children: [
+            Material(
+              elevation: 1,
+              borderRadius: BorderRadius.circular(8),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: "Suchen...",
+                  prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurface),
+                  border: Theme.of(context).inputDecorationTheme.border,
+                  focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
+                ),
+                onChanged: _filterClasses,
               ),
-              onChanged: _filterClasses,
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredClasses.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(filteredClasses[index].className),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ClassScreen(classModel: filteredClasses[index]),
+            const SizedBox(height: 12),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredClasses.length,
+                itemBuilder: (context, index) {
+                  // TODO: Export to search_card.dart
+                  return Card(
+                    elevation: 1,
+                    shape: Theme.of(context).cardTheme.shape,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                      title: Text(
+                        filteredClasses[index].className,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
-                    );
-                  },
-                );
-              },
+                      trailing: Wrap(
+                        spacing: 12,
+                        children: [
+                          // TODO: Should only be shown when the class is started & not completed. If completed show something else like a checkmark or smt
+                          Icon(Icons.play_circle_fill, color: Theme.of(context).colorScheme.onSurface),
+
+                          // TODO: If we want to implement favoriting (is this even a word?)
+                          Icon(Icons.star_border, color: Theme.of(context).colorScheme.onSurface),
+                          
+                          // TODO: If we want to implement a rating system
+                          Icon(Icons.numbers, color: Theme.of(context).colorScheme.onSurface),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ClassScreen(classModel: filteredClasses[index]),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
     );
   }
 }

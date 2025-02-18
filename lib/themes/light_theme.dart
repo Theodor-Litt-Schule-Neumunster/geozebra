@@ -4,29 +4,27 @@ class LightTheme {
   static ThemeData get theme {
     return ThemeData(
       brightness: Brightness.light,
-      primaryColor: Colors.white, // White primary color
+      primaryColor: Colors.white,
       colorScheme: const ColorScheme.light(
-        primary: Colors.white, // White as the primary color
-        onPrimary: Colors.black, // Black text/icons on primary
-        secondary: Colors.black12, // Subtle gray for accents
-        onSecondary: Colors.black, // Text on background
-        surface: Color.fromARGB(255, 245, 245, 245), // White surfaces (e.g., app bar, cards)
-        onSurface: Colors.black, // Text/icons on surface
-        error: Color(0xFFB00020), // Standard error red
-        onError: Colors.white, // Text/icons on error
+        primary: Colors.white,
+        onPrimary: Colors.black,
+        secondary: Colors.black12,
+        onSecondary: Colors.black,
+        surface: Color(0xFFF5F5F5),
+        onSurface: Colors.black,
+        error: Color(0xFFB00020),
+        onError: Colors.white,
       ),
-      scaffoldBackgroundColor: Colors.white, // Pure white background
+      scaffoldBackgroundColor: Colors.white,
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.white, // White app bar
-        elevation: 0, // Flat design with no shadow
+        backgroundColor: Colors.white,
+        elevation: 0,
         titleTextStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.black, // Black text for contrast
+          color: Colors.black,
         ),
-        iconTheme: IconThemeData(
-          color: Colors.black, // Black icons
-        ),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
@@ -42,32 +40,28 @@ class LightTheme {
         titleLarge: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Colors.black, // Headings in black
+          color: Colors.black,
         ),
         titleMedium: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.black, // Subheadings in black
+          color: Colors.black,
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color.fromARGB(255, 226, 226, 226), // White background
-        selectedItemColor: Colors.black, // Black for active items
-        unselectedItemColor: Colors.black54, // Gray for inactive items
-        elevation: 5, // Subtle shadow for separation
-        selectedIconTheme: IconThemeData(
-          size: 28, // Larger size for selected icon
-        ),
-        unselectedIconTheme: IconThemeData(
-          size: 24, // Standard size for unselected icons
-        ),
+        backgroundColor: Color(0xFFE2E2E2),
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black54,
+        elevation: 5,
+        selectedIconTheme: IconThemeData(size: 28),
+        unselectedIconTheme: IconThemeData(size: 24),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black, // Black buttons
-          foregroundColor: Colors.white, // White text
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
@@ -76,18 +70,18 @@ class LightTheme {
         fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.black12), // Subtle gray border
+          borderSide: BorderSide(color: Colors.black12),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.black, width: 2), // Black focused border
+          borderSide: BorderSide(color: Colors.black, width: 2),
         ),
         labelStyle: TextStyle(color: Colors.black54),
         hintStyle: TextStyle(color: Colors.black38),
       ),
       cardTheme: const CardTheme(
         color: Colors.white,
-        elevation: 1, // Minimal elevation
+        elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
         ),

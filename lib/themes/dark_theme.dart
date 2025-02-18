@@ -4,92 +4,92 @@ class DarkTheme {
   static ThemeData get theme {
     return ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Color(0xFF6A5AE0), // Purple primary color
+      primaryColor: Colors.black,
       colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF6A5AE0), // Purple as the primary color
-        onPrimary: Colors.white, // White text/icons on primary
-        secondary: Color(0xFF8E8E93), // Gray for accents
-        onSecondary: Colors.white, // Text on secondary background
-        surface: Color.fromARGB(255, 31, 31, 31), // Dark gray surfaces
-        onSurface: Colors.white, // White text/icons on surface
-        error: Color(0xFFCF6679), // Standard error red for dark themes
-        onError: Colors.black, // Text/icons on error
+        primary: Colors.black,
+        onPrimary: Colors.white70,
+        secondary: Colors.grey,
+        onSecondary: Color.fromARGB(221, 48, 48, 48),
+        surface: Color.fromARGB(255, 12, 12, 12),
+        onSurface: Colors.white70,
+        error: Color(0xFFCF6679),
+        onError: Colors.black,
       ),
-      scaffoldBackgroundColor: Color.fromARGB(255, 25, 25, 25), // Dark background
+      scaffoldBackgroundColor: Colors.black,
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color.fromARGB(255, 25, 25, 25), // Dark gray app bar
-        elevation: 0, // Flat design with no shadow
+        backgroundColor: Colors.black,
+        elevation: 0,
         titleTextStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // White text for contrast
+          color: Colors.white70,
         ),
         iconTheme: IconThemeData(
-          color: Colors.white, // White icons
+          color: Colors.white70,
         ),
       ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.normal,
-          color: Colors.white, // White for readability
+          color: Colors.white70,
         ),
         bodyMedium: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.normal,
-          color: Colors.white, // White for readability
+          color: Colors.white70,
         ),
         titleLarge: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // Headings in white
+          color: Colors.white70,
         ),
         titleMedium: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // Subheadings in white
-        )
+          color: Colors.white70,
+        ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color(0xFF1C1C1E), // Dark gray background
-        selectedItemColor: Color(0xFF6A5AE0), // Purple for active items
-        unselectedItemColor: Colors.white54, // Softer white for inactive items
-        elevation: 5, // Subtle shadow for separation
+        backgroundColor: Color.fromARGB(255, 33, 33, 33),
+        selectedItemColor: Colors.white70,
+        unselectedItemColor: Colors.white54,
+        elevation: 5,
         selectedIconTheme: IconThemeData(
-          size: 28, // Larger size for selected icon
+          size: 28,
         ),
         unselectedIconTheme: IconThemeData(
-          size: 24, // Standard size for unselected icons
+          size: 24,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF6A5AE0), // Purple buttons
-          foregroundColor: Colors.white, // White text
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Rounded corners
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
-        fillColor: Color(0xFF2C2C2E), // Dark gray fill color
+        fillColor: Color(0xFF212121),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: Color(0xFF6A5AE0)), // Purple border
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(color: Colors.white24),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: Color(0xFF6A5AE0), width: 2), // Purple focused border
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(color: Colors.white60, width: 2),
         ),
-        labelStyle: TextStyle(color: Colors.white70),
-        hintStyle: TextStyle(color: Colors.white54),
+        labelStyle: TextStyle(color: Colors.white54),
+        hintStyle: TextStyle(color: Colors.white38),
       ),
       cardTheme: const CardTheme(
-        color: Color(0xFF2C2C2E), // Dark gray cards
-        elevation: 2, // Minimal elevation
+        color: Color(0xFF212121),
+        elevation: 1,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
       ),
     );
