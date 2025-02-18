@@ -68,13 +68,17 @@ class Lesson {
 
 class ClassModel {
   final String className;
+  final String classDescription;
+  final String classShortDescription;
   final List<Lesson> lessons;
 
-  ClassModel({required this.className, required this.lessons});
+  ClassModel({required this.className, required this.lessons,required this.classDescription,required this.classShortDescription});
 
   factory ClassModel.fromJson(Map<String, dynamic> json) {
     return ClassModel(
       className: json['classTitle'] ?? json['className'],
+      classDescription: json['classDescription'],
+      classShortDescription: json['classShortDescription'] ?? json['classShortDescription'],
       lessons: (json['lessons'] as List).map((lesson) => Lesson.fromJson(lesson)).toList(),
     );
   }
@@ -82,6 +86,8 @@ class ClassModel {
   Map<String, dynamic> toJson() {
     return {
       'classTitle': className,
+      'classDescription': classDescription,
+      'classShortDescription': classShortDescription,
       'lessons': lessons.map((lesson) => lesson.toJson()).toList(),
     };
   }

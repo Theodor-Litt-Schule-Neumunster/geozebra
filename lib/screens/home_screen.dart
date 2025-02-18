@@ -6,7 +6,7 @@ import '../widgets/bottombar_widget.dart';
 // import "../widgets/card_widget.dart";
 import 'search_screen.dart';
 import 'notification_screen.dart';
-// import 'rechner_screen.dart';
+import 'rechner_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -146,13 +146,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: const Text('GeoGebra Rechner'),
                     subtitle: const Text('Starte den GeoGebra Rechner'),
                     onTap: () {
-                      // FIXME: Implement GeoGebra Rechner, need to fix/create/whatever rechner_screen.dart first.
-                      // Navigator.push(
-                      //   context,
-                        // MaterialPageRoute(
-                          // builder: (context) => const RechnerScreen(),
-                        // ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RechnerScreen(),
+                        ),
+                      );
                     },
                   ),
                 ),

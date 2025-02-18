@@ -84,40 +84,54 @@ class _SearchScreenState extends State<SearchScreen> {
               child: ListView.builder(
                 itemCount: filteredClasses.length,
                 itemBuilder: (context, index) {
-                  // TODO: Export to search_card.dart
                   return Card(
-                    elevation: 1,
-                    shape: Theme.of(context).cardTheme.shape,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
-                      title: Text(
-                        filteredClasses[index].className,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      trailing: Wrap(
+                  elevation: 1,
+                  shape: Theme.of(context).cardTheme.shape,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10, horizontal: 16),
+                    title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                        child: Text(
+                          filteredClasses[index].className,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                        ),
+                        const SizedBox(width: 12),
+                        Wrap(
                         spacing: 12,
                         children: [
-                          // TODO: Should only be shown when the class is started & not completed. If completed show something else like a checkmark or smt
                           Icon(Icons.play_circle_fill, color: Theme.of(context).colorScheme.onSurface),
-
-                          // TODO: If we want to implement favoriting (is this even a word?)
-                          Icon(Icons.star_border, color: Theme.of(context).colorScheme.onSurface),
-                          
-                          // TODO: If we want to implement a rating system
+                          Icon(Icons.bookmark_border, color: Theme.of(context).colorScheme.onSurface),
                           Icon(Icons.numbers, color: Theme.of(context).colorScheme.onSurface),
                         ],
+                        ),
+                      ],
                       ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ClassScreen(classModel: filteredClasses[index]),
-                          ),
-                        );
-                      },
+                      const SizedBox(height: 4),
+                      Text(
+                      filteredClasses[index].classShortDescription,
+                      style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
                     ),
+                    onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) =>
+                        ClassScreen(classModel: filteredClasses[index]),
+                      ),
+                    );
+                    },
+                  ),
                   );
                 },
               ),
