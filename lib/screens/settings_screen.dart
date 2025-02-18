@@ -86,6 +86,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
         themeKey = "light";
     }
 
+    if (themeKey != "light") {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Hinweis"),
+            content: Text("Der GeoGebra Rechner unterstützt aktuell keine Farbänderungen. Die Farbanpassung beeinflusst die Darstellung des Rechners nicht."),
+            actions: [
+              TextButton(
+              child: Text(
+                "OK",
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     await SettingsService().setValue("theme", themeKey);
     Provider.of<SettingsProvider>(context, listen: false).setTheme(themeKey);
 
