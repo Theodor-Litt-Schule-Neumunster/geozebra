@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/class_model.dart';
 import '../screens/class_screen.dart';
-import '../widgets/defaultappbar_widget.dart';
+// import '../widgets/defaultappbar_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -14,6 +14,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
   List<ClassModel> allClasses = [];
   List<ClassModel> filteredClasses = [];
 
@@ -21,6 +22,13 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     _loadClasses();
+    _searchFocusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
   }
 
   Future<void> _loadClasses() async {
@@ -60,26 +68,59 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(title: "Suchen", showLeading: true),
+      appBar: AppBar(
+        titleSpacing: 0,
+        title: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: Padding(
+            // FIXME: Padding does not work, please fix UwU
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: TextField(
+              controller: _searchController,
+              focusNode: _searchFocusNode,
+              cursorColor: Theme.of(context).colorScheme.onPrimary,
+              decoration: InputDecoration(
+                hintText: "Suchen...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+              ),
+              onChanged: _filterClasses,
+            ),
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.tune, size: 24.0),
+            onPressed: () {
+              // TODO: Implement options menu
+            },
+          ),
+        ],
+        toolbarHeight: 40.0,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, size: 24.0),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         child: Column(
           children: [
-            Material(
-              elevation: 1,
-              borderRadius: BorderRadius.circular(8),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: "Suchen...",
-                  prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurface),
-                  border: Theme.of(context).inputDecorationTheme.border,
-                  focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
-                ),
-                onChanged: _filterClasses,
-              ),
-            ),
-            const SizedBox(height: 12),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredClasses.length,
@@ -99,13 +140,16 @@ class _SearchScreenState extends State<SearchScreen> {
                         spacing: 12,
                         children: [
                           // TODO: Should only be shown when the class is started & not completed. If completed show something else like a checkmark or smt
-                          Icon(Icons.play_circle_fill, color: Theme.of(context).colorScheme.onSurface),
+                          Icon(Icons.play_circle_fill,
+                              color: Theme.of(context).colorScheme.onSurface),
 
                           // TODO: If we want to implement favoriting (is this even a word?)
-                          Icon(Icons.star_border, color: Theme.of(context).colorScheme.onSurface),
-                          
+                          Icon(Icons.star_border,
+                              color: Theme.of(context).colorScheme.onSurface),
+
                           // TODO: If we want to implement a rating system
-                          Icon(Icons.numbers, color: Theme.of(context).colorScheme.onSurface),
+                          Icon(Icons.numbers,
+                              color: Theme.of(context).colorScheme.onSurface),
                         ],
                       ),
                       onTap: () {
