@@ -1,0 +1,22 @@
+{
+  "classId": "intermediategeogebra",
+  "classTitle": "Intermediate GeoGebra Tasks",
+  "classDescription": "A combination of basic and advanced GeoGebra tasks with multiple solutions.",
+  "classShortDescription": "Basic and advanced GeoGebra tasks with multiple solutions.",
+  "lessons": [
+    {
+      "lessonId": "intermediategeogebra_lesson1",
+      "lessonTitle": "Basic GeoGebra Tasks",
+      "description": "Learn how to add points and draw lines.",
+      "shortDescription": "Basic GeoGebra concepts.",
+      "tasks": [
+        {
+          "taskId": "intermediategeogebra_lesson1_task1",
+          "taskDescription": "Set point A at (5,21)",
+          "taskShortDescription": "Set point A at (5,21)",
+          "taskCondition": { "type": "point", "solutions": [{ "x": 5, "y": 21 }] }
+        }
+      ]
+    }
+  ]
+}

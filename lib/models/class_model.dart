@@ -2,7 +2,7 @@ class Task {
   final String id;
   final String description;
   final String shortDescription;
-  final Map<String, dynamic> condition; // ✅ Now supports structured conditions
+  final Map<String, dynamic> condition;
 
   Task({
     required this.id,
@@ -16,7 +16,7 @@ class Task {
       id: json['taskId'] ?? json['id'],
       description: json['taskDescription'] ?? json['description'],
       shortDescription: json['taskShortDescription'] ?? json['shortDescription'] ?? json['description'],
-      condition: json['taskCondition'] ?? {}, // ✅ Now correctly parses conditions
+      condition: json['taskCondition'] ?? {},
     );
   }
 

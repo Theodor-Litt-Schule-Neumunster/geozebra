@@ -105,7 +105,7 @@ class _LessonScreenState extends State<LessonScreen> {
         children: [
           Expanded(
             child: InAppWebView(
-              initialFile: "assets/html/lesson_rechner.html",
+              initialFile: "assets/html/rechner_beta.html",
               initialOptions: InAppWebViewGroupOptions(
                 crossPlatform: InAppWebViewOptions(javaScriptEnabled: true),
               ),
