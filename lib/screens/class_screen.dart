@@ -6,7 +6,7 @@ import 'lesson_screen.dart';
 class ClassScreen extends StatelessWidget {
   final ClassModel classModel;
 
-  const ClassScreen({Key? key, required this.classModel}) : super(key: key);
+  const ClassScreen({super.key, required this.classModel});
 
   @override
   Widget build(BuildContext context) {
