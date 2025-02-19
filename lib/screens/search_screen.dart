@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../models/class_model.dart';
-import '../screens/class_screen.dart';
-// import '../widgets/defaultappbar_widget.dart';
+import 'package:geozebra_app/models/class_model.dart';
+import 'package:geozebra_app/screens/class_screen.dart';
+// import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

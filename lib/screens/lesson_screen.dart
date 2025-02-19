@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../models/class_model.dart';
-import '../widgets/defaultappbar_widget.dart';
+import 'package:geozebra_app/models/class_model.dart';
+import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;

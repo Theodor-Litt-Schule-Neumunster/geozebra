@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import "../widgets/defaultappbar_widget.dart";
-import '../widgets/bottombar_widget.dart';
+import "package:geozebra_app/widgets/defaultappbar_widget.dart";
+import 'package:geozebra_app/widgets/bottombar_widget.dart';
 import 'settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
