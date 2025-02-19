@@ -61,15 +61,17 @@ class _LessonScreenState extends State<LessonScreen>
               _startTaskCheckLoop();
             } else {
               Timer(Duration(milliseconds: 500), () {
-                _animationController.forward().then((_) {
-                  if (mounted) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                  }
-                });
-                sendAllTasksToWebView();
-                _startTaskCheckLoop();
+                if (mounted) {
+                  _animationController.forward().then((_) {
+                    if (mounted) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  });
+                  sendAllTasksToWebView();
+                  _startTaskCheckLoop();
+                }
               });
             }
           },
@@ -149,7 +151,7 @@ class _LessonScreenState extends State<LessonScreen>
                             : Colors.red),
                   ),
                 );
-              }).toList(),
+              })
             ],
           ),
         ),

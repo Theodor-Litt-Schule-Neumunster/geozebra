@@ -58,7 +58,7 @@ class ClassScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceVariant,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
