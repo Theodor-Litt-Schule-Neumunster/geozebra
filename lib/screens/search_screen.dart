@@ -44,6 +44,20 @@ class _SearchScreenState extends State<SearchScreen> {
       try {
         String jsonString = await rootBundle.loadString(file);
         Map<String, dynamic> jsonData = jsonDecode(jsonString);
+        
+        // Setze ids auf den index des arrays um die nicht selber eingeben zu müssen
+        if (jsonData['lessons'] != null) {
+          for (int i = 0; i < jsonData['lessons'].length; i++) {
+            var lesson = jsonData['lessons'][i];
+            lesson['lessonId'] = 'lesson_$i';
+            if (lesson['tasks'] != null) {
+              for (int j = 0; j < lesson['tasks'].length; j++) {
+                lesson['tasks'][j]['taskId'] = 'task_$j';
+              }
+            }
+          }
+        }
+
         loadedClasses.add(ClassModel.fromJson(jsonData));
       } catch (e) {
         debugPrint("Error loading file $file: $e");
