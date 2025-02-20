@@ -1,27 +1,43 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LessonProgressService {
-  static const String _key = 'startedLessons';
+class LessonService {
+  static const String taskStatusKey = "taskStatus";
+  static const String overriddenTasksKey = "overriddenTasks";
+  static const String geogebraStateKey = "geogebraState";
 
-  /// Retrieve the list of started lesson IDs.
-  Future<List<String>> getStartedLessons() async {
+  /// Load saved task data
+  static Future<Map<String, bool>> loadTaskStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    String? lessonsJson = prefs.getString(_key);
-    if (lessonsJson != null) {
-      List<dynamic> lessonsList = json.decode(lessonsJson);
-      return lessonsList.cast<String>();
-    }
-    return [];
+    final taskData = prefs.getString(taskStatusKey);
+    return taskData != null ? Map<String, bool>.from(jsonDecode(taskData)) : {};
   }
 
-  /// Add a lesson to the list of started lessons if it isn't already saved.
-  Future<void> addStartedLesson(String lessonId) async {
+  /// Load manually overridden tasks
+  static Future<Map<String, bool>> loadOverriddenTasks() async {
     final prefs = await SharedPreferences.getInstance();
-    List<String> startedLessons = await getStartedLessons();
-    if (!startedLessons.contains(lessonId)) {
-      startedLessons.add(lessonId);
-      await prefs.setString(_key, json.encode(startedLessons));
-    }
+    final manualData = prefs.getString(overriddenTasksKey);
+    return manualData != null ? Map<String, bool>.from(jsonDecode(manualData)) : {};
+  }
+
+  /// Save task status and overridden tasks
+  static Future<void> saveTaskData(Map<String, bool> taskStatus, Map<String, bool> overriddenTasks) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(taskStatusKey, jsonEncode(taskStatus));
+    await prefs.setString(overriddenTasksKey, jsonEncode(overriddenTasks));
+    print("💾 Task data saved.");
+  }
+
+  /// Save GeoGebra state (points, lines, etc.)
+  static Future<void> saveGeoGebraState(String stateJson) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(geogebraStateKey, stateJson);
+    print("💾 GeoGebra state saved.");
+  }
+
+  /// Load GeoGebra state
+  static Future<String?> loadGeoGebraState() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(geogebraStateKey);
   }
 }
