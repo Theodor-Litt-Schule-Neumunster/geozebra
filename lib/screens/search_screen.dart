@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geozebra_app/models/class_model.dart';
 import 'package:geozebra_app/screens/class_screen.dart';
+import 'package:geozebra_app/services/lessons_service.dart';
 // import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -17,18 +18,29 @@ class _SearchScreenState extends State<SearchScreen> {
   final FocusNode _searchFocusNode = FocusNode();
   List<ClassModel> allClasses = [];
   List<ClassModel> filteredClasses = [];
+  Set<String> _bookmarkedIds = {};
+
+  final LessonService _lessonService = LessonService();
 
   @override
   void initState() {
     super.initState();
     _loadClasses();
     _searchFocusNode.requestFocus();
+    _loadBookmarkedClasses();
   }
 
   @override
   void dispose() {
     _searchFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadBookmarkedClasses() async {
+    final bookmarkedIds = await _lessonService.getBookmarkedClasses();
+    setState(() {
+      _bookmarkedIds = bookmarkedIds.toSet();
+    });
   }
 
   Future<void> _loadClasses() async {
@@ -139,46 +151,55 @@ class _SearchScreenState extends State<SearchScreen> {
               child: ListView.builder(
                 itemCount: filteredClasses.length,
                 itemBuilder: (context, index) {
+                  final cls = filteredClasses[index];
+                  final isBookmarked = _bookmarkedIds.contains(cls.classId);
+
                   return Card(
                     elevation: 1,
                     shape: Theme.of(context).cardTheme.shape,
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
+                        vertical: 10, 
+                        horizontal: 16,
+                      ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Class Title
                               Expanded(
                                 child: Text(
-                                  filteredClasses[index].className,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                  cls.className,
+                                  style: Theme.of(context).textTheme.titleMedium,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
                               ),
-                              Wrap(
-                                spacing: 0,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.bookmark_border,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface),
-                                    onPressed: () {
-                                      // TODO: Implement bookmark action
-                                    },
-                                  ),
-                                ],
+                              // Bookmark Icon
+                              IconButton(
+                                icon: Icon(
+                                  isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                                  color: isBookmarked 
+                                    ? Theme.of(context).colorScheme.primary 
+                                    : Theme.of(context).colorScheme.onSurface,
+                                ),
+                                onPressed: () async {
+                                  if (isBookmarked) {
+                                    await _lessonService.unbookmarkClass(cls.classId);
+                                  } else {
+                                    await _lessonService.bookmarkClass(cls.classId);
+                                  }
+                                  // Update local set
+                                  await _loadBookmarkedClasses();
+                                },
                               ),
                             ],
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            filteredClasses[index].classShortDescription,
+                            cls.classShortDescription,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
@@ -187,8 +208,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ClassScreen(classModel: filteredClasses[index]),
+                            builder: (context) => ClassScreen(classModel: cls),
                           ),
                         );
                       },

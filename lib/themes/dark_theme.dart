@@ -96,8 +96,8 @@ class DarkTheme {
 
       extensions: [
         const TaskColors(
-          uncompletedTask: Color(0xFF4CAF50),
-          completedTask: Color(0xFF424242),
+          uncompletedTask: Color.fromARGB(255, 36, 36, 36),
+          completedTask: Color.fromARGB(255, 50, 58, 48),
         ),
       ],
     );

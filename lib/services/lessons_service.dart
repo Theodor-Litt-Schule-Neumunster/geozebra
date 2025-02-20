@@ -1,43 +1,53 @@
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LessonService {
-  static const String taskStatusKey = "taskStatus";
-  static const String overriddenTasksKey = "overriddenTasks";
-  static const String geogebraStateKey = "geogebraState";
+  static const String enrolledClassesKey = 'enrolledClasses';
+  static const String bookmarkedClassesKey = 'bookmarkedClasses';
 
-  /// Load saved task data
-  static Future<Map<String, bool>> loadTaskStatus() async {
+  Future<void> enrollInClass(String classId) async {
     final prefs = await SharedPreferences.getInstance();
-    final taskData = prefs.getString(taskStatusKey);
-    return taskData != null ? Map<String, bool>.from(jsonDecode(taskData)) : {};
+    List<String> enrolledClasses = prefs.getStringList(enrolledClassesKey) ?? [];
+    if (!enrolledClasses.contains(classId)) {
+      enrolledClasses.add(classId);
+      await prefs.setStringList(enrolledClassesKey, enrolledClasses);
+    }
   }
 
-  /// Load manually overridden tasks
-  static Future<Map<String, bool>> loadOverriddenTasks() async {
+  Future<List<String>> getEnrolledClasses() async {
     final prefs = await SharedPreferences.getInstance();
-    final manualData = prefs.getString(overriddenTasksKey);
-    return manualData != null ? Map<String, bool>.from(jsonDecode(manualData)) : {};
+    return prefs.getStringList(enrolledClassesKey) ?? [];
   }
 
-  /// Save task status and overridden tasks
-  static Future<void> saveTaskData(Map<String, bool> taskStatus, Map<String, bool> overriddenTasks) async {
+  Future<void> unenrollFromClass(String classId) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(taskStatusKey, jsonEncode(taskStatus));
-    await prefs.setString(overriddenTasksKey, jsonEncode(overriddenTasks));
-    print("💾 Task data saved.");
+    List<String> enrolledClasses = prefs.getStringList(enrolledClassesKey) ?? [];
+    if (enrolledClasses.contains(classId)) {
+      enrolledClasses.remove(classId);
+      await prefs.setStringList(enrolledClassesKey, enrolledClasses);
+    }
   }
 
-  /// Save GeoGebra state (points, lines, etc.)
-  static Future<void> saveGeoGebraState(String stateJson) async {
+
+  Future<void> bookmarkClass(String classId) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(geogebraStateKey, stateJson);
-    print("💾 GeoGebra state saved.");
+    List<String> bookmarkedClasses = prefs.getStringList(bookmarkedClassesKey) ?? [];
+    if (!bookmarkedClasses.contains(classId)) {
+      bookmarkedClasses.add(classId);
+      await prefs.setStringList(bookmarkedClassesKey, bookmarkedClasses);
+    }
   }
 
-  /// Load GeoGebra state
-  static Future<String?> loadGeoGebraState() async {
+  Future<void> unbookmarkClass(String classId) async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(geogebraStateKey);
+    List<String> bookmarkedClasses = prefs.getStringList(bookmarkedClassesKey) ?? [];
+    if (bookmarkedClasses.contains(classId)) {
+      bookmarkedClasses.remove(classId);
+      await prefs.setStringList(bookmarkedClassesKey, bookmarkedClasses);
+    }
+  }
+
+  Future<List<String>> getBookmarkedClasses() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(bookmarkedClassesKey) ?? [];
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:geozebra_app/services/settings_service.dart';
 import 'package:geozebra_app/widgets/bottombar_widget.dart';
-// import "package:geozebra_app/widgets/card_widget.dart";
+import 'package:geozebra_app/cards/home_card.dart';
 import 'search_screen.dart';
 import 'notification_screen.dart';
 import 'rechner_screen.dart';
@@ -116,47 +116,27 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.location_on,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    title: const Text('Willkommen!'),
-                    subtitle: const Text('Tippe um loszulegen'),
-                    onTap: () {
-                      // Handle card tap
-                    },
-                  ),
+                ScreenCard(
+                  iconData: Icons.location_on,
+                  title: "Willkommen!",
+                  subtitle: "Tippe um loszulegen",
+                  onTap: () {
+                    // Handle card tap
+                  },
                 ),
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.map,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                    title: const Text('GeoGebra Rechner'),
-                    subtitle: const Text('Starte den GeoGebra Rechner'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RechnerScreen(),
-                        ),
-                      );
-                    },
-                  ),
+                ScreenCard(
+                  iconData: Icons.map,
+                  title: "GeoGebra Rechner",
+                  subtitle: "Starte den GeoGebra Rechner",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RechnerScreen(),
+                      ),
+                    );
+                  },
                 ),
-
-                
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,6 +160,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+                ScreenCard(
+                  iconData: Icons.book,
+                  title: 'Kurs: Analysis 1',
+                  subtitle: 'Kapitel 3: Integralrechnung',
+                  onTap: () {
+                    // Handle tap
+                  },
+                ),
+
+                
               ],
             ),
           ),

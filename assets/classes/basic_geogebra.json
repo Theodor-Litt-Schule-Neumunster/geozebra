@@ -25,6 +25,30 @@
           "taskCondition": { "type": "point", "solutions": [{ "x": 1, "y": 1 }] }
         }
       ]
+    },
+    {
+      "lessonTitle": "Grundlegende GeoGebra Aufgaben II",
+      "description": "Lerne, wie man Punkte hinzufügt und Linien zeichnet.",
+      "shortDescription": "Grundlegende GeoGebra-Konzepte.",
+      "tasks": [
+        {
+          "taskDescription": "Setze einen Punkt auf der Koordinate (13,53)",
+          "taskShortDescription": "Punkt auf (13,53)",
+          "taskCondition": { "type": "point", "solutions": [{ "x": 13, "y": 53 }] }
+        }
+      ]
+    },
+    {
+      "lessonTitle": "Grundlegende GeoGebra Aufgaben III",
+      "description": "Lerne, wie man Punkte hinzufügt und Linien zeichnet.",
+      "shortDescription": "Grundlegende GeoGebra-Konzepte.",
+      "tasks": [
+        {
+          "taskDescription": "Setze einen Punkt auf der Koordinate (5,21)",
+          "taskShortDescription": "Punkt auf (5,21)",
+          "taskCondition": { "type": "point", "solutions": [{ "x": 5, "y": 21 }] }
+        }
+      ]
     }
   ]
 }

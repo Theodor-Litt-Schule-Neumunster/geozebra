@@ -90,8 +90,8 @@ class LightTheme {
 
       extensions: [
         const TaskColors(
-          uncompletedTask: Color(0xFFC8E6C9),
-          completedTask: Color(0xFFEEEEEE),
+          uncompletedTask: Color.fromARGB(255, 212, 212, 212),
+          completedTask: Color.fromARGB(255, 194, 224, 185),
         ),
       ],
     );

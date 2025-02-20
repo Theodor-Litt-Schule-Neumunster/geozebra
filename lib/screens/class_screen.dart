@@ -1,30 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:geozebra_app/models/class_model.dart';
 import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
+import 'package:geozebra_app/services/lessons_service.dart';
 import 'lesson_screen.dart';
 
-class ClassScreen extends StatelessWidget {
+class ClassScreen extends StatefulWidget {
   final ClassModel classModel;
 
-  const ClassScreen({super.key, required this.classModel});
+  const ClassScreen({Key? key, required this.classModel}) : super(key: key);
+
+  @override
+  _ClassScreenState createState() => _ClassScreenState();
+}
+
+class _ClassScreenState extends State<ClassScreen> {
+  final LessonService _lessonService = LessonService();
+  bool _isEnrolled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkEnrollmentStatus();
+  }
+
+  Future<void> _checkEnrollmentStatus() async {
+    final enrolledClasses = await _lessonService.getEnrolledClasses();
+    setState(() {
+      _isEnrolled = enrolledClasses.contains(widget.classModel.classId);
+    });
+  }
+
+  Future<void> _enrollInClass() async {
+    await _lessonService.enrollInClass(widget.classModel.classId);
+    setState(() {
+      _isEnrolled = true;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Enrolled in ${widget.classModel.className}')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: DefaultAppBar(
-        title: classModel.className,
+        title: widget.classModel.className,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {
-              // Placeholder for share functionality
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              // Handle menu selection
             },
-          ),
-          IconButton(
-            icon: const Icon(Icons.bookmark_border),
-            onPressed: () {
-              // Placeholder for bookmark functionality
+            itemBuilder: (BuildContext context) {
+              return [
+                const PopupMenuItem<String>(
+                  value: 'bookmark',
+                  child: ListTile(
+                    leading: Icon(Icons.bookmark_border),
+                    title: Text('Favoritisieren'),
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'share',
+                  child: ListTile(
+                    leading: Icon(Icons.share),
+                    title: Text('Teilen'),
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'leave',
+                  child: ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    title: Text('Verlassen'),
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'report',
+                  child: ListTile(
+                    leading: Icon(Icons.report),
+                    title: Text('Melden'),
+                  ),
+                ),
+              ];
             },
+            icon: const Icon(Icons.more_vert),
           ),
         ],
       ),
@@ -38,22 +96,31 @@ class ClassScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.star, size: 20, color: Colors.orangeAccent),
-                    const SizedBox(width: 6), 
-                    Text("0", style: Theme.of(context).textTheme.bodyMedium,),
-                    const SizedBox(width: 10), 
-                    const Icon(Icons.emoji_events, size: 20, color: Colors.orangeAccent),
-                    const SizedBox(width: 6), 
-                    Text("0", style: Theme.of(context).textTheme.bodyMedium,),
+                    const Icon(Icons.star,
+                        size: 20, color: Colors.orangeAccent),
+                    const SizedBox(width: 6),
+                    Text(
+                      "0",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.emoji_events,
+                        size: 20, color: Colors.orangeAccent),
+                    const SizedBox(width: 6),
+                    Text(
+                      "0",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   ],
                 ),
                 Row(
-                  children: [],
+                  children: const [],
                 ),
               ],
             ),
           ),
 
+          // Short description + enrollment button
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16.0),
@@ -70,40 +137,54 @@ class ClassScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  classModel.classShortDescription,
+                  widget.classModel.classShortDescription,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Enroll functionality to be implemented later
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+
+                // Conditionally show enroll button
+                if (!_isEnrolled)
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _enrollInClass,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        "Enroll in Class",
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: Colors.white,
+                                ),
                       ),
                     ),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
                     child: Text(
-                      "Enroll in Class",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Colors.white,
-                          ),
+                      "Du bist diesem Kurs bereits beigetreten.",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.green),
                     ),
                   ),
-                ),
               ],
             ),
           ),
+
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              itemCount: classModel.lessons.length,
+              itemCount: widget.classModel.lessons.length,
               itemBuilder: (context, index) {
-                final lesson = classModel.lessons[index];
+                final lesson = widget.classModel.lessons[index];
                 return Card(
                   elevation: 2,
                   margin: const EdgeInsets.only(bottom: 12),
@@ -125,12 +206,21 @@ class ClassScreen extends StatelessWidget {
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios, size: 18),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LessonScreen(lesson: lesson),
-                        ),
-                      );
+                      if (_isEnrolled) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LessonScreen(lesson: lesson),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                "Du musst diesem Kurs erst beitreten, bevor du Lektionen starten kannst."),
+                          ),
+                        );
+                      }
                     },
                   ),
                 );
