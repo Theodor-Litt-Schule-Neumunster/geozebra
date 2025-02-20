@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geozebra_app/models/theme_model.dart';
 
 class LightTheme {
   static ThemeData get theme {
@@ -86,6 +87,13 @@ class LightTheme {
           borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
       ),
+
+      extensions: [
+        const TaskColors(
+          uncompletedTask: Color(0xFFC8E6C9),
+          completedTask: Color(0xFFEEEEEE),
+        ),
+      ],
     );
   }
 }

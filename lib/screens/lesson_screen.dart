@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../models/class_model.dart';
 import '../widgets/defaultappbar_widget.dart';
-import '../services/lessons_service.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'package:geozebra_app/models/theme_model.dart';
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;
@@ -22,13 +24,11 @@ class _LessonScreenState extends State<LessonScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   Map<String, bool> taskStatus = {};
-  Map<String, bool> overriddenTasks = {};
   Timer? _taskCheckTimer;
 
   @override
   void initState() {
     super.initState();
-    _loadTaskData(); // Load task & GeoGebra data
 
     _animationController = AnimationController(
       vsync: this,
@@ -51,7 +51,7 @@ class _LessonScreenState extends State<LessonScreen>
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageFinished: (url) async {
+          onPageFinished: (url) {
             if (minLoadingTimePassed) {
               _animationController.forward().then((_) {
                 if (mounted) {
@@ -62,7 +62,20 @@ class _LessonScreenState extends State<LessonScreen>
               });
               sendAllTasksToWebView();
               _startTaskCheckLoop();
-              _restoreGeoGebraState();  // Restore previous GeoGebra state
+            } else {
+              Timer(Duration(milliseconds: 500), () {
+                if (mounted) {
+                  _animationController.forward().then((_) {
+                    if (mounted) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
+                  });
+                  sendAllTasksToWebView();
+                  _startTaskCheckLoop();
+                }
+              });
             }
           },
         ),
@@ -73,12 +86,6 @@ class _LessonScreenState extends State<LessonScreen>
           _updateTaskStatus(message.message);
         },
       )
-      ..addJavaScriptChannel(
-        "saveGeoGebraState",
-        onMessageReceived: (message) {
-          LessonService.saveGeoGebraState(message.message);
-        },
-      )
       ..loadFlutterAsset("assets/html/rechner_beta.html");
   }
 
@@ -87,13 +94,6 @@ class _LessonScreenState extends State<LessonScreen>
     _taskCheckTimer?.cancel();
     _animationController.dispose();
     super.dispose();
-  }
-
-  Future<void> _loadTaskData() async {
-    taskStatus = await LessonService.loadTaskStatus();
-    overriddenTasks = await LessonService.loadOverriddenTasks();
-    setState(() {}); 
-    print("📂 Loaded task data: $taskStatus");
   }
 
   void sendAllTasksToWebView() {
@@ -116,55 +116,98 @@ class _LessonScreenState extends State<LessonScreen>
 
   void _updateTaskStatus(String jsonStatus) {
     try {
+      print("🔄 Received task status update: $jsonStatus");
       final Map<String, dynamic> status = jsonDecode(jsonStatus);
+
       setState(() {
-        status.forEach((taskId, completed) {
-          if (!overriddenTasks.containsKey(taskId)) {
-            taskStatus[taskId] = completed;
-          }
-        });
+        taskStatus.clear();
+        taskStatus
+            .addAll(status.map((key, value) => MapEntry(key, value == true)));
       });
 
-      LessonService.saveTaskData(taskStatus, overriddenTasks);
+      print("✅ Updated taskStatus: $taskStatus");
     } catch (e) {
       print("❌ Error parsing task status: $e");
     }
   }
 
-  void _restoreGeoGebraState() async {
-    final savedState = await LessonService.loadGeoGebraState();
-    if (savedState != null) {
-      _controller.runJavaScript("restoreGeoGebraState('$savedState');");
-    }
-  }
-
-  void _manuallyCompleteTask(String taskId) {
-    setState(() {
-      overriddenTasks[taskId] = true;
-      taskStatus[taskId] = true;
-    });
-
-    LessonService.saveTaskData(taskStatus, overriddenTasks);
-  }
-
-  void _showCompleteTaskDialog(String taskId) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Complete Task?"),
-        content: Text("Do you want to manually mark this task as complete?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("No"),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: DefaultAppBar(title: widget.lesson.lessonTitle),
+      endDrawer: Builder(
+        builder: (context) => Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                  child: Text("Aufgaben", style: TextStyle(fontSize: 22))),
+              ...widget.lesson.tasks.map((task) {
+                return ExpansionTile(
+                  title: Text(task.shortDescription),
+                    tilePadding: EdgeInsets.symmetric(horizontal: 16.0),
+                    backgroundColor: taskStatus[task.id] == true
+                      ? Theme.of(context).extension<TaskColors>()!.completedTask
+                      : Theme.of(context).extension<TaskColors>()!.uncompletedTask,
+                    collapsedBackgroundColor: taskStatus[task.id] == true
+                      ? Theme.of(context).extension<TaskColors>()!.completedTask
+                      : Theme.of(context).extension<TaskColors>()!.uncompletedTask,
+                  children: [
+                    ListTile(
+                      title: Text(task.description),
+                      
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Task Details"),
+                              content: Text(task.description),
+                              actions: [
+                                TextButton(
+                                  child: Text("Close"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                );
+              })
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _manuallyCompleteTask(taskId);
-            },
-            child: Text("Yes"),
-          ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          WebViewWidget(controller: _controller),
+          if (isLoading)
+            FadeTransition(
+              opacity: _fadeAnimation,
+              child: Container(
+                color: Colors.white,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.calculate_rounded,
+                          size: 80, color: Colors.blueAccent),
+                      SizedBox(height: 20),
+                      Text("Loading GeoGebra...",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 20),
+                      CircularProgressIndicator(
+                          strokeWidth: 3, color: Colors.blueAccent),
+                    ],
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
