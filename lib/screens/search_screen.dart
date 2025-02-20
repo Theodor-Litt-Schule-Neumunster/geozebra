@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../models/class_model.dart';
-import '../screens/class_screen.dart';
-// import '../widgets/defaultappbar_widget.dart';
+import 'package:geozebra_app/models/class_model.dart';
+import 'package:geozebra_app/screens/class_screen.dart';
+// import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -44,6 +44,20 @@ class _SearchScreenState extends State<SearchScreen> {
       try {
         String jsonString = await rootBundle.loadString(file);
         Map<String, dynamic> jsonData = jsonDecode(jsonString);
+        
+        // Setze ids auf den index des arrays um die nicht selber eingeben zu müssen
+        if (jsonData['lessons'] != null) {
+          for (int i = 0; i < jsonData['lessons'].length; i++) {
+            var lesson = jsonData['lessons'][i];
+            lesson['lessonId'] = 'lesson_$i';
+            if (lesson['tasks'] != null) {
+              for (int j = 0; j < lesson['tasks'].length; j++) {
+                lesson['tasks'][j]['taskId'] = 'task_$j';
+              }
+            }
+          }
+        }
+
         loadedClasses.add(ClassModel.fromJson(jsonData));
       } catch (e) {
         debugPrint("Error loading file $file: $e");

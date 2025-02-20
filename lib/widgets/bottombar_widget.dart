@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import "../screens/home_screen.dart";
-import "../screens/profile_screen.dart";
+import "package:geozebra_app/screens/home_screen.dart";
+import "package:geozebra_app/screens/profile_screen.dart";
 
 class BottomBarWidget extends StatefulWidget {
   final int currentIndex;

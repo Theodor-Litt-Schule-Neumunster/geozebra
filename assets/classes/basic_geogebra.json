@@ -1,31 +1,27 @@
 {
   "classId": "basicgeogebra",
-  "classTitle": "Basic GeoGebra Tasks",
-  "classDescription": "A combination of basic and advanced GeoGebra tasks with multiple solutions.",
-  "classShortDescription": "Basic and advanced GeoGebra tasks with multiple solutions.",
+  "classTitle": "Grundlegende GeoGebra Aufgaben",
+  "classDescription": "Eine Kombination aus grundlegenden und fortgeschrittenen GeoGebra-Aufgaben mit mehreren Lösungen.",
+  "classShortDescription": "Grundlegende und fortgeschrittene GeoGebra-Aufgaben mit mehreren Lösungen.",
   "lessons": [
     {
-      "lessonId": "basicgeogebra_lesson1",
-      "lessonTitle": "Basic GeoGebra Tasks",
-      "description": "Learn how to add points and draw lines.",
-      "shortDescription": "Basic GeoGebra concepts.",
+      "lessonTitle": "Grundlegende GeoGebra Aufgaben",
+      "description": "Lerne, wie man Punkte hinzufügt und Linien zeichnet.",
+      "shortDescription": "Grundlegende GeoGebra-Konzepte.",
       "tasks": [
         {
-          "taskId": "basicgeogebra_lesson1_task1",
-          "taskDescription": "Set point A at (2,3)",
-          "taskShortDescription": "Set point A at (2,3)",
+          "taskDescription": "Setze einen Punkt auf der Koordinate (2,3)",
+          "taskShortDescription": "Punkt auf (2,3)",
           "taskCondition": { "type": "point", "solutions": [{ "x": 2, "y": 3 }] }
         },
         {
-          "taskId": "basicgeogebra_lesson1_task2",
-          "taskDescription": "Set point A at (5,6)",
-          "taskShortDescription": "Set point A at (5,6)",
+          "taskDescription": "Setze einen Punkt auf der Koordinate (5,6)",
+          "taskShortDescription": "Punkt auf (5,6)",
           "taskCondition": { "type": "point", "solutions": [{ "x": 5, "y": 6 }] }
         },
         {
-          "taskId": "basicgeogebra_lesson1_task3",
-          "taskDescription": "Set point A at (1,1)",
-          "taskShortDescription": "Set point A at (1,1)",
+          "taskDescription": "Setze einen Punkt auf der Koordinate (1,1)",
+          "taskShortDescription": "Punkt auf (1,1)",
           "taskCondition": { "type": "point", "solutions": [{ "x": 1, "y": 1 }] }
         }
       ]

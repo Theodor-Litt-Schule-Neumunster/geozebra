@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import "../widgets/defaultappbar_widget.dart";
+import "package:geozebra_app/widgets/defaultappbar_widget.dart";
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/defaultappbar_widget.dart';
-import '../services/settings_service.dart';
-import '../providers/settings_provider.dart';
+import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
+import 'package:geozebra_app/services/settings_service.dart';
+import 'package:geozebra_app/providers/settings_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
