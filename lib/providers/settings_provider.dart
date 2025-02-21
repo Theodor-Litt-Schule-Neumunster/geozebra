@@ -14,7 +14,12 @@ class SettingsProvider extends ChangeNotifier {
   String _username = "";
   String get username => _username;
 
-
+  Future<void> clearAllData() async {
+    await SettingsService().clearAll();
+    _username = "";
+    _theme = LightTheme.theme;
+    notifyListeners();
+  }
 
   void setUsername(String username) {
     SettingsService().setValue("username", username);

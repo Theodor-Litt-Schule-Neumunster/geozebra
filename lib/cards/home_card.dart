@@ -18,9 +18,7 @@ class ScreenCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: Theme.of(context).cardTheme.shape,
       child: ListTile(
         leading: Icon(
           iconData,

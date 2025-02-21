@@ -36,7 +36,7 @@ class _ClassScreenState extends State<ClassScreen> {
       _isEnrolled = true;
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Enrolled in ${widget.classModel.className}')),
+      SnackBar(content: Text('Du bist "${widget.classModel.className}" beigetreten')),
     );
   }
 
@@ -47,8 +47,30 @@ class _ClassScreenState extends State<ClassScreen> {
         title: widget.classModel.className,
         actions: [
           PopupMenuButton<String>(
-            onSelected: (value) {
-              // Handle menu selection
+            onSelected: (value) async {
+              if (value == 'bookmark') {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Bookmarked')),
+                );
+              } else if (value == 'share') {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Shared')),
+                );
+              } else if (value == 'leave') {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Du hast "${widget.classModel.className}" verlassen.'),
+                  ),
+                );
+                await _lessonService.unenrollFromClass(widget.classModel.classId);
+                setState(() {
+                  _isEnrolled = false;
+                });
+              } else if (value == 'report') {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Reported')),
+                );
+              }
             },
             itemBuilder: (BuildContext context) {
               return [
@@ -149,18 +171,14 @@ class _ClassScreenState extends State<ClassScreen> {
                     child: ElevatedButton(
                       onPressed: _enrollInClass,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: Text(
-                        "Enroll in Class",
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: Colors.white,
-                                ),
+                        "Kurs beitreten",
+                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                       ),
                     ),
                   )

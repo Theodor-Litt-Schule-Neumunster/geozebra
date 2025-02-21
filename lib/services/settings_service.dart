@@ -26,4 +26,9 @@ class SettingsService {
       _ => throw UnsupportedError('Unsupported type: ${T.toString()}')
     };
   }
+
+  Future<void> clearAll() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 }

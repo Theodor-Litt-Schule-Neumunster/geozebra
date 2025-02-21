@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:geozebra_app/models/class_model.dart';
 import 'package:geozebra_app/screens/class_screen.dart';
 import 'package:geozebra_app/services/lessons_service.dart';
+import 'package:geozebra_app/providers/lessons_provider.dart';
 // import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -19,15 +20,17 @@ class _SearchScreenState extends State<SearchScreen> {
   List<ClassModel> allClasses = [];
   List<ClassModel> filteredClasses = [];
   Set<String> _bookmarkedIds = {};
+  List<String> classFiles = [];
 
-  final LessonService _lessonService = LessonService();
+  final _lessonService = LessonService();
+  final lessonsProvider = LessonsProvider();
 
   @override
   void initState() {
     super.initState();
     _loadClasses();
-    _searchFocusNode.requestFocus();
     _loadBookmarkedClasses();
+    _searchFocusNode.requestFocus();
   }
 
   @override
@@ -44,11 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> _loadClasses() async {
-    List<String> classFiles = [
-      'assets/classes/basic_geogebra.json',
-      'assets/classes/advanced_geogebra.json',
-      'assets/classes/intermediate_geogebra.json',
-    ];
+    classFiles = lessonsProvider.getAllClassFiles();
 
     List<ClassModel> loadedClasses = [];
 
@@ -57,7 +56,6 @@ class _SearchScreenState extends State<SearchScreen> {
         String jsonString = await rootBundle.loadString(file);
         Map<String, dynamic> jsonData = jsonDecode(jsonString);
         
-        // Setze ids auf den index des arrays um die nicht selber eingeben zu müssen
         if (jsonData['lessons'] != null) {
           for (int i = 0; i < jsonData['lessons'].length; i++) {
             var lesson = jsonData['lessons'][i];
@@ -139,7 +137,7 @@ class _SearchScreenState extends State<SearchScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, size: 24.0),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
         ),
       ),
@@ -168,7 +166,6 @@ class _SearchScreenState extends State<SearchScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Class Title
                               Expanded(
                                 child: Text(
                                   cls.className,
@@ -177,12 +174,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                   maxLines: 2,
                                 ),
                               ),
-                              // Bookmark Icon
                               IconButton(
                                 icon: Icon(
                                   isBookmarked ? Icons.bookmark : Icons.bookmark_border,
                                   color: isBookmarked 
-                                    ? Theme.of(context).colorScheme.primary 
+                                    ? Colors.amber
                                     : Theme.of(context).colorScheme.onSurface,
                                 ),
                                 onPressed: () async {
@@ -191,7 +187,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                   } else {
                                     await _lessonService.bookmarkClass(cls.classId);
                                   }
-                                  // Update local set
                                   await _loadBookmarkedClasses();
                                 },
                               ),
