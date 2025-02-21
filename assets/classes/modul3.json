@@ -1,0 +1,68 @@
+{
+    "classId": "modul3_funktionen",
+    "classTitle": "Arbeiten mit Funktionen",
+    "classDescription": "Lerne, wie man mit Funktionswerten, Nullstellen und Schnittpunkten arbeitet.",
+    "lessons": [
+      {
+        "lessonTitle": "Funktionswerte, y-Achsenabschnitt, Nullstellen",
+        "description": "Berechnung von Funktionswerten, Nullstellen und y-Achsenabschnitten.",
+        "tasks": [
+          {
+            "taskDescription": "Legen Sie die folgenden Geraden über die entsprechende Funktionsgleichung an.",
+            "taskShortDescription": "Geraden definieren.",
+            "taskCondition": {
+              "type": "equation",
+              "solutions": [
+                { "name": "f", "definition": "x - 1" },
+                { "name": "g", "definition": "0.5 * x + 2" },
+                { "name": "h", "definition": "-x + 1/3" }
+              ]
+            }
+          },
+          {
+            "taskDescription": "Berechnen Sie die Werte der Funktionen an den Stellen x = 2 und x = 1.",
+            "taskShortDescription": "Funktionswerte berechnen."
+          },
+          {
+            "taskDescription": "Bestimmen Sie die Nullstellen der Funktionen.",
+            "taskShortDescription": "Nullstellen berechnen."
+          },
+          {
+            "taskDescription": "Ermitteln Sie die y-Achsenabschnitte der Funktionen.",
+            "taskShortDescription": "y-Achsenabschnitte bestimmen."
+          }
+        ]
+      },
+      {
+        "lessonTitle": "Schnittpunkte",
+        "description": "Berechnung von Schnittpunkten zwischen zwei Funktionen oder mit einer Achse.",
+        "tasks": [
+          {
+            "taskDescription": "Legen Sie die folgenden Geraden über die entsprechende Funktionsgleichung an.",
+            "taskShortDescription": "Geraden definieren.",
+            "taskCondition": {
+              "type": "equation",
+              "solutions": [
+                { "name": "f", "definition": "x" },
+                { "name": "g", "definition": "-2/5 * x" },
+                { "name": "h", "definition": "2x - 0.5" }
+              ]
+            }
+          },
+          {
+            "taskDescription": "Berechnen Sie alle paarweisen Schnittpunkte der drei Funktionen.",
+            "taskShortDescription": "Schnittpunkte berechnen."
+          },
+          {
+            "taskDescription": "Bestimmen Sie die Nullstellen der Funktionen mithilfe des Buttons Schnittpunkt.",
+            "taskShortDescription": "Nullstellen bestimmen."
+          },
+          {
+            "taskDescription": "Ermitteln Sie die y-Achsenabschnitte der Funktionen mithilfe des Buttons Schnittpunkt.",
+            "taskShortDescription": "y-Achsenabschnitte bestimmen."
+          }
+        ]
+      }
+    ]
+  }
+  
