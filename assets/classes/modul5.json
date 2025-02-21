@@ -1,0 +1,59 @@
+{
+    "classId": "geogebra_test_modul5",
+    "classTitle": "GeoGebra Test Modul 5",
+    "classDescription": "Mathematik-Test mit verschiedenen GeoGebra-Aufgaben.",
+    "classShortDescription": "GeoGebra-Test mit algebraischen und graphischen Lösungen.",
+    "lessons": [
+      {
+        "lessonId": "modul5_test",
+        "lessonTitle": "Mathematik Test",
+        "description": "Testaufgaben zur Anwendung von Funktionen und graphischen Lösungen.",
+        "shortDescription": "Funktionale und graphische Aufgaben in GeoGebra.",
+        "tasks": [
+          {
+            "taskId": "modul5_task1",
+            "taskDescription": "Legen Sie die Funktion f(x) = 5000 + 1000 * x an und skalieren Sie das Koordinatensystem geeignet.",
+            "taskShortDescription": "Erstellen der Funktion f(x) und Skalierung.",
+            "taskCondition": { "type": "function", "expression": "5000 + 1000 * x" }
+          },
+          {
+            "taskId": "modul5_task2",
+            "taskDescription": "Berechnen Sie f(10), die Nullstelle und den y-Achsenabschnitt der Funktion f.",
+            "taskShortDescription": "Berechnungen für f(x).",
+            "taskCondition": { "type": "calculation", "values": [10], "find": ["zero", "y-intercept"] }
+          },
+          {
+            "taskId": "modul5_task3",
+            "taskDescription": "Bestimmen Sie x so, dass f(x) = 21000 gilt, mit einer rechnerischen Methode.",
+            "taskShortDescription": "Lösen von f(x) = 21000 rechnerisch.",
+            "taskCondition": { "type": "solve", "equation": "5000 + 1000 * x = 21000" }
+          },
+          {
+            "taskId": "modul5_task4",
+            "taskDescription": "Legen Sie die Punkte P(1, 13500) und Q(6, 6000) im Koordinatensystem an.",
+            "taskShortDescription": "Punkte P und Q setzen.",
+            "taskCondition": { "type": "points", "solutions": [{ "x": 1, "y": 13500 }, { "x": 6, "y": 6000 }] }
+          },
+          {
+            "taskId": "modul5_task5",
+            "taskDescription": "Stellen Sie die Gerade g durch P und Q in der Form y = mx + t auf.",
+            "taskShortDescription": "Geradengleichung aus zwei Punkten bestimmen.",
+            "taskCondition": { "type": "line", "points": [{ "x": 1, "y": 13500 }, { "x": 6, "y": 6000 }] }
+          },
+          {
+            "taskId": "modul5_task6",
+            "taskDescription": "Bestimmen Sie den Schnittpunkt der Funktionen f und g.",
+            "taskShortDescription": "Schnittpunkt von f(x) und g(x) berechnen.",
+            "taskCondition": { "type": "intersection", "functions": ["f", "g"] }
+          },
+          {
+            "taskId": "modul5_task7",
+            "taskDescription": "Lösen Sie g(x) = 8500 nach x auf mit einer graphischen Methode.",
+            "taskShortDescription": "Graphische Lösung für g(x) = 8500.",
+            "taskCondition": { "type": "graphical_solve", "equation": "g(x) = 8500" }
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,23 @@
+{
+    "classId": "geogebramixedtasks",
+    "classTitle": "GeoGebra Mixed Tasks",
+    "classDescription": "A combination of basic and advanced GeoGebra tasks with multiple solutions.",
+    "classShortDescription": "Basic and advanced GeoGebra tasks with multiple solutions.",
+    "lessons": [
+      {
+        "lessonId": "geogebramixedtasks_task1",
+        "lessonTitle": "Basic GeoGebra Tasks",
+        "description": "Learn how to add points and draw lines.",
+        "shortDescription": "Basic GeoGebra concepts.",
+        "tasks": [
+          {
+            "taskId": "geogebramixedtasks_task2",
+            "taskDescription": "Set point A at (2,3)",
+            "taskShortDescription": "Set point A at (2,3)",
+            "taskCondition": { "type": "point", "solutions": [{ "x": 2, "y": 3 }] }
+          }
+        ]
+      }
+    ]
+  }
+  
