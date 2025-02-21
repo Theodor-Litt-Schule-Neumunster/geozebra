@@ -28,11 +28,12 @@
     <script>
         var ggbAPI;
         var currentTasks = [];
+        let manualCompletions = {};
 
         function receiveTasksFromFlutter(tasksJson) {
             try {
                 currentTasks = JSON.parse(tasksJson);
-                console.log("📥 Aufgaben von Flutter empfangen:", currentTasks);
+                // console.log("📥 Aufgaben von Flutter empfangen:", currentTasks);
             } catch (error) {
                 console.error("❌ Fehler beim Parsen der Aufgaben:", error);
             }
@@ -68,7 +69,7 @@
                         break;
                 }
 
-                console.log(`✅ Aufgabe ${task.taskId}: ${correct ? "Bestanden" : "Nicht bestanden"}`);
+                // console.log(`✅ Aufgabe ${task.taskId}: ${correct ? "Bestanden" : "Nicht bestanden"}`);
                 taskStatus[task.taskId] = correct;
             });
 
@@ -77,7 +78,7 @@
 
         function sendTaskStatusToFlutter() {
             let status = getTaskStatus();
-            console.log("📤 Sende an Flutter:", status);
+            // console.log("📤 Sende an Flutter:", status);
             if (window.taskCompleted) {
                 window.taskCompleted.postMessage(JSON.stringify(status));
             }
@@ -93,7 +94,7 @@
             "showMenuBar": false,
             "appletOnLoad": function (api) {
                 ggbAPI = api;
-                console.log("🎯 GeoGebra API geladen!");
+                // console.log("🎯 GeoGebra API geladen!");
                 setInterval(sendTaskStatusToFlutter, 1000);
             }
         }, true);

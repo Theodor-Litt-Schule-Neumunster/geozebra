@@ -1,27 +1,53 @@
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LessonProgressService {
-  static const String _key = 'startedLessons';
+class LessonService {
+  static const String enrolledClassesKey = 'enrolledClasses';
+  static const String bookmarkedClassesKey = 'bookmarkedClasses';
 
-  /// Retrieve the list of started lesson IDs.
-  Future<List<String>> getStartedLessons() async {
+  Future<void> enrollInClass(String classId) async {
     final prefs = await SharedPreferences.getInstance();
-    String? lessonsJson = prefs.getString(_key);
-    if (lessonsJson != null) {
-      List<dynamic> lessonsList = json.decode(lessonsJson);
-      return lessonsList.cast<String>();
+    List<String> enrolledClasses = prefs.getStringList(enrolledClassesKey) ?? [];
+    if (!enrolledClasses.contains(classId)) {
+      enrolledClasses.add(classId);
+      await prefs.setStringList(enrolledClassesKey, enrolledClasses);
     }
-    return [];
   }
 
-  /// Add a lesson to the list of started lessons if it isn't already saved.
-  Future<void> addStartedLesson(String lessonId) async {
+  Future<List<String>> getEnrolledClasses() async {
     final prefs = await SharedPreferences.getInstance();
-    List<String> startedLessons = await getStartedLessons();
-    if (!startedLessons.contains(lessonId)) {
-      startedLessons.add(lessonId);
-      await prefs.setString(_key, json.encode(startedLessons));
+    return prefs.getStringList(enrolledClassesKey) ?? [];
+  }
+
+  Future<void> unenrollFromClass(String classId) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> enrolledClasses = prefs.getStringList(enrolledClassesKey) ?? [];
+    if (enrolledClasses.contains(classId)) {
+      enrolledClasses.remove(classId);
+      await prefs.setStringList(enrolledClassesKey, enrolledClasses);
     }
+  }
+
+
+  Future<void> bookmarkClass(String classId) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> bookmarkedClasses = prefs.getStringList(bookmarkedClassesKey) ?? [];
+    if (!bookmarkedClasses.contains(classId)) {
+      bookmarkedClasses.add(classId);
+      await prefs.setStringList(bookmarkedClassesKey, bookmarkedClasses);
+    }
+  }
+
+  Future<void> unbookmarkClass(String classId) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> bookmarkedClasses = prefs.getStringList(bookmarkedClassesKey) ?? [];
+    if (bookmarkedClasses.contains(classId)) {
+      bookmarkedClasses.remove(classId);
+      await prefs.setStringList(bookmarkedClassesKey, bookmarkedClasses);
+    }
+  }
+
+  Future<List<String>> getBookmarkedClasses() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(bookmarkedClassesKey) ?? [];
   }
 }

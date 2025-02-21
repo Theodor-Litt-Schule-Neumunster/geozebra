@@ -2,8 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:geozebra_app/models/class_model.dart';
-import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
+import '../models/class_model.dart';
+import '../widgets/defaultappbar_widget.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'package:geozebra_app/models/theme_model.dart';
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;
@@ -136,19 +139,83 @@ class _LessonScreenState extends State<LessonScreen>
         builder: (context) => Drawer(
           child: ListView(
             children: [
-              DrawerHeader(
-                  child: Text("Aufgaben", style: TextStyle(fontSize: 22))),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text("Aufgaben", style: TextStyle(fontSize: 22)),
+                  ),
+                  ListTile(
+                    title: Text("Desktop Modus"),
+                    trailing: Transform.scale(
+                      scale: 0.8,
+                      child: Switch(
+                        value: false,
+                        onChanged: (bool value) {
+                          // Handle switch state change
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+                const Padding(
+                padding: EdgeInsets.only(bottom: 12.0),
+                child: Divider(
+                  height: 2,
+                  thickness: 2,
+                  color: Colors.grey,
+                ),
+                ),
               ...widget.lesson.tasks.map((task) {
-                return ListTile(
-                  title: Text(task.shortDescription),
-                  subtitle: Text(
-                    taskStatus[task.id] == true
-                        ? "✅ Aufgabe abgeschlossen!"
-                        : "⏳ Aufgabe wird geprüft...",
-                    style: TextStyle(
-                        color: taskStatus[task.id] == true
-                            ? Colors.green
-                            : Colors.red),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 6.0, vertical: 2.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: ExpansionTile(
+                      title: Text(task.shortDescription),
+                      tilePadding: EdgeInsets.symmetric(horizontal: 16.0),
+                      backgroundColor: taskStatus[task.id] == true
+                          ? Theme.of(context)
+                              .extension<TaskColors>()!
+                              .completedTask
+                          : Theme.of(context)
+                              .extension<TaskColors>()!
+                              .uncompletedTask,
+                      collapsedBackgroundColor: taskStatus[task.id] == true
+                          ? Theme.of(context)
+                              .extension<TaskColors>()!
+                              .completedTask
+                          : Theme.of(context)
+                              .extension<TaskColors>()!
+                              .uncompletedTask,
+                      children: [
+                        ListTile(
+                          title: Text(task.description),
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Task Details"),
+                                  content: Text(task.description),
+                                  actions: [
+                                    TextButton(
+                                      child: Text("Close"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               })

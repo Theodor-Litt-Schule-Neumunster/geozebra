@@ -14,6 +14,7 @@ class LightColorTheme {
         onSurface: Colors.black, // Text color on background
         error: Color(0xFFEF476F), // Vibrant red for errors
         onError: Colors.white, // Text/icon color on error
+        
       ),
       scaffoldBackgroundColor: const Color(0xFFEFF6FF), // Light blue background
       appBarTheme: const AppBarTheme(

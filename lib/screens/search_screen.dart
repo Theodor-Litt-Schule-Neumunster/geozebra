@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geozebra_app/models/class_model.dart';
 import 'package:geozebra_app/screens/class_screen.dart';
+import 'package:geozebra_app/services/lessons_service.dart';
+import 'package:geozebra_app/providers/lessons_provider.dart';
 // import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -17,11 +19,17 @@ class _SearchScreenState extends State<SearchScreen> {
   final FocusNode _searchFocusNode = FocusNode();
   List<ClassModel> allClasses = [];
   List<ClassModel> filteredClasses = [];
+  Set<String> _bookmarkedIds = {};
+  List<String> classFiles = [];
+
+  final _lessonService = LessonService();
+  final lessonsProvider = LessonsProvider();
 
   @override
   void initState() {
     super.initState();
     _loadClasses();
+    _loadBookmarkedClasses();
     _searchFocusNode.requestFocus();
   }
 
@@ -31,12 +39,15 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 
+  Future<void> _loadBookmarkedClasses() async {
+    final bookmarkedIds = await _lessonService.getBookmarkedClasses();
+    setState(() {
+      _bookmarkedIds = bookmarkedIds.toSet();
+    });
+  }
+
   Future<void> _loadClasses() async {
-    List<String> classFiles = [
-      'assets/classes/basic_geogebra.json',
-      'assets/classes/advanced_geogebra.json',
-      'assets/classes/intermediate_geogebra.json',
-    ];
+    classFiles = lessonsProvider.getAllClassFiles();
 
     List<ClassModel> loadedClasses = [];
 
@@ -45,7 +56,6 @@ class _SearchScreenState extends State<SearchScreen> {
         String jsonString = await rootBundle.loadString(file);
         Map<String, dynamic> jsonData = jsonDecode(jsonString);
         
-        // Setze ids auf den index des arrays um die nicht selber eingeben zu müssen
         if (jsonData['lessons'] != null) {
           for (int i = 0; i < jsonData['lessons'].length; i++) {
             var lesson = jsonData['lessons'][i];
@@ -127,7 +137,7 @@ class _SearchScreenState extends State<SearchScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, size: 24.0),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
         ),
       ),
@@ -139,12 +149,17 @@ class _SearchScreenState extends State<SearchScreen> {
               child: ListView.builder(
                 itemCount: filteredClasses.length,
                 itemBuilder: (context, index) {
+                  final cls = filteredClasses[index];
+                  final isBookmarked = _bookmarkedIds.contains(cls.classId);
+
                   return Card(
                     elevation: 1,
                     shape: Theme.of(context).cardTheme.shape,
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
+                        vertical: 10, 
+                        horizontal: 16,
+                      ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -153,32 +168,33 @@ class _SearchScreenState extends State<SearchScreen> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  filteredClasses[index].className,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                  cls.className,
+                                  style: Theme.of(context).textTheme.titleMedium,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
                               ),
-                              Wrap(
-                                spacing: 0,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.bookmark_border,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface),
-                                    onPressed: () {
-                                      // TODO: Implement bookmark action
-                                    },
-                                  ),
-                                ],
+                              IconButton(
+                                icon: Icon(
+                                  isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                                  color: isBookmarked 
+                                    ? Colors.amber
+                                    : Theme.of(context).colorScheme.onSurface,
+                                ),
+                                onPressed: () async {
+                                  if (isBookmarked) {
+                                    await _lessonService.unbookmarkClass(cls.classId);
+                                  } else {
+                                    await _lessonService.bookmarkClass(cls.classId);
+                                  }
+                                  await _loadBookmarkedClasses();
+                                },
                               ),
                             ],
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            filteredClasses[index].classShortDescription,
+                            cls.classShortDescription,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
@@ -187,8 +203,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ClassScreen(classModel: filteredClasses[index]),
+                            builder: (context) => ClassScreen(classModel: cls),
                           ),
                         );
                       },

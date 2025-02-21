@@ -6,6 +6,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showLeading;
   final bool showTransparent;
   final bool automaticallyImplyLeading;
+  final bool refreshNextPage;
 
   const DefaultAppBar({
     super.key,
@@ -14,6 +15,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showLeading = true,
     this.showTransparent = false,
     this.automaticallyImplyLeading = true,
+    this.refreshNextPage = false,
   });
 
   @override
@@ -25,7 +27,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: showLeading
           ? IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pop(refreshNextPage ? true : null),
         )
           : null,
       title: Text(
