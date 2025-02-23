@@ -40,6 +40,7 @@ class _LessonScreenState extends State<LessonScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Wähle ein Thema'),
+        backgroundColor: Colors.blueAccent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -76,12 +77,18 @@ class _LessonScreenState extends State<LessonScreen> {
                 }
               },
               child: Container(
-                margin: EdgeInsets.only(bottom: 32),
+                margin: EdgeInsets.only(bottom: 16),
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(width: 1, color: Colors.black),
                   color: isLessonAvailable ? Colors.white : Colors.grey[300],
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blueAccent.withOpacity(0.2),
+                      spreadRadius: 3,
+                      blurRadius: 8,
+                    ),
+                  ],
                 ),
                 child: Stack(
                   children: [
@@ -93,6 +100,7 @@ class _LessonScreenState extends State<LessonScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent,
                           ),
                         ),
                         SizedBox(height: 10),
@@ -111,7 +119,7 @@ class _LessonScreenState extends State<LessonScreen> {
                         right: 8,
                         child: Icon(
                           Icons.lock,
-                          color: Colors.black54,
+                          color: Colors.blueAccent,
                           size: 30,
                         ),
                       ),
@@ -131,16 +139,18 @@ class LessonDetailScreen extends StatelessWidget {
   final String description;
   final VoidCallback onLessonCompleted;
 
-  LessonDetailScreen(
-      {required this.title,
-      required this.description,
-      required this.onLessonCompleted});
+  LessonDetailScreen({
+    required this.title,
+    required this.description,
+    required this.onLessonCompleted,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        backgroundColor: Colors.blueAccent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -152,6 +162,7 @@ class LessonDetailScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Colors.blueAccent,
               ),
             ),
             SizedBox(height: 20),
@@ -166,6 +177,9 @@ class LessonDetailScreen extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Text('Lektion abschließen'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+              ),
             ),
           ],
         ),
@@ -173,3 +187,4 @@ class LessonDetailScreen extends StatelessWidget {
     );
   }
 }
+
