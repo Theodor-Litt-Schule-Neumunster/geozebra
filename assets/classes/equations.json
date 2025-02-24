@@ -1,0 +1,69 @@
+{
+  "classId": "modul4_loesen_von_gleichungen",
+  "classTitle": "Lösen von Gleichungen in GeoGebra",
+  "classDescription": "Lerne, wie man Gleichungen rechnerisch und graphisch löst.",
+  "classShortDescription": "Gleichungen rechnerisch und graphisch lösen.",
+  "lessons": [
+    {
+      "lessonTitle": "Rechnerisches Lösen von Gleichungen",
+      "description": "Lerne, wie man Gleichungen mit dem Befehl 'Löse' in GeoGebra berechnet.",
+      "shortDescription": "Gleichungen rechnerisch lösen.",
+      "tasks": [
+        {
+          "taskDescription": "Erstelle die Funktion f(x) = 3x - 1.",
+          "taskShortDescription": "Funktion f(x) = 3x - 1 erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "f", "definition": "3x - 1" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne die Funktionswerte für x = -5, x = -1, x = 2 und x = 100.",
+          "taskShortDescription": "Funktionswerte für x = -5, -1, 2, 100 berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": -5 },
+              { "function": "f", "x": -1 },
+              { "function": "f", "x": 2 },
+              { "function": "f", "x": 100 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Löse die Gleichungen f(x) = 0, f(x) = 11 und f(x) = 7 rechnerisch.",
+          "taskShortDescription": "Gleichungen rechnerisch lösen.",
+          "taskCondition": {
+            "type": "solve_equation",
+            "solutions": [
+              { "equation": "f(x) = 0" },
+              { "equation": "f(x) = 11" },
+              { "equation": "f(x) = 7" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lessonTitle": "Graphisches Lösen von Gleichungen",
+      "description": "Lerne, wie man Gleichungen mit einer Hilfsfunktion graphisch löst.",
+      "shortDescription": "Gleichungen graphisch lösen.",
+      "tasks": [
+        {
+          "taskDescription": "Löse die Gleichungen f(x) = 1, f(x) = 12 und f(x) = 8 graphisch mit einer Hilfsfunktion u(x).",
+          "taskShortDescription": "Gleichungen graphisch lösen.",
+          "taskCondition": {
+            "type": "graphical_solution",
+            "solutions": [
+              { "equation": "f(x) = 1", "helperFunction": "u(x) = 1" },
+              { "equation": "f(x) = 12", "helperFunction": "u(x) = 12" },
+              { "equation": "f(x) = 8", "helperFunction": "u(x) = 8" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

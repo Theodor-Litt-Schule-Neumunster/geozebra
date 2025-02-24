@@ -1,0 +1,121 @@
+{
+  "classId": "modul3_arbeiten_mit_funktionen",
+  "classTitle": "Arbeiten mit Funktionen in GeoGebra",
+  "classDescription": "Lerne, wie man Funktionen anlegt, Nullstellen und y-Achsenabschnitte bestimmt sowie Schnittpunkte berechnet.",
+  "classShortDescription": "Funktionen, Nullstellen und Schnittpunkte in GeoGebra.",
+  "lessons": [
+    {
+      "lessonTitle": "Grundlegende Funktionsoperationen",
+      "description": "Lerne, wie man Funktionen in GeoGebra erstellt und grundlegende Eigenschaften bestimmt.",
+      "shortDescription": "Funktionen erstellen und analysieren.",
+      "tasks": [
+        {
+          "taskDescription": "Erstelle die Funktionen f(x) = x - 1, g(x) = 0.5 * x + 2 und h(x) = -x + 1/3.",
+          "taskShortDescription": "Funktionen f, g und h erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "f", "definition": "x - 1" },
+              { "name": "g", "definition": "0.5 * x + 2" },
+              { "name": "h", "definition": { "numerator": -1, "denominator": 1, "xTerm": true, "constant": { "numerator": 1, "denominator": 3 } } }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne die Funktionswerte für x = 2 und x = 1.",
+          "taskShortDescription": "Funktionswerte für x = 2 und x = 1 berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": 2 },
+              { "function": "f", "x": 1 },
+              { "function": "g", "x": 2 },
+              { "function": "g", "x": 1 },
+              { "function": "h", "x": 2 },
+              { "function": "h", "x": 1 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme die Nullstellen der Funktionen f, g und h.",
+          "taskShortDescription": "Nullstellen der Funktionen bestimmen.",
+          "taskCondition": {
+            "type": "zero_point",
+            "solutions": [
+              { "function": "f" },
+              { "function": "g" },
+              { "function": "h" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle die y-Achsenabschnitte der Funktionen f, g und h.",
+          "taskShortDescription": "y-Achsenabschnitte der Funktionen bestimmen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
+              { "function": "f" },
+              { "function": "g" },
+              { "function": "h" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lessonTitle": "Berechnung von Schnittpunkten",
+      "description": "Lerne, wie man Schnittpunkte von Funktionen in GeoGebra berechnet.",
+      "shortDescription": "Schnittpunkte von Funktionen berechnen.",
+      "tasks": [
+        {
+          "taskDescription": "Erstelle die Funktionen f(x) = x, g(x) = -2/5 * x und h(x) = 2x - 0.5.",
+          "taskShortDescription": "Funktionen f, g und h erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "f", "definition": "x" },
+              { "name": "g", "definition": { "numerator": -2, "denominator": 5, "xTerm": true } },
+              { "name": "h", "definition": "2x - 0.5" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne alle paarweisen Schnittpunkte der Funktionen f, g und h.",
+          "taskShortDescription": "Schnittpunkte der Funktionen berechnen.",
+          "taskCondition": {
+            "type": "intersection",
+            "solutions": [
+              { "functions": ["f", "g"] },
+              { "functions": ["f", "h"] },
+              { "functions": ["g", "h"] }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme die Nullstellen der Funktionen f, g und h.",
+          "taskShortDescription": "Nullstellen der Funktionen bestimmen.",
+          "taskCondition": {
+            "type": "zero_point",
+            "solutions": [
+              { "function": "f" },
+              { "function": "g" },
+              { "function": "h" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle die y-Achsenabschnitte der Funktionen f, g und h.",
+          "taskShortDescription": "y-Achsenabschnitte der Funktionen bestimmen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
+              { "function": "f" },
+              { "function": "g" },
+              { "function": "h" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

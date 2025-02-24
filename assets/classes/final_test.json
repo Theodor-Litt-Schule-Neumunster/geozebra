@@ -1,0 +1,95 @@
+{
+  "classId": "modul5_funktionen",
+  "classTitle": "Funktionen in GeoGebra",
+  "classDescription": "Lerne, wie man Funktionen in GeoGebra darstellt und analysiert.",
+  "classShortDescription": "Funktionen darstellen und analysieren.",
+  "lessons": [
+    {
+      "lessonTitle": "Funktion f(x) = 5000 + 1000x",
+      "description": "Lerne, wie man die Funktion f(x) = 5000 + 1000x in GeoGebra darstellt und analysiert.",
+      "shortDescription": "Funktion f(x) = 5000 + 1000x darstellen und analysieren.",
+      "tasks": [
+        {
+          "taskDescription": "Erstelle die Funktion f(x) = 5000 + 1000x und skaliere das Koordinatensystem geeignet.",
+          "taskShortDescription": "Funktion f(x) = 5000 + 1000x erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "f", "definition": "5000 + 1000x" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Wert f(10) und ermittle die Nullstelle sowie den y-Achsenabschnitt der Funktion.",
+          "taskShortDescription": "f(10), Nullstelle und y-Achsenabschnitt berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": 10 },
+              { "equation": "f(x) = 0" },
+              { "point": "(0, 5000)" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme den Wert von x, sodass f(x) = 21000 gilt.",
+          "taskShortDescription": "f(x) = 21000 lösen.",
+          "taskCondition": {
+            "type": "solve_equation",
+            "solutions": [
+              { "equation": "f(x) = 21000" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lessonTitle": "Gerade g durch P(1|13500) und Q(6|6000)",
+      "description": "Lerne, wie man die Gerade g durch die Punkte P(1|13500) und Q(6|6000) in GeoGebra darstellt und analysiert.",
+      "shortDescription": "Gerade g durch P und Q darstellen und analysieren.",
+      "tasks": [
+        {
+          "taskDescription": "Erstelle die Punkte P(1|13500) und Q(6|6000) und benenne sie wie angegeben.",
+          "taskShortDescription": "Punkte P(1|13500) und Q(6|6000) erstellen.",
+          "taskCondition": {
+            "type": "point",
+            "solutions": [
+              { "name": "P", "x": 1, "y": 13500 },
+              { "name": "Q", "x": 6, "y": 6000 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Stelle die Gerade g durch P und Q in der Form y = mx + t auf.",
+          "taskShortDescription": "Gerade g in der Form y = mx + t aufstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "g", "definition": "-1500x + 15000" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme den Schnittpunkt der Funktionen f und g.",
+          "taskShortDescription": "Schnittpunkt von f und g bestimmen.",
+          "taskCondition": {
+            "type": "intersection",
+            "solutions": [
+              { "functions": ["f", "g"] }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Löse die Gleichung g(x) = 8500 graphisch.",
+          "taskShortDescription": "g(x) = 8500 graphisch lösen.",
+          "taskCondition": {
+            "type": "graphical_solution",
+            "solutions": [
+              { "equation": "g(x) = 8500" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
