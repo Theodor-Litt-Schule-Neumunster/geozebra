@@ -58,9 +58,7 @@ flutter:
     - assets/html/rechner.html
 
     # Classes (JSON) Files
-    - assets/classes/basic_geogebra.json
-    - assets/classes/advanced_geogebra.json
-    - assets/classes/intermediate_geogebra.json
+    - assets/classes/
 
 
   # To add custom fonts to your application, add a fonts section here,
