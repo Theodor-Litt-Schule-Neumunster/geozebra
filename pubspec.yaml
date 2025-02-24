@@ -56,8 +56,6 @@ flutter:
   assets:
     # HTML Files
     - assets/html/rechner.html
-    - assets/html/lesson_rechner.html
-    - assets/html/rechner_beta.html
 
     # Classes (JSON) Files
     - assets/classes/basic_geogebra.json
