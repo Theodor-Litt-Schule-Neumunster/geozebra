@@ -1,0 +1,86 @@
+{
+  "classId": "modul1_arbeiten_mit_punkten",
+  "classTitle": "Arbeiten mit Punkten in GeoGebra",
+  "classDescription": "Lerne, wie man Punkte in GeoGebra setzt, verändert und die Grafik-Ansicht skaliert.",
+  "classShortDescription": "Punkte setzen, bearbeiten und Ansicht skalieren.",
+  "lessons": [
+    {
+      "lessonTitle": "Punkte in GeoGebra setzen",
+      "description": "Lerne, wie man Punkte in GeoGebra einfügt.",
+      "shortDescription": "Punkte einfügen.",
+      "tasks": [
+        {
+          "taskDescription": "Setze die Punkte A (1,3), B (4,0) und C (-1,-1).",
+          "taskShortDescription": "Punkte A, B und C setzen.",
+          "taskCondition": {
+            "type": "point",
+            "solutions": [
+              { "x": 1, "y": 3, "name": "A" },
+              { "x": 4, "y": 0, "name": "B" },
+              { "x": -1, "y": -1, "name": "C" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lessonTitle": "Eigenschaften von Punkten ändern",
+      "description": "Lerne, wie man Namen und Koordinaten bestehender Punkte verändert.",
+      "shortDescription": "Punkte umbenennen und Koordinaten ändern.",
+      "tasks": [
+        {
+          "taskDescription": "Ändere den Namen des Punktes C in P.",
+          "taskShortDescription": "Punkt C in P umbenennen.",
+          "taskCondition": {
+            "type": "rename",
+            "solutions": [
+              { "oldName": "C", "newName": "P" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Füge die Punkte C (-1.5, 0.5) und D (1/3, -2/7) hinzu.",
+          "taskShortDescription": "Punkte C und D ergänzen.",
+          "taskCondition": {
+            "type": "point",
+            "solutions": [
+              { "x": -1.5, "y": 0.5, "name": "C" },
+              { 
+                "x": { "numerator": 1, "denominator": 3 }, 
+                "y": { "numerator": -2, "denominator": 7 }, 
+                "name": "D" 
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lessonTitle": "Skalierung der Grafik-Ansicht",
+      "description": "Lerne, wie man die Grafik-Ansicht anpasst, um alle Punkte sichtbar zu machen.",
+      "shortDescription": "Grafik-Ansicht skalieren.",
+      "tasks": [
+        {
+          "taskDescription": "Füge den Punkt E (100, -20) hinzu und skaliere die Ansicht so, dass alle Punkte sichtbar sind.",
+          "taskShortDescription": "Punkt E hinzufügen und Ansicht skalieren.",
+          "taskCondition": {
+            "type": "scale",
+            "solutions": [
+              { "x": 100, "y": -20, "name": "E" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Notiere das verwendete Verhältnis der x-Achse zur y-Achse nach der Skalierung.",
+          "taskShortDescription": "Verhältnis x:y nach Skalierung notieren.",
+          "taskCondition": {
+            "type": "note",
+            "solutions": [
+              { "description": "Verhältnis der Achsen aufzeichnen." }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
