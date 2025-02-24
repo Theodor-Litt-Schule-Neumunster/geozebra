@@ -86,7 +86,7 @@ class _LessonScreenState extends State<LessonScreen>
           _updateTaskStatus(message.message);
         },
       )
-      ..loadFlutterAsset("assets/html/rechner_beta.html");
+      ..loadFlutterAsset("assets/html/rechner.html");
   }
 
   @override
