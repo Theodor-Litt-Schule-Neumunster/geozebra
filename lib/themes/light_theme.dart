@@ -59,8 +59,10 @@ class LightTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
+          backgroundColor: const Color.fromARGB(255, 208, 208, 208),
+          foregroundColor: Colors.black,
+          // Do we want a border? Not sure.
+            side: const BorderSide(color: Colors.black, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
