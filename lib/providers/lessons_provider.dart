@@ -1,11 +1,16 @@
 class LessonsProvider {
   List<String> classFiles = [
-    'assets/classes/basic_geogebra.json',
-    'assets/classes/advanced_geogebra.json',
-    'assets/classes/intermediate_geogebra.json',
+    'basic_geogebra',
+    'advanced_geogebra',
+    'intermediate_geogebra',
+    'points',
+    'lines',
+    'functions',
+    'equations',
+    'final_test',
   ];
 
   List<String> getAllClassFiles() {
-    return classFiles;
+    return classFiles.map((file) => 'assets/classes/$file.json').toList();
   }
 }
