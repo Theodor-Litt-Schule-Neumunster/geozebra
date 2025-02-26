@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_flutter_project/screens/notification_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 import 'package:geozebra_app/services/settings_service.dart';
 import 'package:geozebra_app/providers/settings_provider.dart';
+import 'notification_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -13,11 +15,9 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final TextEditingController _usernameController = TextEditingController();
-
   String _username = "";
   String _selectedTheme = "Light";
   bool _isEditingUsername = false;
-
   final List<String> _themes = ["Light", "Light Color", "Dark", "Dark Color"];
 
   @override
@@ -130,107 +130,124 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          children: [
             Row(
               children: [
-              Expanded(
-                child: _isEditingUsername
-                  ? TextFormField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                    labelText: "Benutzername",
-                    border: OutlineInputBorder(),
-                    ),
-                    onFieldSubmitted: (value) => _updateUsername(value),
-                  )
-                  : Text(
-                    _username.isNotEmpty
-                      ? _username
-                      : "Kein Benutzername",
-                    style: const TextStyle(fontSize: 16),
-                  ),
-              ),
-              IconButton(
-                icon: Icon(_isEditingUsername ? Icons.check : Icons.edit),
-                onPressed: () {
-                if (_isEditingUsername) {
-                  _updateUsername(_usernameController.text);
-                } else {
-                  setState(() {
-                  _isEditingUsername = true;
-                  });
-                }
-                },
-              ),
+                Expanded(
+                  child: _isEditingUsername
+                      ? TextFormField(
+                          controller: _usernameController,
+                          decoration: const InputDecoration(
+                            labelText: "Benutzername",
+                            border: OutlineInputBorder(),
+                          ),
+                          onFieldSubmitted: (value) => _updateUsername(value),
+                        )
+                      : Text(
+                          _username.isNotEmpty
+                              ? _username
+                              : "Kein Benutzername",
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                ),
+                IconButton(
+                  icon: Icon(_isEditingUsername ? Icons.check : Icons.edit),
+                  onPressed: () {
+                    if (_isEditingUsername) {
+                      _updateUsername(_usernameController.text);
+                    } else {
+                      setState(() {
+                        _isEditingUsername = true;
+                      });
+                    }
+                  },
+                ),
               ],
             ),
             const SizedBox(height: 20),
             DropdownButtonFormField<String>(
               value: _selectedTheme,
               decoration: const InputDecoration(
-              labelText: "Theme",
-              border: OutlineInputBorder(),
+                labelText: "Theme",
+                border: OutlineInputBorder(),
               ),
               items: _themes
-                .map((theme) => DropdownMenuItem(
-                  value: theme,
-                  child: Text(theme),
-                  ))
-                .toList(),
+                  .map((theme) => DropdownMenuItem(
+                        value: theme,
+                        child: Text(theme),
+                      ))
+                  .toList(),
               onChanged: (value) => _updateTheme(value!),
             ),
+            const SizedBox(height: 20),
+            ListTile(
+              leading: Icon(Icons.notifications),
+              title: Text("Benachrichtigungen"),
+              subtitle: Text("Verwalte deine Benachrichtigungen"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationScreen()),
+                );
+              },
+            ),
+            const Divider(),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error,
-                foregroundColor: Theme.of(context).colorScheme.onError,
-              ),
-              onPressed: () async {
-                bool? confirm = await showDialog<bool>(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                  title: Text("Bestätigung"),
-                  content: Text("Möchtest du die App zurücksetzen? \nEs werden alle Daten unwiederkehrbar gelöscht."),
-                  actions: [
-                    TextButton(
-                    child: Text(
-                      "Abbrechen",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
+                ),
+                onPressed: () async {
+                  bool? confirm = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Bestätigung"),
+                        content: Text(
+                            "Möchtest du die App zurücksetzen? \nEs werden alle Daten unwiederkehrbar gelöscht."),
+                        actions: [
+                          TextButton(
+                            child: Text(
+                              "Abbrechen",
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                          ),
+                          TextButton(
+                            child: Text(
+                              "Ja",
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                          ),
+                        ],
+                      );
                     },
-                    ),
-                    TextButton(
-                    child: Text(
-                      "Ja",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                    },
-                    ),
-                  ],
                   );
-                },
-                );
 
-                if (confirm == true) {
-                await Provider.of<SettingsProvider>(context, listen: false)
-                  .clearAllData();
-                setState(() {
-                  _username = "";
-                  _selectedTheme = "Light";
-                  _usernameController.clear();
-                });
-                }
-              },
-              child: const Text("App zurücksetzen"),
+                  if (confirm == true) {
+                    await Provider.of<SettingsProvider>(context, listen: false)
+                        .clearAllData();
+                    setState(() {
+                      _username = "";
+                      _selectedTheme = "Light";
+                      _usernameController.clear();
+                    });
+                  }
+                },
+                child: const Text("App zurücksetzen"),
               ),
             ),
           ],
