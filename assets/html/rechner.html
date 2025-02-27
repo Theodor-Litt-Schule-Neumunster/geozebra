@@ -28,6 +28,7 @@
   <script>
     var ggbAPI;
     var currentTasks = [];
+    let savedStatus = {};
     let manualCompletions = {};
 
     function receiveTasksFromFlutter(tasksJson) {
@@ -69,7 +70,8 @@
             break;
 
           case "equation":
-            // Prüfung, ob ein Objekt mit gegebenem Namen existiert und ob dessen Darstellung der Definition entspricht.
+// Prüfung, ob ein Objekt mit gegebenem Namen existiert und ob dessen Darstellung der Definition entspricht.
+// Prüfung, ob ein Objekt mit gegebenem Namen existiert und ob dessen Darstellung der Definition entspricht.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.name)) {
                 let def = ggbAPI.getValueString(solution.name);
@@ -81,10 +83,11 @@
             break;
 
           case "function_value":
-            // Überprüft, ob der Funktionswert an der Stelle x dem erwarteten Wert entspricht.
-            task.condition.solutions.forEach(solution => {
+// Überprüft, ob der Funktionswert an der Stelle x dem erwarteten Wert entspricht.
+            task.condition.solutions.forEach(solution => // Hier erwarten wir, dass jedes Lösungselement ein zusätzliches Feld "expected" enthält.
+{
               try {
-                // Hier erwarten wir, dass jedes Lösungselement ein zusätzliches Feld "expected" enthält.
+// Hier erwarten wir, dass jedes Lösungselement ein zusätzliches Feld "expected" enthält.
                 let computed = ggbAPI.getValue(solution.function + "(" + solution.x + ")");
                 if (Math.abs(computed - solution.expected) < 0.01) {
                   correct = true;
@@ -96,7 +99,7 @@
             break;
 
           case "solve_equation":
-            // Annahme: Der Nutzer hat eine Lösung des angegebenen Gleichungsausdrucks erzeugt.
+// Annahme: Der Nutzer hat eine Lösung des angegebenen Gleichungsausdrucks erzeugt.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.equation)) {
                 correct = true;
@@ -105,7 +108,7 @@
             break;
 
           case "graphical_solution":
-            // Beispielhaft: Überprüfe, ob das grafische Element (z. B. Schnittpunkt) vorhanden ist.
+// Beispielhaft: Überprüfe, ob das grafische Element (z. B. Schnittpunkt) vorhanden ist.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.equation)) {
                 correct = true;
@@ -114,7 +117,7 @@
             break;
 
           case "line":
-            // Überprüft, ob eine Linie mit dem angegebenen Namen existiert.
+// Überprüft, ob eine Linie mit dem angegebenen Namen existiert.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.name) && ggbAPI.getObjectType(solution.name) === "line") {
                 correct = true;
@@ -123,8 +126,6 @@
             break;
 
           case "distance":
-            // Überprüft, ob der gemessene Abstand zwischen den angegebenen Punkten (Lösungselement "points")
-            // den erwarteten Wert (Feld "expected") erreicht.
             task.condition.solutions.forEach(solution => {
               try {
                 let dist = ggbAPI.getDistance(solution.points[0], solution.points[1]);
@@ -138,7 +139,7 @@
             break;
 
           case "rename":
-            // Überprüft, ob das alte Objekt nicht mehr existiert und das neue Objekt vorhanden ist.
+// Überprüft, ob das alte Objekt nicht mehr existiert und das neue Objekt vorhanden ist.
             task.condition.solutions.forEach(solution => {
               if (!objects.includes(solution.oldName) && objects.includes(solution.newName)) {
                 correct = true;
@@ -147,9 +148,9 @@
             break;
 
           case "scale":
-            // Beispielhaft: Überprüft, ob das Verhältnis der x- zur y-Achse dem erwarteten Wert entspricht.
+// Beispielhaft: Überprüft, ob das Verhältnis der x- zur y-Achse dem erwarteten Wert entspricht.
             task.condition.solutions.forEach(solution => {
-              // Hier wird angenommen, dass die API eine Methode getCoordSystem liefert
+// Hier wird angenommen, dass die API eine Methode getCoordSystem liefert
               // mit Eigenschaften xscale und yscale.
               let cs = ggbAPI.getCoordSystem ? ggbAPI.getCoordSystem() : { xscale: 1, yscale: 1 };
               let ratio = cs.xscale / cs.yscale;
@@ -160,7 +161,7 @@
             break;
 
           case "note":
-            // Z.B. wird ein manueller Bestätigungswert erwartet (über das Objekt manualCompletions).
+// Z.B. wird ein manueller Bestätigungswert erwartet (über das Objekt manualCompletions).
             task.condition.solutions.forEach(solution => {
               if (manualCompletions[task.taskId]) {
                 correct = true;
@@ -169,10 +170,9 @@
             break;
 
           case "zero_point":
-            // Überprüft, ob die Nullstelle der Funktion gefunden wurde.
+// Überprüft, ob die Nullstelle der Funktion gefunden wurde.
             task.condition.solutions.forEach(solution => {
               try {
-                // Hier wird symbolisch angenommen, dass "Löse(f(x)=0)" einen Wert liefert.
                 let zero = ggbAPI.getValue("Löse(" + solution.function + " = 0)");
                 if (!isNaN(zero)) {
                   correct = true;
@@ -184,10 +184,10 @@
             break;
 
           case "y_intercept":
-            // Überprüft, ob der y-Achsenabschnitt korrekt ermittelt wurde.
+// Überprüft, ob der y-Achsenabschnitt korrekt ermittelt wurde.
             task.condition.solutions.forEach(solution => {
               try {
-                // Pseudo-Code: Annahme, dass es eine Methode zur Ermittlung des y-Achsenabschnitts gibt.
+// Pseudo-Code: Annahme, dass es eine Methode zur Ermittlung des y-Achsenabschnitts gibt.
                 let yIntercept = ggbAPI.getYcoord ? ggbAPI.getYcoord(solution.function, 0) : null;
                 if (yIntercept !== null && Math.abs(yIntercept - solution.expected) < 0.01) {
                   correct = true;
@@ -199,10 +199,10 @@
             break;
 
           case "intersection":
-            // Überprüft, ob der Schnittpunkt der angegebenen Funktionen existiert.
+// Überprüft, ob der Schnittpunkt der angegebenen Funktionen existiert.
             task.condition.solutions.forEach(solution => {
               try {
-                // Pseudo-Code: Man könnte den Schnittpunkt über eine spezielle Namenskonvention oder Berechnung ermitteln.
+// Pseudo-Code: Man könnte den Schnittpunkt über eine spezielle Namenskonvention oder Berechnung ermitteln.
                 let ix = ggbAPI.getXcoord(solution.functions.join("_"));
                 let iy = ggbAPI.getYcoord(solution.functions.join("_"));
                 if (!isNaN(ix) && !isNaN(iy)) {
@@ -226,6 +226,11 @@
 
     function sendTaskStatusToFlutter() {
       let status = getTaskStatus();
+      // Schicke nur Aufgaben fortschritt wenn er sich geändert hat.
+      if (JSON.stringify(status) === JSON.stringify(savedStatus)) {
+        return;
+      }
+      savedStatus = status;
       // console.log("📤 Sende an Flutter:", status);
       if (window.taskCompleted) {
         window.taskCompleted.postMessage(JSON.stringify(status));
