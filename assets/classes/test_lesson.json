@@ -1,0 +1,26 @@
+{
+    "classId": "testclass",
+    "classTitle": "Test Class",
+    "classDescription": "A test class for testing purposes.",
+    "classShortDescription": "A test class.",
+    "lessons": [
+        {
+            "lessonId": "testlesson",
+            "lessonTitle": "Test Lesson",
+            "description": "A test lesson for testing purposes.",
+            "shortDescription": "A test lesson.",
+            "showRechner": false,
+            "textSections": [
+                {
+                    "title": "Test Header",
+                    "content": "This is a test text for testing purposes."
+                },
+                {
+                    "title": "Test Header",
+                    "content": "This is a test text for testing purposes."
+                }
+            ],
+            "tasks": []
+        }
+    ]
+}
