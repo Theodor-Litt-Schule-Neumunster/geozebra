@@ -127,7 +127,7 @@ void main() {
             shortDescription: 'Kurze Lektionsbeschreibung',
             tasks: [],
           )
-        ],
+        ], classId: '',
       );
 
       final json = classModel.toJson();
