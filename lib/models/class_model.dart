@@ -33,24 +33,28 @@ class Task {
 }
 
 class TextSection {
-  final String title;
+  final String header;
+  final String subHeader;
   final String content;
 
   TextSection({
-    required this.title,
+    required this.header,
+    required this.subHeader,
     required this.content,
   });
 
   factory TextSection.fromJson(Map<String, dynamic> json) {
     return TextSection(
-      title: json['title'],
+      header: json['header'],
+      subHeader: json['subHeader'],
       content: json['content'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'title': title,
+      'header': header,
+      "subHeader": subHeader,
       'content': content,
     };
   }
