@@ -17,7 +17,9 @@ class Task {
     return Task(
       id: json['taskId'] ?? json['id'],
       description: json['taskDescription'] ?? json['description'],
-      shortDescription: json['taskShortDescription'] ?? json['shortDescription'] ?? json['description'],
+      shortDescription: json['taskShortDescription'] ??
+          json['shortDescription'] ??
+          json['description'],
       condition: json['taskCondition'] ?? {},
       showDetails: json['showDetails'] ?? false, // Ensure default value
     );
@@ -34,12 +36,44 @@ class Task {
   }
 }
 
+class TextSection {
+  final String header;
+  final String subHeader;
+  final String content;
+
+  TextSection({
+    required this.header,
+    required this.subHeader,
+    required this.content,
+  });
+
+  factory TextSection.fromJson(Map<String, dynamic> json) {
+    return TextSection(
+      header: json['header'],
+      subHeader: json['subHeader'],
+      content: json['content'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'header': header,
+      "subHeader": subHeader,
+      'content': content,
+    };
+  }
+}
+
 class Lesson {
   final String lessonId;
   final String lessonTitle;
   final String description;
   final String shortDescription;
+
+  final bool showRechner;
+
   final List<Task> tasks;
+  final List<TextSection> textSections;
 
   Lesson({
     required this.lessonId,
@@ -47,15 +81,26 @@ class Lesson {
     required this.description,
     required this.shortDescription,
     required this.tasks,
+    required this.textSections,
+    required this.showRechner,
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
     return Lesson(
-      lessonId: json['lessonId'],
-      lessonTitle: json['lessonTitle'],
-      description: json['description'],
-      shortDescription: json['shortDescription'] ?? json['description'],
-      tasks: (json['tasks'] as List).map((task) => Task.fromJson(task)).toList(),
+      lessonId: json['lessonId'] ?? 'no_id_given',
+      lessonTitle: json['lessonTitle'] ?? 'Kein Titel.',
+      description: json['description'] ?? 'Keine Beschreibung.',
+      shortDescription: json['shortDescription'] ?? json['description'] ?? 'Keine Kurzbeschreibung.',
+
+      showRechner: json['showRechner'] ?? true,
+
+      tasks: json['tasks'] != null && (json['tasks'] as List).isNotEmpty
+          ? (json['tasks'] as List).map((task) => Task.fromJson(task)).toList()
+          : [],
+
+      textSections: json['textSections'] != null && (json['textSections'] as List).isNotEmpty
+          ? (json['textSections'] as List).map((section) => TextSection.fromJson(section)).toList()
+          : [],
     );
   }
 
@@ -91,8 +136,11 @@ class ClassModel {
       className: json['classTitle'],
       classDescription: json['classDescription'],
       classShortDescription: json['classShortDescription'],
-      lessons: (json['lessons'] as List).map((lesson) => Lesson.fromJson(lesson)).toList(),
+      lessons: (json['lessons'] as List)
+          .map((lesson) => Lesson.fromJson(lesson))
+          .toList(),
     );
+
   }
 
   Map<String, dynamic> toJson() {
