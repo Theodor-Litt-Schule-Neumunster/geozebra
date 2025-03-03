@@ -41,6 +41,8 @@ dependencies:
   path_provider: ^2.1.2
   google_fonts: ^6.2.1
   flutter_local_notifications: ^18.0.1
+  video_player: ^2.7.0
+  chewie: ^1.7.0
 
 dev_dependencies:
   flutter_test:
@@ -60,7 +62,7 @@ flutter:
 
     # Classes (JSON) Files
     - assets/classes/
-
+    - assets/classes/test_info_lesson.json
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
