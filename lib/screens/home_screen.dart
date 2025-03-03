@@ -11,6 +11,9 @@ import 'package:geozebra_app/services/lessons_service.dart';
 import 'package:geozebra_app/screens/class_screen.dart';
 import 'package:geozebra_app/models/class_model.dart';
 import 'package:geozebra_app/providers/lessons_provider.dart';
+import 'package:geozebra_app/services/info_lesson_service.dart';  // Updated import with full package path
+import 'package:geozebra_app/models/info_lesson_model.dart';      // Updated import with full package path
+import 'info_lesson_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final LessonService _lessonService = LessonService();
   final lessonsProvider = LessonsProvider();
+  final InfoLessonService _infoLessonService = InfoLessonService();
 
   List<ClassModel> enrolledClasses = [];
   List<ClassModel> bookmarkedClasses = [];
@@ -121,6 +125,46 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       enrolledClasses = loadedClasses;
     });
+  }
+
+  void _loadAndNavigateToInfoLesson(BuildContext context) async {
+    try {
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+
+      // Load the test info lesson
+      final InfoLesson infoLesson = await _infoLessonService.loadInfoLesson('test_info_lesson');
+      
+      // Hide loading indicator
+      Navigator.pop(context);
+      
+      // Navigate to the info lesson screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => InfoLessonScreen(lesson: infoLesson),
+        ),
+      );
+    } catch (e) {
+      // Hide loading indicator
+      Navigator.pop(context);
+      
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to load lesson: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -371,6 +415,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   },
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    _loadAndNavigateToInfoLesson(context);
+                  },
+                  child: const Text('Open Test Info Lesson'),
                 ),
               ],
             ),

@@ -194,26 +194,21 @@ class _LessonScreenState extends State<LessonScreen>
                       children: [
                         ListTile(
                           title: Text(task.description),
-                          onLongPress: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Task Details"),
-                                  content: Text(task.description),
-                                  actions: [
-                                    TextButton(
-                                      child: Text("Close"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
+                          trailing: IconButton(
+                            icon: Icon(Icons.arrow_drop_down),
+                            onPressed: () {
+                              setState(() {
+                                task.showDetails = !task.showDetails;
+                              });
+                            },
+                          ),
                         ),
+                        if (task.showDetails)
+                          Container(
+                            color: Colors.black.withOpacity(0.1), // Add a darker background
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            child: Text(task.description),
+                          ),
                       ],
                     ),
                   ),

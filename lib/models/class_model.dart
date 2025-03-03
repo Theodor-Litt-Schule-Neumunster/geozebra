@@ -3,12 +3,14 @@ class Task {
   final String description;
   final String shortDescription;
   final Map<String, dynamic> condition;
+  bool showDetails;
 
   Task({
     required this.id,
     required this.description,
     required this.shortDescription,
     required this.condition,
+    this.showDetails = false,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class Task {
       description: json['taskDescription'] ?? json['description'],
       shortDescription: json['taskShortDescription'] ?? json['shortDescription'] ?? json['description'],
       condition: json['taskCondition'] ?? {},
+      showDetails: json['showDetails'] ?? false, // Ensure default value
     );
   }
 
@@ -26,6 +29,7 @@ class Task {
       'taskDescription': description,
       'taskShortDescription': shortDescription,
       'taskCondition': condition,
+      'showDetails': showDetails,
     };
   }
 }

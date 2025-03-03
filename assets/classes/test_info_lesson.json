@@ -1,0 +1,26 @@
+{
+  "id": "test_lesson_1",
+  "title": "Introduction to Geometry",
+  "sections": [
+    {
+      "title": "What is Geometry?",
+      "type": "text",
+      "content": "Geometry is a branch of mathematics that studies the sizes, shapes, positions, angles, and dimensions of things. It originated with the need to solve practical problems, such as measuring land, building structures, and navigation."
+    },
+    {
+      "title": "Basic Shapes",
+      "type": "image",
+      "content": "https://media.discordapp.net/attachments/1327211237393698890/1333491405301219358/Screenshot_20250127_183801_Chrome.jpg?ex=67c29d66&is=67c14be6&hm=01b01a0b990fce80e23deaf6cee244f623c9a83dee5655979d0d1ee891f43d3a&=&format=webp&width=1044&height=960"
+    },
+    {
+      "title": "Introduction to GeoGebra",
+      "type": "video",
+      "content": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+    },
+    {
+      "title": "Geometry in Real Life",
+      "type": "text",
+      "content": "Geometry is all around us! From architecture to art, geometry plays a crucial role in many aspects of our daily lives. Engineers use geometry to design buildings, bridges, and machines. Artists use geometric principles to create balanced and appealing compositions."
+    }
+  ]
+}
