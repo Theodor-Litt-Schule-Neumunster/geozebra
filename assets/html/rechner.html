@@ -6,15 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <script src="https://www.geogebra.org/apps/deployggb.js"></script>
   <style>
-    html,
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
     }
-
     #ggb-element {
       width: 100%;
       height: 100%;
@@ -30,13 +28,50 @@
     var currentTasks = [];
     let savedStatus = {};
     let manualCompletions = {};
+    let DEBUG_MODE = false;
+    
+    function getNumericValue(coord) {
+      if (typeof coord === 'number') {
+        return coord;
+      }
+      
+      if (typeof coord === 'object' && coord !== null) {
+        if (coord.numerator !== undefined && coord.denominator !== undefined) {
+          return coord.numerator / coord.denominator;
+        }
+        if (coord.num !== undefined && coord.den !== undefined) {
+          return coord.num / coord.den;
+        }
+      }
+      
+      if (typeof coord === 'string') {
+        if (coord.includes('/')) {
+          const parts = coord.split('/');
+          if (parts.length === 2) {
+            const num = parseFloat(parts[0]);
+            const den = parseFloat(parts[1]);
+            if (!isNaN(num) && !isNaN(den) && den !== 0) {
+              return num / den;
+            }
+          }
+        }
+        return parseFloat(coord) || 0;
+      }
+      
+      return 0;
+    }
+
+    function areCoordinatesEqual(coord1, coord2, tolerance = 0.05) {
+      const value1 = getNumericValue(coord1);
+      const value2 = getNumericValue(coord2);
+      return Math.abs(value1 - value2) < tolerance;
+    }
 
     function receiveTasksFromFlutter(tasksJson) {
       try {
         currentTasks = JSON.parse(tasksJson);
-        // console.log("📥 Aufgaben von Flutter empfangen:", currentTasks);
       } catch (error) {
-        console.error("❌ Fehler beim Parsen der Aufgaben:", error);
+        console.error("Error parsing tasks:", error);
       }
     }
 
@@ -44,12 +79,10 @@
       let taskStatus = {};
 
       if (!ggbAPI || currentTasks.length === 0) {
-        console.warn("⚠️ Keine Aufgaben oder GeoGebra-API nicht verfügbar!");
         return taskStatus;
       }
 
       let objects = ggbAPI.getAllObjectNames();
-      console.log("📝 Gefundene GeoGebra-Objekte:", objects);
 
       currentTasks.forEach(task => {
         let correct = false;
@@ -60,8 +93,17 @@
               if (ggbAPI.getObjectType(obj) === "point") {
                 let x = ggbAPI.getXcoord(obj);
                 let y = ggbAPI.getYcoord(obj);
+                
                 task.condition.solutions.forEach(solution => {
-                  if (Math.abs(x - solution.x) < 0.01 && Math.abs(y - solution.y) < 0.01) {
+                  const expectedX = getNumericValue(solution.x);
+                  const expectedY = getNumericValue(solution.y);
+                  
+                  if (obj === solution.name) {
+                    if (areCoordinatesEqual(x, expectedX) && areCoordinatesEqual(y, expectedY)) {
+                      correct = true;
+                    }
+                  }
+                  else if (areCoordinatesEqual(x, expectedX) && areCoordinatesEqual(y, expectedY)) {
                     correct = true;
                   }
                 });
@@ -70,8 +112,6 @@
             break;
 
           case "equation":
-// Prüfung, ob ein Objekt mit gegebenem Namen existiert und ob dessen Darstellung der Definition entspricht.
-// Prüfung, ob ein Objekt mit gegebenem Namen existiert und ob dessen Darstellung der Definition entspricht.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.name)) {
                 let def = ggbAPI.getValueString(solution.name);
@@ -83,11 +123,8 @@
             break;
 
           case "function_value":
-// Überprüft, ob der Funktionswert an der Stelle x dem erwarteten Wert entspricht.
-            task.condition.solutions.forEach(solution => // Hier erwarten wir, dass jedes Lösungselement ein zusätzliches Feld "expected" enthält.
-{
+            task.condition.solutions.forEach(solution => {
               try {
-// Hier erwarten wir, dass jedes Lösungselement ein zusätzliches Feld "expected" enthält.
                 let computed = ggbAPI.getValue(solution.function + "(" + solution.x + ")");
                 if (Math.abs(computed - solution.expected) < 0.01) {
                   correct = true;
@@ -99,7 +136,6 @@
             break;
 
           case "solve_equation":
-// Annahme: Der Nutzer hat eine Lösung des angegebenen Gleichungsausdrucks erzeugt.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.equation)) {
                 correct = true;
@@ -108,7 +144,6 @@
             break;
 
           case "graphical_solution":
-// Beispielhaft: Überprüfe, ob das grafische Element (z. B. Schnittpunkt) vorhanden ist.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.equation)) {
                 correct = true;
@@ -117,7 +152,6 @@
             break;
 
           case "line":
-// Überprüft, ob eine Linie mit dem angegebenen Namen existiert.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.name) && ggbAPI.getObjectType(solution.name) === "line") {
                 correct = true;
@@ -139,7 +173,6 @@
             break;
 
           case "rename":
-// Überprüft, ob das alte Objekt nicht mehr existiert und das neue Objekt vorhanden ist.
             task.condition.solutions.forEach(solution => {
               if (!objects.includes(solution.oldName) && objects.includes(solution.newName)) {
                 correct = true;
@@ -148,10 +181,7 @@
             break;
 
           case "scale":
-// Beispielhaft: Überprüft, ob das Verhältnis der x- zur y-Achse dem erwarteten Wert entspricht.
             task.condition.solutions.forEach(solution => {
-// Hier wird angenommen, dass die API eine Methode getCoordSystem liefert
-              // mit Eigenschaften xscale und yscale.
               let cs = ggbAPI.getCoordSystem ? ggbAPI.getCoordSystem() : { xscale: 1, yscale: 1 };
               let ratio = cs.xscale / cs.yscale;
               if (Math.abs(ratio - solution.expectedRatio) < 0.01) {
@@ -161,7 +191,6 @@
             break;
 
           case "note":
-// Z.B. wird ein manueller Bestätigungswert erwartet (über das Objekt manualCompletions).
             task.condition.solutions.forEach(solution => {
               if (manualCompletions[task.taskId]) {
                 correct = true;
@@ -170,7 +199,6 @@
             break;
 
           case "zero_point":
-// Überprüft, ob die Nullstelle der Funktion gefunden wurde.
             task.condition.solutions.forEach(solution => {
               try {
                 let zero = ggbAPI.getValue("Löse(" + solution.function + " = 0)");
@@ -184,10 +212,8 @@
             break;
 
           case "y_intercept":
-// Überprüft, ob der y-Achsenabschnitt korrekt ermittelt wurde.
             task.condition.solutions.forEach(solution => {
               try {
-// Pseudo-Code: Annahme, dass es eine Methode zur Ermittlung des y-Achsenabschnitts gibt.
                 let yIntercept = ggbAPI.getYcoord ? ggbAPI.getYcoord(solution.function, 0) : null;
                 if (yIntercept !== null && Math.abs(yIntercept - solution.expected) < 0.01) {
                   correct = true;
@@ -199,10 +225,8 @@
             break;
 
           case "intersection":
-// Überprüft, ob der Schnittpunkt der angegebenen Funktionen existiert.
             task.condition.solutions.forEach(solution => {
               try {
-// Pseudo-Code: Man könnte den Schnittpunkt über eine spezielle Namenskonvention oder Berechnung ermitteln.
                 let ix = ggbAPI.getXcoord(solution.functions.join("_"));
                 let iy = ggbAPI.getYcoord(solution.functions.join("_"));
                 if (!isNaN(ix) && !isNaN(iy)) {
@@ -215,7 +239,7 @@
             break;
 
           default:
-            console.warn("Unbekannter Typ:", task.condition.type);
+            console.warn("Unknown type:", task.condition.type);
         }
 
         taskStatus[task.taskId] = correct;
@@ -226,17 +250,14 @@
 
     function sendTaskStatusToFlutter() {
       let status = getTaskStatus();
-      // Schicke nur Aufgaben fortschritt wenn er sich geändert hat.
       if (JSON.stringify(status) === JSON.stringify(savedStatus)) {
         return;
       }
       savedStatus = status;
-      // console.log("📤 Sende an Flutter:", status);
       if (window.taskCompleted) {
         window.taskCompleted.postMessage(JSON.stringify(status));
       }
     }
-
 
     var ggbApp = new GGBApplet({
       "appName": "graphing",
@@ -247,7 +268,6 @@
       "showMenuBar": false,
       "appletOnLoad": function (api) {
         ggbAPI = api;
-        // console.log("🎯 GeoGebra API geladen!");
         setInterval(sendTaskStatusToFlutter, 1000);
       }
     }, true);
@@ -255,5 +275,4 @@
     ggbApp.inject('ggb-element');
   </script>
 </body>
-
 </html>

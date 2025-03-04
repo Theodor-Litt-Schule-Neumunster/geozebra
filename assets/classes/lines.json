@@ -10,49 +10,121 @@
       "shortDescription": "Geraden mit zwei Punkten definieren.",
       "tasks": [
         {
-          "taskDescription": "Setze die Punkte A (1,4), B (2,5) und C (-4,1).",
-          "taskShortDescription": "Punkte A, B und C setzen.",
+          "taskDescription": "Setze den Punkt A (1,4).",
+          "taskShortDescription": "Punkt A setzen.",
           "taskCondition": {
             "type": "point",
             "solutions": [
-              { "x": 1, "y": 4, "name": "A" },
-              { "x": 2, "y": 5, "name": "B" },
+              { "x": 1, "y": 4, "name": "A" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Setze den Punkt B (2,5).",
+          "taskShortDescription": "Punkt B setzen.",
+          "taskCondition": {
+            "type": "point",
+            "solutions": [
+              { "x": 2, "y": 5, "name": "B" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Setze den Punkt C (-4,1).",
+          "taskShortDescription": "Punkt C setzen.",
+          "taskCondition": {
+            "type": "point",
+            "solutions": [
               { "x": -4, "y": 1, "name": "C" }
             ]
           }
         },
         {
-          "taskDescription": "Erstelle die Geraden gAB, gAC und gBC und notiere ihre Koordinatenform.",
-          "taskShortDescription": "Geraden gAB, gAC und gBC definieren.",
+          "taskDescription": "Erstelle die Gerade gAB durch die Punkte A und B.",
+          "taskShortDescription": "Gerade gAB definieren.",
           "taskCondition": {
             "type": "line",
             "solutions": [
-              { "points": ["A", "B"], "name": "gAB" },
-              { "points": ["A", "C"], "name": "gAC" },
+              { "points": ["A", "B"], "name": "gAB" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Erstelle die Gerade gAC durch die Punkte A und C.",
+          "taskShortDescription": "Gerade gAC definieren.",
+          "taskCondition": {
+            "type": "line",
+            "solutions": [
+              { "points": ["A", "C"], "name": "gAC" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Erstelle die Gerade gBC durch die Punkte B und C.",
+          "taskShortDescription": "Gerade gBC definieren.",
+          "taskCondition": {
+            "type": "line",
+            "solutions": [
               { "points": ["B", "C"], "name": "gBC" }
             ]
           }
         },
         {
-          "taskDescription": "Stelle alle drei Geradengleichungen in der Form y = mx + t dar.",
-          "taskShortDescription": "Geradengleichungen in der Form y = mx + t umwandeln.",
+          "taskDescription": "Stelle die Geradengleichung gAB in der Form y = mx + t dar.",
+          "taskShortDescription": "Geradengleichung gAB in der Form y = mx + t umwandeln.",
           "taskCondition": {
             "type": "equation",
             "solutions": [
-              { "name": "gAB", "form": "y = mx + t" },
-              { "name": "gAC", "form": "y = mx + t" },
+              { "name": "gAB", "form": "y = mx + t" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Stelle die Geradengleichung gAC in der Form y = mx + t dar.",
+          "taskShortDescription": "Geradengleichung gAC in der Form y = mx + t umwandeln.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "gAC", "form": "y = mx + t" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Stelle die Geradengleichung gBC in der Form y = mx + t dar.",
+          "taskShortDescription": "Geradengleichung gBC in der Form y = mx + t umwandeln.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
               { "name": "gBC", "form": "y = mx + t" }
             ]
           }
         },
         {
-          "taskDescription": "Messe die Abstände zwischen den Punkten A, B und C mithilfe einer Strecke.",
-          "taskShortDescription": "Abstände zwischen A, B und C messen.",
+          "taskDescription": "Messe den Abstand zwischen den Punkten A und B mit einer Strecke.",
+          "taskShortDescription": "Abstand zwischen A und B messen.",
           "taskCondition": {
             "type": "distance",
             "solutions": [
-              { "points": ["A", "B"], "name": "AB" },
-              { "points": ["A", "C"], "name": "AC" },
+              { "points": ["A", "B"], "name": "AB" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Messe den Abstand zwischen den Punkten A und C mit einer Strecke.",
+          "taskShortDescription": "Abstand zwischen A und C messen.",
+          "taskCondition": {
+            "type": "distance",
+            "solutions": [
+              { "points": ["A", "C"], "name": "AC" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Messe den Abstand zwischen den Punkten B und C mit einer Strecke.",
+          "taskShortDescription": "Abstand zwischen B und C messen.",
+          "taskCondition": {
+            "type": "distance",
+            "solutions": [
               { "points": ["B", "C"], "name": "BC" }
             ]
           }

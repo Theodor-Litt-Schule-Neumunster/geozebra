@@ -10,7 +10,7 @@
       "shortDescription": "Funktion f(x) = 5000 + 1000x darstellen und analysieren.",
       "tasks": [
         {
-          "taskDescription": "Erstelle die Funktion f(x) = 5000 + 1000x und skaliere das Koordinatensystem geeignet.",
+          "taskDescription": "Erstelle die Funktion f(x) = 5000 + 1000x.",
           "taskShortDescription": "Funktion f(x) = 5000 + 1000x erstellen.",
           "taskCondition": {
             "type": "equation",
@@ -20,13 +20,41 @@
           }
         },
         {
-          "taskDescription": "Berechne den Wert f(10) und ermittle die Nullstelle sowie den y-Achsenabschnitt der Funktion.",
-          "taskShortDescription": "f(10), Nullstelle und y-Achsenabschnitt berechnen.",
+          "taskDescription": "Skaliere das Koordinatensystem geeignet um die Funktion anzuzeigen.",
+          "taskShortDescription": "Koordinatensystem skalieren.",
+          "taskCondition": {
+            "type": "scale",
+            "solutions": [
+              { "description": "Ansicht so skaliert, dass die Funktion sichtbar ist." }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Wert f(10).",
+          "taskShortDescription": "Wert f(10) berechnen.",
           "taskCondition": {
             "type": "function_value",
             "solutions": [
-              { "function": "f", "x": 10 },
-              { "equation": "f(x) = 0" },
+              { "function": "f", "x": 10 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle die Nullstelle der Funktion f.",
+          "taskShortDescription": "Nullstelle der Funktion berechnen.",
+          "taskCondition": {
+            "type": "solve_equation",
+            "solutions": [
+              { "equation": "f(x) = 0" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme den y-Achsenabschnitt der Funktion f.",
+          "taskShortDescription": "y-Achsenabschnitt berechnen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
               { "point": "(0, 5000)" }
             ]
           }
@@ -49,12 +77,21 @@
       "shortDescription": "Gerade g durch P und Q darstellen und analysieren.",
       "tasks": [
         {
-          "taskDescription": "Erstelle die Punkte P(1|13500) und Q(6|6000) und benenne sie wie angegeben.",
-          "taskShortDescription": "Punkte P(1|13500) und Q(6|6000) erstellen.",
+          "taskDescription": "Erstelle den Punkt P(1|13500).",
+          "taskShortDescription": "Punkt P erstellen.",
           "taskCondition": {
             "type": "point",
             "solutions": [
-              { "name": "P", "x": 1, "y": 13500 },
+              { "name": "P", "x": 1, "y": 13500 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Erstelle den Punkt Q(6|6000).",
+          "taskShortDescription": "Punkt Q erstellen.",
+          "taskCondition": {
+            "type": "point",
+            "solutions": [
               { "name": "Q", "x": 6, "y": 6000 }
             ]
           }
