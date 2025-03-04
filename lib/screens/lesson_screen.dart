@@ -4,9 +4,10 @@ import 'dart:convert';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../models/class_model.dart';
 import '../widgets/defaultappbar_widget.dart';
-import 'package:flutter/cupertino.dart';
-
-import 'package:geozebra_app/models/theme_model.dart';
+import '../widgets/lessonScreen/defaultBody.dart';
+import '../widgets/lessonScreen/defaultDrawer.dart';
+import '../widgets/lessonScreen/textDrawer.dart';
+import '../widgets/lessonScreen/textBody.dart';
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;
@@ -16,8 +17,7 @@ class LessonScreen extends StatefulWidget {
   State<LessonScreen> createState() => _LessonScreenState();
 }
 
-class _LessonScreenState extends State<LessonScreen>
-    with SingleTickerProviderStateMixin {
+class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderStateMixin {
   late final WebViewController _controller;
   bool isLoading = true;
   bool minLoadingTimePassed = false;
@@ -25,6 +25,9 @@ class _LessonScreenState extends State<LessonScreen>
   late Animation<double> _fadeAnimation;
   Map<String, bool> taskStatus = {};
   Timer? _taskCheckTimer;
+
+  late ScrollController _scrollController;
+  final List<GlobalKey> _sectionKeys = [];
 
   @override
   void initState() {
@@ -37,6 +40,11 @@ class _LessonScreenState extends State<LessonScreen>
     _fadeAnimation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeOut,
+    );
+
+    _scrollController = ScrollController();
+    _sectionKeys.addAll(
+      widget.lesson.textSections.map((_) => GlobalKey()).toList()
     );
 
     Timer(Duration(seconds: 3), () {
@@ -116,7 +124,6 @@ class _LessonScreenState extends State<LessonScreen>
 
   void _updateTaskStatus(String jsonStatus) {
     try {
-      print("🔄 Received task status update: $jsonStatus");
       final Map<String, dynamic> status = jsonDecode(jsonStatus);
 
       setState(() {
@@ -125,133 +132,42 @@ class _LessonScreenState extends State<LessonScreen>
             .addAll(status.map((key, value) => MapEntry(key, value == true)));
       });
 
-      print("✅ Updated taskStatus: $taskStatus");
     } catch (e) {
-      print("❌ Error parsing task status: $e");
+      print("Error parsing task status: $e");
     }
+  }
+
+  void _scrollToSection(int index) {
+    final key = _sectionKeys[index];
+    // Use Scrollable.ensureVisible() to jump to that GlobalKey
+    Scrollable.ensureVisible(
+      key.currentContext!,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: DefaultAppBar(title: widget.lesson.lessonTitle),
-      endDrawer: Builder(
-        builder: (context) => Drawer(
-          child: ListView(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text("Aufgaben", style: TextStyle(fontSize: 22)),
-                  ),
-                  ListTile(
-                    title: Text("Desktop Modus"),
-                    trailing: Transform.scale(
-                      scale: 0.8,
-                      child: Switch(
-                        value: false,
-                        onChanged: (bool value) {
-                          // Handle switch state change
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-                const Padding(
-                padding: EdgeInsets.only(bottom: 12.0),
-                child: Divider(
-                  height: 2,
-                  thickness: 2,
-                  color: Colors.grey,
-                ),
-                ),
-              ...widget.lesson.tasks.map((task) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 6.0, vertical: 2.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: ExpansionTile(
-                      title: Text(task.shortDescription),
-                      tilePadding: EdgeInsets.symmetric(horizontal: 16.0),
-                      backgroundColor: taskStatus[task.id] == true
-                          ? Theme.of(context)
-                              .extension<TaskColors>()!
-                              .completedTask
-                          : Theme.of(context)
-                              .extension<TaskColors>()!
-                              .uncompletedTask,
-                      collapsedBackgroundColor: taskStatus[task.id] == true
-                          ? Theme.of(context)
-                              .extension<TaskColors>()!
-                              .completedTask
-                          : Theme.of(context)
-                              .extension<TaskColors>()!
-                              .uncompletedTask,
-                      children: [
-                        ListTile(
-                          title: Text(task.description),
-                          onLongPress: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Task Details"),
-                                  content: Text(task.description),
-                                  actions: [
-                                    TextButton(
-                                      child: Text("Close"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              })
-            ],
-          ),
-        ),
-      ),
-      body: Stack(
-        children: [
-          WebViewWidget(controller: _controller),
-          if (isLoading)
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: Container(
-                color: Colors.white,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.calculate_rounded,
-                          size: 80, color: Colors.blueAccent),
-                      SizedBox(height: 20),
-                      Text("Loading GeoGebra...",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 20),
-                      CircularProgressIndicator(
-                          strokeWidth: 3, color: Colors.blueAccent),
-                    ],
-                  ),
-                ),
-              ),
+      endDrawer: widget.lesson.showRechner
+          ? DefaultDrawer(lesson: widget.lesson, taskStatus: taskStatus)
+          : TextDrawer(
+              textSections: widget.lesson.textSections,
+              onTextSectionSelected: _scrollToSection,
             ),
-        ],
-      ),
+      body: widget.lesson.showRechner
+          ? DefaultBody(
+              controller: _controller,
+              isLoading: isLoading,
+              fadeAnimation: _fadeAnimation,
+            )
+          : TextBody(
+              textSections: widget.lesson.textSections,
+              scrollController: _scrollController,
+              sectionKeys: _sectionKeys,
+            ),
     );
   }
 }
-

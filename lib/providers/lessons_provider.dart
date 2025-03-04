@@ -8,6 +8,7 @@ class LessonsProvider {
     'functions',
     'equations',
     'final_test',
+    'test_lesson',
   ];
 
   List<String> getAllClassFiles() {
