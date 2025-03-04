@@ -43,12 +43,12 @@
       let taskStatus = {};
 
       if (!ggbAPI || currentTasks.length === 0) {
-        console.warn("⚠️ Keine Aufgaben oder GeoGebra-API nicht verfügbar!");
+        console.warn("geogebra api or tasks not available");
         return taskStatus;
       }
 
       let objects = ggbAPI.getAllObjectNames();
-      console.log("📝 Gefundene GeoGebra-Objekte:", objects);
+      console.log("found geogebra objects:", objects);
 
       currentTasks.forEach(task => {
         let correct = false;
@@ -69,7 +69,6 @@
             break;
 
           case "equation":
-            // Prüfung, ob ein Objekt mit gegebenem Namen existiert und ob dessen Darstellung der Definition entspricht.
             task.condition.solutions.forEach(solution => {
               if (objects.includes(solution.name)) {
                 let def = ggbAPI.getValueString(solution.name);
@@ -226,7 +225,6 @@
 
     function sendTaskStatusToFlutter() {
       let status = getTaskStatus();
-      // console.log("📤 Sende an Flutter:", status);
       if (window.taskCompleted) {
         window.taskCompleted.postMessage(JSON.stringify(status));
       }
