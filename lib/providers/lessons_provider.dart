@@ -1,4 +1,4 @@
-import '../utils/task_validator.dart';
+import 'package:geozebra_app/utils/task_validator.dart';
 
 class LessonsProvider {
   List<String> classFiles = [

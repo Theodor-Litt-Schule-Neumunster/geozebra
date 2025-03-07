@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../models/class_model.dart';
-import '../widgets/defaultappbar_widget.dart';
-import '../widgets/lessonScreen/defaultBody.dart';
-import '../widgets/lessonScreen/defaultDrawer.dart';
-import '../widgets/lessonScreen/textDrawer.dart';
-import '../widgets/lessonScreen/textBody.dart';
+import 'package:geozebra_app/models/class_model.dart';
+import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
+import 'package:geozebra_app/widgets/lessonScreen/defaultBody.dart';
+import 'package:geozebra_app/widgets/lessonScreen/defaultDrawer.dart';
+import 'package:geozebra_app/widgets/lessonScreen/textDrawer.dart';
+import 'package:geozebra_app/widgets/lessonScreen/textBody.dart';
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;

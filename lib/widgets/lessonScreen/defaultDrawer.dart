@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geozebra_app/models/theme_model.dart';
-import '../../models/class_model.dart';
+import 'package:geozebra_app/models/class_model.dart';
 
 class DefaultDrawer extends StatelessWidget {
   final Lesson lesson;
