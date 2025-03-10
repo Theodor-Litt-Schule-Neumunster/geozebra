@@ -1,0 +1,132 @@
+{
+  "classId": "modul4_loesen_von_gleichungen",
+  "classTitle": "Lösen von Gleichungen in GeoGebra",
+  "classDescription": "Lerne, wie man Gleichungen rechnerisch und graphisch löst.",
+  "classShortDescription": "Gleichungen rechnerisch und graphisch lösen.",
+  "lessons": [
+    {
+      "lessonTitle": "Rechnerisches Lösen von Gleichungen",
+      "description": "Lerne, wie man Gleichungen mit dem Befehl 'Löse' in GeoGebra berechnet.",
+      "shortDescription": "Gleichungen rechnerisch lösen.",
+      "tasks": [
+        {
+          "taskDescription": "Erstelle die Funktion f(x) = 3x - 1.",
+          "taskShortDescription": "Funktion f(x) = 3x - 1 erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "f", "definition": "3x - 1" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert f(-5).",
+          "taskShortDescription": "Funktionswert f(-5) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": -5 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert f(-1).",
+          "taskShortDescription": "Funktionswert f(-1) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": -1 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert f(2).",
+          "taskShortDescription": "Funktionswert f(2) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": 2 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert f(100).",
+          "taskShortDescription": "Funktionswert f(100) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": 100 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Löse die Gleichung f(x) = 0 rechnerisch.",
+          "taskShortDescription": "Gleichung f(x) = 0 rechnerisch lösen.",
+          "taskCondition": {
+            "type": "solve_equation",
+            "solutions": [
+              { "equation": "f(x) = 0" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Löse die Gleichung f(x) = 11 rechnerisch.",
+          "taskShortDescription": "Gleichung f(x) = 11 rechnerisch lösen.",
+          "taskCondition": {
+            "type": "solve_equation",
+            "solutions": [
+              { "equation": "f(x) = 11" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Löse die Gleichung f(x) = 7 rechnerisch.",
+          "taskShortDescription": "Gleichung f(x) = 7 rechnerisch lösen.",
+          "taskCondition": {
+            "type": "solve_equation",
+            "solutions": [
+              { "equation": "f(x) = 7" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lessonTitle": "Graphisches Lösen von Gleichungen",
+      "description": "Lerne, wie man Gleichungen mit einer Hilfsfunktion graphisch löst.",
+      "shortDescription": "Gleichungen graphisch lösen.",
+      "tasks": [
+        {
+          "taskDescription": "Löse die Gleichung f(x) = 1 graphisch mit der Hilfsfunktion u(x) = 1.",
+          "taskShortDescription": "Gleichung f(x) = 1 graphisch lösen.",
+          "taskCondition": {
+            "type": "graphical_solution",
+            "solutions": [
+              { "equation": "f(x) = 1", "helperFunction": "u(x) = 1" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Löse die Gleichung f(x) = 12 graphisch mit der Hilfsfunktion u(x) = 12.",
+          "taskShortDescription": "Gleichung f(x) = 12 graphisch lösen.",
+          "taskCondition": {
+            "type": "graphical_solution",
+            "solutions": [
+              { "equation": "f(x) = 12", "helperFunction": "u(x) = 12" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Löse die Gleichung f(x) = 8 graphisch mit der Hilfsfunktion u(x) = 8.",
+          "taskShortDescription": "Gleichung f(x) = 8 graphisch lösen.",
+          "taskCondition": {
+            "type": "graphical_solution",
+            "solutions": [
+              { "equation": "f(x) = 8", "helperFunction": "u(x) = 8" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
