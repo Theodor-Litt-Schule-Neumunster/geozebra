@@ -1,0 +1,292 @@
+{
+  "classId": "modul3_arbeiten_mit_funktionen",
+  "classTitle": "Arbeiten mit Funktionen in GeoGebra",
+  "classDescription": "Lerne, wie man Funktionen anlegt, Nullstellen und y-Achsenabschnitte bestimmt sowie Schnittpunkte berechnet.",
+  "classShortDescription": "Funktionen, Nullstellen und Schnittpunkte in GeoGebra.",
+  "lessons": [
+    {
+      "lessonTitle": "Grundlegende Funktionsoperationen",
+      "description": "Lerne, wie man Funktionen in GeoGebra erstellt und grundlegende Eigenschaften bestimmt.",
+      "shortDescription": "Funktionen erstellen und analysieren.",
+      "tasks": [
+        {
+          "taskDescription": "Erstelle die Funktion f(x) = x - 1.",
+          "taskShortDescription": "Funktion f(x) = x - 1 erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "f", "definition": "x - 1" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Erstelle die Funktion g(x) = 0.5 * x + 2.",
+          "taskShortDescription": "Funktion g(x) = 0.5 * x + 2 erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "g", "definition": "0.5 * x + 2" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Erstelle die Funktion h(x) = -x + 1/3.",
+          "taskShortDescription": "Funktion h(x) = -x + 1/3 erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "h", "definition": { "numerator": -1, "denominator": 1, "xTerm": true, "constant": { "numerator": 1, "denominator": 3 } } }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert f(2).",
+          "taskShortDescription": "Funktionswert f(2) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": 2 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert f(1).",
+          "taskShortDescription": "Funktionswert f(1) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "f", "x": 1 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert g(2).",
+          "taskShortDescription": "Funktionswert g(2) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "g", "x": 2 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert g(1).",
+          "taskShortDescription": "Funktionswert g(1) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "g", "x": 1 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert h(2).",
+          "taskShortDescription": "Funktionswert h(2) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "h", "x": 2 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Funktionswert h(1).",
+          "taskShortDescription": "Funktionswert h(1) berechnen.",
+          "taskCondition": {
+            "type": "function_value",
+            "solutions": [
+              { "function": "h", "x": 1 }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme die Nullstelle der Funktion f.",
+          "taskShortDescription": "Nullstelle der Funktion f bestimmen.",
+          "taskCondition": {
+            "type": "zero_point",
+            "solutions": [
+              { "function": "f" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme die Nullstelle der Funktion g.",
+          "taskShortDescription": "Nullstelle der Funktion g bestimmen.",
+          "taskCondition": {
+            "type": "zero_point",
+            "solutions": [
+              { "function": "g" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme die Nullstelle der Funktion h.",
+          "taskShortDescription": "Nullstelle der Funktion h bestimmen.",
+          "taskCondition": {
+            "type": "zero_point",
+            "solutions": [
+              { "function": "h" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle den y-Achsenabschnitt der Funktion f.",
+          "taskShortDescription": "y-Achsenabschnitt der Funktion f bestimmen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
+              { "function": "f" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle den y-Achsenabschnitt der Funktion g.",
+          "taskShortDescription": "y-Achsenabschnitt der Funktion g bestimmen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
+              { "function": "g" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle den y-Achsenabschnitt der Funktion h.",
+          "taskShortDescription": "y-Achsenabschnitt der Funktion h bestimmen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
+              { "function": "h" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lessonTitle": "Berechnung von Schnittpunkten",
+      "description": "Lerne, wie man Schnittpunkte von Funktionen in GeoGebra berechnet.",
+      "shortDescription": "Schnittpunkte von Funktionen berechnen.",
+      "tasks": [
+        {
+          "taskDescription": "Erstelle die Funktion f(x) = x.",
+          "taskShortDescription": "Funktion f(x) = x erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "f", "definition": "x" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Erstelle die Funktion g(x) = -2/5 * x.",
+          "taskShortDescription": "Funktion g(x) = -2/5 * x erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "g", "definition": { "numerator": -2, "denominator": 5, "xTerm": true } }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Erstelle die Funktion h(x) = 2x - 0.5.",
+          "taskShortDescription": "Funktion h(x) = 2x - 0.5 erstellen.",
+          "taskCondition": {
+            "type": "equation",
+            "solutions": [
+              { "name": "h", "definition": "2x - 0.5" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Schnittpunkt der Funktionen f und g.",
+          "taskShortDescription": "Schnittpunkt von f und g berechnen.",
+          "taskCondition": {
+            "type": "intersection",
+            "solutions": [
+              { "functions": ["f", "g"] }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Schnittpunkt der Funktionen f und h.",
+          "taskShortDescription": "Schnittpunkt von f und h berechnen.",
+          "taskCondition": {
+            "type": "intersection",
+            "solutions": [
+              { "functions": ["f", "h"] }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Berechne den Schnittpunkt der Funktionen g und h.",
+          "taskShortDescription": "Schnittpunkt von g und h berechnen.",
+          "taskCondition": {
+            "type": "intersection",
+            "solutions": [
+              { "functions": ["g", "h"] }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme die Nullstelle der Funktion f.",
+          "taskShortDescription": "Nullstelle der Funktion f bestimmen.",
+          "taskCondition": {
+            "type": "zero_point",
+            "solutions": [
+              { "function": "f" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme die Nullstelle der Funktion g.",
+          "taskShortDescription": "Nullstelle der Funktion g bestimmen.",
+          "taskCondition": {
+            "type": "zero_point",
+            "solutions": [
+              { "function": "g" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Bestimme die Nullstelle der Funktion h.",
+          "taskShortDescription": "Nullstelle der Funktion h bestimmen.",
+          "taskCondition": {
+            "type": "zero_point",
+            "solutions": [
+              { "function": "h" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle den y-Achsenabschnitt der Funktion f.",
+          "taskShortDescription": "y-Achsenabschnitt der Funktion f bestimmen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
+              { "function": "f" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle den y-Achsenabschnitt der Funktion g.",
+          "taskShortDescription": "y-Achsenabschnitt der Funktion g bestimmen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
+              { "function": "g" }
+            ]
+          }
+        },
+        {
+          "taskDescription": "Ermittle den y-Achsenabschnitt der Funktion h.",
+          "taskShortDescription": "y-Achsenabschnitt der Funktion h bestimmen.",
+          "taskCondition": {
+            "type": "y_intercept",
+            "solutions": [
+              { "function": "h" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
