@@ -1,0 +1,49 @@
+{
+    "handbookId": "geogebra_handbook",
+    "handbookTitle": "GeoGebra-Handbuch",
+    "handbookDescription": "Ein umfassendes Handbuch für die Verwendung von GeoGebra im Mathematikunterricht.",
+    "handbookShortDescription": "GeoGebra-Anleitung für Lehrende und Lernende",
+    "chapters": [
+        {
+            "chapterId": "grundlagen",
+            "chapterTitle": "Grundlagen von GeoGebra",
+            "description": "Einführung in die grundlegenden Funktionen und die Benutzeroberfläche von GeoGebra.",
+            "shortDescription": "Erste Schritte mit GeoGebra",
+            "textSections": [
+                {
+                    "header": "Benutzeroberfläche",
+                    "subHeader": "Kennenlernen der wichtigsten Elemente",
+                    "content": "<p>Die <b>Benutzeroberfläche</b> von GeoGebra besteht aus mehreren Bereichen:</p><ul><li>Menüleiste</li><li>Werkzeugleiste</li><li>Algebraansicht</li><li>Grafikansicht</li><li>Eingabezeile</li></ul><p>In der <i>Grafikansicht</i> werden geometrische Objekte dargestellt, während die <i>Algebraansicht</i> die entsprechenden algebraischen Ausdrücke anzeigt.</p>"
+                },
+                {
+                    "header": "Erste Konstruktionen",
+                    "subHeader": "Punkte, Geraden und Kreise erstellen",
+                    "content": "<p>So erstellen Sie Ihre erste Konstruktion:</p><ol><li>Klicken Sie auf das Punkt-Werkzeug und dann in die Grafikansicht, um einen Punkt zu erstellen.</li><li>Wählen Sie das Geraden-Werkzeug und verbinden Sie zwei Punkte.</li><li>Mit dem Kreis-Werkzeug können Sie einen Kreis mit Mittelpunkt und einem Punkt auf der Kreislinie zeichnen.</li></ol><p>Alle erstellten Objekte erscheinen automatisch in der Algebraansicht mit ihren entsprechenden Koordinaten oder Gleichungen.</p>"
+                }
+            ]
+        },
+        {
+            "chapterId": "fortgeschritten",
+            "chapterTitle": "Fortgeschrittene Funktionen",
+            "description": "Entdecken Sie die erweiterten Möglichkeiten von GeoGebra für komplexere mathematische Aufgaben.",
+            "shortDescription": "Erweiterte GeoGebra-Funktionen",
+            "textSections": [
+                {
+                    "header": "Funktionen und Graphen",
+                    "subHeader": "Funktionen darstellen und analysieren",
+                    "content": "<p>GeoGebra ermöglicht die einfache Darstellung von <b>Funktionen</b>. Geben Sie dazu in der Eingabezeile die Funktionsgleichung ein, z.B. <code>f(x) = x²</code>.</p><p>Sie können Funktionen analysieren mit:</p><ul><li>Ableitungen: <code>f'(x)</code></li><li>Integral: <code>Integral(f, a, b)</code></li><li>Nullstellen: <code>Nullstelle(f)</code></li><li>Extrempunkte: <code>Extremum(f)</code></li></ul>"
+                },
+                {
+                    "header": "Dynamische Arbeitsblätter",
+                    "subHeader": "Interaktive Materialien erstellen",
+                    "content": "<p>Mit GeoGebra können Sie <i>dynamische Arbeitsblätter</i> erstellen, die Schülern helfen, mathematische Konzepte zu verstehen.</p><p>Dazu gehören:</p><ul><li>Schieberegler für Parameter</li><li>Kontrollkästchen zum Ein-/Ausblenden von Objekten</li><li>Textfelder mit dynamischen Informationen</li><li>Schaltflächen für interaktive Elemente</li></ul><p>Diese Materialien können online geteilt oder in Lernplattformen eingebettet werden.</p>"
+                },
+                {
+                    "header": "CAS-Ansicht",
+                    "subHeader": "Arbeiten mit dem Computer-Algebra-System",
+                    "content": "<p>Die <b>CAS-Ansicht</b> (Computer-Algebra-System) ermöglicht symbolisches Rechnen wie:</p><ul><li>Gleichungen lösen</li><li>Terme vereinfachen</li><li>Ableitungen und Integrale berechnen</li><li>Mit Matrizen arbeiten</li></ul><p>Dies ist besonders nützlich für fortgeschrittene mathematische Probleme und den Einsatz im Oberstufenunterricht.</p>"
+                }
+            ]
+        }
+    ]
+}

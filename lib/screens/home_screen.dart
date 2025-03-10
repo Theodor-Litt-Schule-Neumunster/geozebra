@@ -7,6 +7,7 @@ import 'package:geozebra_app/cards/home_card.dart';
 import 'search_screen.dart';
 import 'notification_screen.dart';
 import 'rechner_screen.dart';
+import 'handbook_screen.dart'; // Import für HandbookScreen
 import 'package:geozebra_app/services/lessons_service.dart';
 import 'package:geozebra_app/screens/class_screen.dart';
 import 'package:geozebra_app/models/class_model.dart';
@@ -230,6 +231,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => const RechnerScreen(),
+                      ),
+                    );
+                  },
+                ),
+                // Neuer Button für das Handbuch
+                ScreenCard(
+                  iconData: Icons.book,
+                  title: "GeoGebra-Handbuch",
+                  subtitle: "Hilfe und Anleitungen für GeoGebra",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HandbookScreen(),
                       ),
                     );
                   },
