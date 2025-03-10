@@ -5,11 +5,11 @@ class LessonsProvider {
     'basic_geogebra',
     'advanced_geogebra',
     'intermediate_geogebra',
-    'points',
-    'lines',
-    'functions',
-    'equations',
-    'final_test',
+    'm1_points',
+    'm2_lines',
+    'm3_functions',
+    'm4_equations',
+    'm5_final_test',
     'test_lesson',
   ];
 
