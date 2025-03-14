@@ -2,15 +2,11 @@ import 'package:geozebra_app/utils/task_validator.dart';
 
 class LessonsProvider {
   List<String> classFiles = [
-    'advanced_geogebra',
-    'basic_geogebra',
-    'intermediate_geogebra',
     'm1_points',
     'm2_lines',
     'm3_functions',
     'm4_equations',
     'm5_final_test',
-    'test_lesson'
   ];
 
   List<String> getAllClassFiles() {

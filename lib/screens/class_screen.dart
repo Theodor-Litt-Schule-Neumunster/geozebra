@@ -174,6 +174,7 @@ class _ClassScreenState extends State<ClassScreen> {
                       onPressed: _enrollInClass,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
+                        // backgroundColor: Theme.of(context).colorScheme.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
