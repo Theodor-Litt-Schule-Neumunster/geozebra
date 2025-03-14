@@ -36,7 +36,9 @@ class _ClassScreenState extends State<ClassScreen> {
       _isEnrolled = true;
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Du bist "${widget.classModel.className}" beigetreten')),
+      SnackBar(
+          content:
+              Text('Du bist "${widget.classModel.className}" beigetreten')),
     );
   }
 
@@ -59,10 +61,12 @@ class _ClassScreenState extends State<ClassScreen> {
               } else if (value == 'leave') {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Du hast "${widget.classModel.className}" verlassen.'),
+                    content: Text(
+                        'Du hast "${widget.classModel.className}" verlassen.'),
                   ),
                 );
-                await _lessonService.unenrollFromClass(widget.classModel.classId);
+                await _lessonService
+                    .unenrollFromClass(widget.classModel.classId);
                 setState(() {
                   _isEnrolled = false;
                 });
@@ -142,7 +146,6 @@ class _ClassScreenState extends State<ClassScreen> {
             ),
           ),
 
-          // Short description + enrollment button
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16.0),
@@ -164,7 +167,6 @@ class _ClassScreenState extends State<ClassScreen> {
                 ),
                 const SizedBox(height: 12),
 
-                // Conditionally show enroll button
                 if (!_isEnrolled)
                   SizedBox(
                     width: double.infinity,
@@ -172,13 +174,15 @@ class _ClassScreenState extends State<ClassScreen> {
                       onPressed: _enrollInClass,
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
+                        // backgroundColor: Theme.of(context).colorScheme.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: Text(
                         "Kurs beitreten",
-                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
                       ),
                     ),
                   )

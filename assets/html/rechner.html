@@ -2,41 +2,279 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <script src="https://www.geogebra.org/apps/deployggb.js"></script>
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        #ggb-element {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    #ggb-element {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="ggb-element"></div>
+  <div id="ggb-element"></div>
 
-    <script>
-        var ggbApp = new GGBApplet({
-            "appName": "graphing",
-            "width": window.innerWidth,
-            "height": window.innerHeight,
-            "showToolBar": true,
-            "showAlgebraInput": true,
-            "showMenuBar": false
-        }, true);
+  <script>
+    var ggbAPI;
+    var currentTasks = [];
+    let savedStatus = {};
+    let manualCompletions = {};
+    let DEBUG_MODE = false;
+    
+    function getNumericValue(coord) {
+      if (typeof coord === 'number') {
+        return coord;
+      }
+      
+      if (typeof coord === 'object' && coord !== null) {
+        if (coord.numerator !== undefined && coord.denominator !== undefined) {
+          return coord.numerator / coord.denominator;
+        }
+        if (coord.num !== undefined && coord.den !== undefined) {
+          return coord.num / coord.den;
+        }
+      }
+      
+      if (typeof coord === 'string') {
+        if (coord.includes('/')) {
+          const parts = coord.split('/');
+          if (parts.length === 2) {
+            const num = parseFloat(parts[0]);
+            const den = parseFloat(parts[1]);
+            if (!isNaN(num) && !isNaN(den) && den !== 0) {
+              return num / den;
+            }
+          }
+        }
+        return parseFloat(coord) || 0;
+      }
+      
+      return 0;
+    }
 
-        ggbApp.inject('ggb-element');
-    </script>
+    function areCoordinatesEqual(coord1, coord2, tolerance = 0.05) {
+      const value1 = getNumericValue(coord1);
+      const value2 = getNumericValue(coord2);
+      return Math.abs(value1 - value2) < tolerance;
+    }
+
+    function receiveTasksFromFlutter(tasksJson) {
+      try {
+        currentTasks = JSON.parse(tasksJson);
+      } catch (error) {
+        console.error("Error parsing tasks:", error);
+      }
+    }
+
+    function getTaskStatus() {
+      let taskStatus = {};
+
+      if (!ggbAPI || currentTasks.length === 0) {
+        console.warn("geogebra api or tasks not available");
+        return taskStatus;
+      }
+
+      let objects = ggbAPI.getAllObjectNames();
+      console.log("found geogebra objects:", objects);
+
+      currentTasks.forEach(task => {
+        let correct = false;
+
+        switch (task.condition.type) {
+          case "point":
+            objects.forEach(obj => {
+              if (ggbAPI.getObjectType(obj) === "point") {
+                let x = ggbAPI.getXcoord(obj);
+                let y = ggbAPI.getYcoord(obj);
+                
+                task.condition.solutions.forEach(solution => {
+                  const expectedX = getNumericValue(solution.x);
+                  const expectedY = getNumericValue(solution.y);
+                  
+                  if (obj === solution.name) {
+                    if (areCoordinatesEqual(x, expectedX) && areCoordinatesEqual(y, expectedY)) {
+                      correct = true;
+                    }
+                  }
+                  else if (areCoordinatesEqual(x, expectedX) && areCoordinatesEqual(y, expectedY)) {
+                    correct = true;
+                  }
+                });
+              }
+            });
+            break;
+
+          case "equation":
+            task.condition.solutions.forEach(solution => {
+              if (objects.includes(solution.name)) {
+                let def = ggbAPI.getValueString(solution.name);
+                if (def === solution.definition) {
+                  correct = true;
+                }
+              }
+            });
+            break;
+
+          case "function_value":
+            task.condition.solutions.forEach(solution => {
+              try {
+                let computed = ggbAPI.getValue(solution.function + "(" + solution.x + ")");
+                if (Math.abs(computed - solution.expected) < 0.01) {
+                  correct = true;
+                }
+              } catch (e) {
+                console.error(e);
+              }
+            });
+            break;
+
+          case "solve_equation":
+            task.condition.solutions.forEach(solution => {
+              if (objects.includes(solution.equation)) {
+                correct = true;
+              }
+            });
+            break;
+
+          case "graphical_solution":
+            task.condition.solutions.forEach(solution => {
+              if (objects.includes(solution.equation)) {
+                correct = true;
+              }
+            });
+            break;
+
+          case "line":
+            task.condition.solutions.forEach(solution => {
+              if (objects.includes(solution.name) && ggbAPI.getObjectType(solution.name) === "line") {
+                correct = true;
+              }
+            });
+            break;
+
+          case "distance":
+            task.condition.solutions.forEach(solution => {
+              try {
+                let dist = ggbAPI.getDistance(solution.points[0], solution.points[1]);
+                if (Math.abs(dist - solution.expected) < 0.01) {
+                  correct = true;
+                }
+              } catch (e) {
+                console.error(e);
+              }
+            });
+            break;
+
+          case "rename":
+            task.condition.solutions.forEach(solution => {
+              if (!objects.includes(solution.oldName) && objects.includes(solution.newName)) {
+                correct = true;
+              }
+            });
+            break;
+
+          case "scale":
+            task.condition.solutions.forEach(solution => {
+              let cs = ggbAPI.getCoordSystem ? ggbAPI.getCoordSystem() : { xscale: 1, yscale: 1 };
+              let ratio = cs.xscale / cs.yscale;
+              if (Math.abs(ratio - solution.expectedRatio) < 0.01) {
+                correct = true;
+              }
+            });
+            break;
+
+          case "note":
+            task.condition.solutions.forEach(solution => {
+              if (manualCompletions[task.taskId]) {
+                correct = true;
+              }
+            });
+            break;
+
+          case "zero_point":
+            task.condition.solutions.forEach(solution => {
+              try {
+                let zero = ggbAPI.getValue("Löse(" + solution.function + " = 0)");
+                if (!isNaN(zero)) {
+                  correct = true;
+                }
+              } catch (e) {
+                console.error(e);
+              }
+            });
+            break;
+
+          case "y_intercept":
+            task.condition.solutions.forEach(solution => {
+              try {
+                let yIntercept = ggbAPI.getYcoord ? ggbAPI.getYcoord(solution.function, 0) : null;
+                if (yIntercept !== null && Math.abs(yIntercept - solution.expected) < 0.01) {
+                  correct = true;
+                }
+              } catch (e) {
+                console.error(e);
+              }
+            });
+            break;
+
+          case "intersection":
+            task.condition.solutions.forEach(solution => {
+              try {
+                let ix = ggbAPI.getXcoord(solution.functions.join("_"));
+                let iy = ggbAPI.getYcoord(solution.functions.join("_"));
+                if (!isNaN(ix) && !isNaN(iy)) {
+                  correct = true;
+                }
+              } catch (e) {
+                console.error(e);
+              }
+            });
+            break;
+
+          default:
+            console.warn("Unknown type:", task.condition.type);
+        }
+
+        taskStatus[task.taskId] = correct;
+      });
+
+      return taskStatus;
+    }
+
+    function sendTaskStatusToFlutter() {
+      let status = getTaskStatus();
+      if (JSON.stringify(status) === JSON.stringify(savedStatus)) {
+        return;
+      }
+      savedStatus = status;
+      if (window.taskCompleted) {
+        window.taskCompleted.postMessage(JSON.stringify(status));
+      }
+    }
+
+    var ggbApp = new GGBApplet({
+      "appName": "graphing",
+      "width": window.innerWidth,
+      "height": window.innerHeight,
+      "showToolBar": true,
+      "showAlgebraInput": true,
+      "showMenuBar": false,
+      "appletOnLoad": function (api) {
+        ggbAPI = api;
+        setInterval(sendTaskStatusToFlutter, 1000);
+      }
+    }, true);
+
+    ggbApp.inject('ggb-element');
+  </script>
 </body>
-
 </html>

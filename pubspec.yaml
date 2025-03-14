@@ -40,6 +40,8 @@ dependencies:
   sqflite: ^2.2.4+1
   path_provider: ^2.1.2
   google_fonts: ^6.2.1
+  flutter_local_notifications: ^18.0.1
+  flutter_html: ^3.0.0-beta.2
 
 dev_dependencies:
   flutter_test:
@@ -56,13 +58,9 @@ flutter:
   assets:
     # HTML Files
     - assets/html/rechner.html
-    - assets/html/lesson_rechner.html
-    - assets/html/rechner_beta.html
 
     # Classes (JSON) Files
-    - assets/classes/basic_geogebra.json
-    - assets/classes/advanced_geogebra.json
-    - assets/classes/intermediate_geogebra.json
+    - assets/classes/
 
 
   # To add custom fonts to your application, add a fonts section here,

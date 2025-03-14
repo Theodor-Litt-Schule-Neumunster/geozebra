@@ -1,0 +1,59 @@
+{
+    "handbookId": "geogebra_handbook",
+    "handbookTitle": "GeoGebra-Handbuch",
+    "handbookDescription": "Ein umfassendes Handbuch für die Verwendung von GeoGebra im Mathematikunterricht.",
+    "handbookShortDescription": "GeoGebra-Anleitung für Lehrende und Lernende",
+    "chapters": [
+        {
+            "chapterId": "kapitel_1",
+            "chapterTitle": "Kapitel 1 - Grundlagen",
+            "description": "Einführung in die grundlegenden Funktionen und die Benutzeroberfläche von GeoGebra.",
+            "shortDescription": "Erste Schritte mit GeoGebra",
+            "textSections": [
+                {
+                    "header": "1.1 Erstellen einer Funktion in Geogebra",
+                    "subHeader": "So erstellst du eine Funktion",
+                    "content": "<p><b>Schritt 1:</b> Klick in das Eingabefenster.</p><p><b>Schritt 2:</b> Eingabe der Funktion. Die Funktion wird nun in der Grafik angezeigt.</p><p>Video: <a href='https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/0.mp4'>Hier ansehen</a></p>"
+                },
+                {
+                    "header": "1.2 Erstellung eines Schiebereglers",
+                    "subHeader": "Schieberegler zur Visualisierung verwenden",
+                    "content": "<p><b>Schritt 1:</b> Wähle den Schieberegler im Menü aus und platziere ihn im Koordinatensystem.</p><p><b>Schritt 2:</b> Passe den Schieberegler an.</p><p><b>Schritt 3:</b> Nutze ihn, um Punkte oder Funktionen zu verändern.</p><p>Video: <a href='https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/6ca62784-dc72-4462-ada7-0670f52e8d0c.mp4'>Hier ansehen</a></p>"
+                },
+                {
+                    "header": "1.3 Eine Funktion ausrechnen",
+                    "subHeader": "Berechnungen mit GeoGebra durchführen",
+                    "content": "<p>Klick in das Eingabefeld des Grafikrechners und gib die gewünschte Funktion ein. Das Ergebnis wird direkt angezeigt.</p><p>Video: <a href='https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/c6cdd21a-f9f8-4f5e-a26f-fc58f36bc384.mp4'>Hier ansehen</a></p>"
+                },
+                {
+                    "header": "1.4 Die wichtigsten Basics",
+                    "subHeader": "Grundlegende Eingaben in GeoGebra",
+                    "content": "<p><b>Brüche eingeben:</b> Benutze die Shift-Taste und den Schrägstrich.</p><p><b>Dezimalzahlen eingeben:</b> Verwende einen Punkt statt eines Kommas.</p><p><b>Hochzahlen:</b> Drücke die Hochzahl-Taste und gib eine Zahl ein.</p><p>Video: <a href='https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/40044f08-7e9f-4e58-9dc0-144014fef82c.mov'>Hier ansehen</a></p>"
+                }
+            ]
+        },
+        {
+            "chapterId": "fortgeschritten",
+            "chapterTitle": "Fortgeschrittene Funktionen",
+            "description": "Entdecken Sie die erweiterten Möglichkeiten von GeoGebra für komplexere mathematische Aufgaben.",
+            "shortDescription": "Erweiterte GeoGebra-Funktionen",
+            "textSections": [
+                {
+                    "header": "Funktionen und Graphen",
+                    "subHeader": "Funktionen darstellen und analysieren",
+                    "content": "<p>GeoGebra ermöglicht die einfache Darstellung von <b>Funktionen</b>. Geben Sie dazu in der Eingabezeile die Funktionsgleichung ein, z.B. <code>f(x) = x²</code>.</p><p>Sie können Funktionen analysieren mit:</p><ul><li>Ableitungen: <code>f'(x)</code></li><li>Integral: <code>Integral(f, a, b)</code></li><li>Nullstellen: <code>Nullstelle(f)</code></li><li>Extrempunkte: <code>Extremum(f)</code></li></ul>"
+                },
+                {
+                    "header": "Dynamische Arbeitsblätter",
+                    "subHeader": "Interaktive Materialien erstellen",
+                    "content": "<p>Mit GeoGebra können Sie <i>dynamische Arbeitsblätter</i> erstellen, die Schülern helfen, mathematische Konzepte zu verstehen.</p><p>Dazu gehören:</p><ul><li>Schieberegler für Parameter</li><li>Kontrollkästchen zum Ein-/Ausblenden von Objekten</li><li>Textfelder mit dynamischen Informationen</li><li>Schaltflächen für interaktive Elemente</li></ul><p>Diese Materialien können online geteilt oder in Lernplattformen eingebettet werden.</p>"
+                },
+                {
+                    "header": "CAS-Ansicht",
+                    "subHeader": "Arbeiten mit dem Computer-Algebra-System",
+                    "content": "<p>Die <b>CAS-Ansicht</b> (Computer-Algebra-System) ermöglicht symbolisches Rechnen wie:</p><ul><li>Gleichungen lösen</li><li>Terme vereinfachen</li><li>Ableitungen und Integrale berechnen</li><li>Mit Matrizen arbeiten</li></ul><p>Dies ist besonders nützlich für fortgeschrittene mathematische Probleme und den Einsatz im Oberstufenunterricht.</p>"
+                }
+            ]
+        }
+    ]
+}
