@@ -1,16 +1,13 @@
 # geozebra_app
 
-A new Flutter project.
+GeoZebra ist eine App die, die Lernanwendung von GeoGebra beibringen soll, die mit dem Flutter framework als Schulprojekt an der Theodor-Litt-Schule in Neumünster.
+Die App integriert den GeoGebra Rechner in der app als eine Web Anwendung, bietet lern aufgaben die sofort in der app mit dem Intigrierten rechner überprüft werden können ob sie korrekt sind.
 
-## Getting Started
+## Funktionen
+* **Interaktiver Rechner**: Integriert den GeoGebra Rechner.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tech Stack
+* **Framework**: Flutter
+* **Lokale Speicherung**:
+ - Shared Preferences mit der Android API für Einstellungen
+ - SQLite-Datenbank für lokale speicherung von Fortschritt.
