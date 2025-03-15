@@ -7,7 +7,8 @@ import 'package:geozebra_app/cards/home_card.dart';
 import 'search_screen.dart';
 import 'notification_screen.dart';
 import 'rechner_screen.dart';
-import 'handbook_screen.dart'; // Import für HandbookScreen
+import 'handbook_screen.dart';
+import 'settings_screen.dart';
 import 'package:geozebra_app/services/lessons_service.dart';
 import 'package:geozebra_app/screens/class_screen.dart';
 import 'package:geozebra_app/models/class_model.dart';
@@ -178,18 +179,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   });
                                 }
                               });
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.notifications),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const NotificationScreen(),
-                                ),
-                              );
                             },
                           ),
                         ],
@@ -387,14 +376,87 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
+                const SizedBox(height: 64),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  ),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NotificationScreen(),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.notifications, 
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Benachrichtigungen',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  ),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsScreen(),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.settings, 
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Einstellungen',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: const BottomBarWidget(
-        currentIndex: 0,
-      ),
+      // bottomNavigationBar: const BottomBarWidget(
+      //   currentIndex: 0,
+      // ),
     );
   }
 }
