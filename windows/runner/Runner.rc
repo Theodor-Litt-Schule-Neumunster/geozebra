@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
+            VALUE "CompanyName", "io.github.theodor_litt_schule_neumuenster.geozebra" "\0"
             VALUE "FileDescription", "geozebra_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "geozebra_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 io.github.theodor_litt_schule_neumuenster.geozebra. All rights reserved." "\0"
             VALUE "OriginalFilename", "geozebra_app.exe" "\0"
             VALUE "ProductName", "geozebra_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
