@@ -16,7 +16,7 @@ class HandbookChapterScreen extends StatelessWidget {
     return Scaffold(
       appBar: DefaultAppBar(
         title: chapter.chapterTitle,
-        showLeading: true,
+        automaticallyImplyLeading: true,
       ),
       body: Container(
         width: double.infinity,
@@ -78,7 +78,7 @@ class HandbookChapterScreen extends StatelessWidget {
                     const Divider(),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

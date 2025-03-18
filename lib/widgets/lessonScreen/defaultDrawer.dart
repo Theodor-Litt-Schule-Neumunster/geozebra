@@ -7,10 +7,10 @@ class DefaultDrawer extends StatelessWidget {
   final Map<String, bool> taskStatus;
 
   const DefaultDrawer({
-    Key? key,
+    super.key,
     required this.lesson,
     required this.taskStatus,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

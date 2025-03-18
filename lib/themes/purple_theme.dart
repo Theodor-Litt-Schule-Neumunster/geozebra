@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geozebra_app/models/theme_model.dart';
 
 class LightPurpleTheme {
   static ThemeData get theme {

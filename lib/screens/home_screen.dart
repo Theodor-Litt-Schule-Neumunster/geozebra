@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:geozebra_app/services/settings_service.dart';
 import 'package:flutter/services.dart';
-import 'package:geozebra_app/widgets/bottombar_widget.dart';
 import 'package:geozebra_app/cards/home_card.dart';
 import 'search_screen.dart';
 import 'notification_screen.dart';
