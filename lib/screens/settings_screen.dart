@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geozebra_app/screens/notification_screen.dart';
+import 'package:geozebra_app/services/lessons_service.dart';
 import 'package:provider/provider.dart';
 import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 import 'package:geozebra_app/services/settings_service.dart';
@@ -14,6 +15,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final TextEditingController _usernameController = TextEditingController();
+  final LessonService _lessonService = LessonService();
   String _username = "";
   String _selectedTheme = "Light";
   bool _isEditingUsername = false;
@@ -124,12 +126,51 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  Future<void> _clearAllProgress() async {
+    bool confirm = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Fortschritt löschen"),
+          content: Text(
+              "Möchtest du wirklich deinen gesamten Fortschritt löschen? Diese Aktion kann nicht rückgängig gemacht werden."),
+          actions: [
+            TextButton(
+              child: Text(
+                "Abbrechen",
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: Text(
+                "Ja, löschen",
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm == true) {
+      await _lessonService.clearAllProgress();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Fortschritt wurde gelöscht')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const DefaultAppBar(
         title: "Einstellungen",
-        showLeading: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -253,6 +294,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }
                 },
                 child: const Text("App zurücksetzen"),
+              ),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
+                ),
+                onPressed: _clearAllProgress,
+                child: const Text("Fortschritt löschen"),
               ),
             ),
           ],

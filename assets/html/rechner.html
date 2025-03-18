@@ -261,6 +261,47 @@
       }
     }
 
+    // Function to get the calculator state using Base64
+    function getCalculatorState() {
+      if (!ggbAPI) return null;
+      
+      try {
+        // Instead of directly returning, we'll use a callback for the Base64 encoding
+        return new Promise((resolve) => {
+          ggbAPI.getBase64((base64) => {
+            resolve(base64);
+          });
+        });
+      } catch (e) {
+        console.error("Error getting calculator state:", e);
+        return Promise.resolve(null);
+      }
+    }
+
+    // Function to load a saved calculator state using Base64
+    function loadCalculatorState(base64State) {
+      if (!ggbAPI || !base64State) return;
+      
+      try {
+        ggbAPI.setBase64(base64State);
+        console.log("Calculator state restored successfully");
+      } catch (e) {
+        console.error("Error loading calculator state:", e);
+      }
+    }
+
+    // Function to send calculator state to Flutter
+    async function sendCalculatorStateToFlutter() {
+      try {
+        const state = await getCalculatorState();
+        if (state && window.calculatorState) {
+          window.calculatorState.postMessage(state);
+        }
+      } catch (e) {
+        console.error("Error sending calculator state to Flutter:", e);
+      }
+    }
+
     var ggbApp = new GGBApplet({
       "appName": "graphing",
       "width": window.innerWidth,
@@ -271,6 +312,8 @@
       "appletOnLoad": function (api) {
         ggbAPI = api;
         setInterval(sendTaskStatusToFlutter, 1000);
+        // Schedule periodic state saving
+        setInterval(sendCalculatorStateToFlutter, 5000);
       }
     }, true);
 
