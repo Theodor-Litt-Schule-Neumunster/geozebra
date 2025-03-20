@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:geozebra_app/services/settings_service.dart';
 import 'package:flutter/services.dart';
-import 'package:geozebra_app/widgets/bottombar_widget.dart';
 import 'package:geozebra_app/cards/home_card.dart';
-import 'search_screen.dart';
-import 'notification_screen.dart';
-import 'rechner_screen.dart';
-import 'handbook_screen.dart';
-import 'settings_screen.dart';
+import 'package:geozebra_app/screens/search_screen.dart';
+import 'package:geozebra_app/screens/notification_screen.dart';
+import 'package:geozebra_app/screens/rechner_screen.dart';
+import 'package:geozebra_app/screens/handbook_screen.dart';
+import 'package:geozebra_app/screens/settings_screen.dart';
 import 'package:geozebra_app/services/lessons_service.dart';
-import 'package:geozebra_app/screens/class_screen.dart';
-import 'package:geozebra_app/models/class_model.dart';
 import 'package:geozebra_app/providers/lessons_provider.dart';
+import 'package:geozebra_app/models/class_model.dart';
+import 'package:geozebra_app/screens/class_screen.dart';
+
+// Example redesigned HomeScreen
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -49,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadUserName() async {
     _savedName = await SettingsService().getValue<String>("displayname", "");
     setState(() {});
-    // return _savedName;
   }
 
   Future<void> _checkBookmarkedClasses() async {
@@ -90,10 +90,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _checkEnrolledClasses() async {
     enrolledClassesString = await _lessonService.getEnrolledClasses();
-
     classFiles = lessonsProvider.getAllClassFiles();
-    List<ClassModel> loadedClasses = [];
 
+    List<ClassModel> loadedClasses = [];
     for (String file in classFiles) {
       try {
         String jsonString = await rootBundle.loadString(file);
@@ -128,335 +127,359 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverPadding(
-              padding: const EdgeInsets.only(top: 24.0),
-              sliver: SliverAppBar(
-                flexibleSpace: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Moin!',
-                            style: TextStyle(
-                              fontSize: _savedName.isNotEmpty ? 20 : 26,
-                              fontWeight: FontWeight.w600,
-                            ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 120,
+            floating: true,
+            pinned: true,
+            snap: true,
+            elevation: 2,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final double collapsePercent = (constraints.maxHeight - kToolbarHeight) / 
+                    (120 - kToolbarHeight);
+                final bool isCollapsed = collapsePercent < 0.5;
+                
+                return FlexibleSpaceBar(
+                  titlePadding: EdgeInsets.only(
+                    left: 16.0,
+                    bottom: isCollapsed ? 16.0 : 20.0,
+                  ),
+                  title: AnimatedOpacity(
+                    opacity: isCollapsed ? 0.0 : 1.0,
+                    duration: const Duration(milliseconds: 250),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Moin!',
+                          style: TextStyle(
+                            fontSize: isCollapsed ? 16 : (_savedName.isNotEmpty ? 20 : 26),
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
+                        ),
+                        if (_savedName.isNotEmpty)
                           Text(
                             _savedName,
                             style: TextStyle(
-                              fontSize: _savedName.isNotEmpty ? 14 : 0,
+                              fontSize: isCollapsed ? 12 : 14,
                               fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
+                      ],
+                    ),
+                  ),
+                  background: SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 50.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.search),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SearchScreen(),
-                                ),
-                              ).then((result) {
-                                if (result == true) {
-                                  setState(() {
-                                    _checkEnrolledClasses();
-                                    _checkBookmarkedClasses();
+                          const SizedBox(width: 1),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.search, color: Theme.of(context).colorScheme.onPrimary),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const SearchScreen(),
+                                    ),
+                                  ).then((result) {
+                                    if (result == true) {
+                                      setState(() {
+                                        _checkEnrolledClasses();
+                                        _checkBookmarkedClasses();
+                                      });
+                                    }
                                   });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.notifications, color: Theme.of(context).colorScheme.onPrimary),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const NotificationScreen(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              )),
-        ],
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(18),
-              topRight: Radius.circular(18),
+                );
+              },
+            ),
+            actions: [
+            ],
+          ),
+                    
+
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildFeatureCard(
+                          context,
+                          title: "Willkommen!",
+                          subtitle: "Tippe um loszulegen",
+                          icon: Icons.location_on,
+                          onTap: () {
+                          },
+                        ),
+                        _buildFeatureCard(
+                          context,
+                          title: "GeoGebra Rechner",
+                          subtitle: "Starte den Rechner",
+                          icon: Icons.calculate,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RechnerScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        _buildFeatureCard(
+                          context,
+                          title: "Handbuch",
+                          subtitle: "Tipps & Tricks",
+                          icon: Icons.book,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HandbookScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  Text(
+                    "Favoriten",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  _buildFavoritesSection(context),
+
+                  const SizedBox(height: 24),
+
+                  Text(
+                    "Fortsetzen",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  _buildEnrolledSection(context),
+                  
+                  const SizedBox(height: 64),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "Einstellungen",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ScreenCard(
-                  iconData: Icons.location_on,
-                  title: "Willkommen!",
-                  subtitle: "Tippe um loszulegen",
-                  onTap: () {
-                    // Handle card tap
-                  },
-                ),
-                ScreenCard(
-                  iconData: Icons.map,
-                  title: "GeoGebra Rechner",
-                  subtitle: "Starte den GeoGebra Rechner",
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RechnerScreen(),
-                      ),
-                    );
-                  },
-                ),
-                // Neuer Button für das Handbuch
-                ScreenCard(
-                  iconData: Icons.book,
-                  title: "GeoGebra-Handbuch",
-                  subtitle: "Hilfe und Anleitungen für GeoGebra",
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HandbookScreen(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Favoriten',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //   },
-                    //   child: Text(
-                    //   'Alle',
-                    //   style: TextStyle(
-                    //     color: Theme.of(context).colorScheme.onSurface,
-                    //     fontSize: 16,
-                    //     decoration: TextDecoration.underline,
-                    //   ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-                if (bookmarkedClasses.isEmpty)
-                  Text("Hier werden deine Favoriten angezeigt"),
-                ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: bookmarkedClasses.length,
-                  itemBuilder: (context, index) {
-                    final cls = bookmarkedClasses[index];
-                    return Card(
-                      elevation: 1,
-                      shape: Theme.of(context).cardTheme.shape,
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 16,
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              cls.className,
-                              style: Theme.of(context).textTheme.titleMedium,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              cls.classShortDescription,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClassScreen(
-                                classModel: cls,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Fortsetzen',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //   },
-                    //   child: Text(
-                    //   'Alle',
-                    //   style: TextStyle(
-                    //     color: Theme.of(context).colorScheme.onSurface,
-                    //     fontSize: 16,
-                    //     decoration: TextDecoration.underline,
-                    //   ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-                if (enrolledClasses.isEmpty)
-                  Text("Hier werden deine Kurse angezeigt"),
-                ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: enrolledClasses.length,
-                  itemBuilder: (context, index) {
-                    final cls = enrolledClasses[index];
-                    return Card(
-                      elevation: 1,
-                      shape: Theme.of(context).cardTheme.shape,
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 16,
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              cls.className,
-                              style: Theme.of(context).textTheme.titleMedium,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              cls.classShortDescription,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClassScreen(
-                                classModel: cls,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 64),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-                  ),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NotificationScreen(),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.notifications, 
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Benachrichtigungen',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-                  ),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsScreen(),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.settings, 
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Einstellungen',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-              ],
-            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureCard(
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: 200,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              )
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                icon,
+                size: 32,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
           ),
         ),
       ),
-      // bottomNavigationBar: const BottomBarWidget(
-      //   currentIndex: 0,
-      // ),
+    );
+  }
+
+  Widget _buildFavoritesSection(BuildContext context) {
+    if (bookmarkedClasses.isEmpty) {
+      return const Text("Hier werden deine Favoriten angezeigt.");
+    }
+    return SizedBox(
+      height: 130,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: bookmarkedClasses.length,
+        itemBuilder: (context, index) {
+          final cls = bookmarkedClasses[index];
+          return Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClassScreen(classModel: cls),
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                width: 180,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    )
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      cls.className,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: Text(
+                        cls.classShortDescription,
+                        style: Theme.of(context).textTheme.bodySmall,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildEnrolledSection(BuildContext context) {
+    if (enrolledClasses.isEmpty) {
+      return const Text("Hier werden deine Kurse angezeigt.");
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: enrolledClasses.length,
+      itemBuilder: (context, index) {
+        final cls = enrolledClasses[index];
+        return Card(
+          elevation: 2,
+          margin: const EdgeInsets.symmetric(vertical: 1),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 16,
+            ),
+            title: Text(
+              cls.className,
+              style: Theme.of(context).textTheme.titleMedium,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+            subtitle: Text(
+              cls.classShortDescription,
+              style: Theme.of(context).textTheme.bodySmall,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ClassScreen(classModel: cls),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
