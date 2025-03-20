@@ -13,8 +13,6 @@ import 'package:geozebra_app/providers/lessons_provider.dart';
 import 'package:geozebra_app/models/class_model.dart';
 import 'package:geozebra_app/screens/class_screen.dart';
 
-// Example redesigned HomeScreen
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
