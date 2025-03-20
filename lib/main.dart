@@ -11,7 +11,7 @@ import 'package:geozebra_app/services/settings_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String savedTheme = await SettingsService().getValue<String>("theme", "light");
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(MyApp(savedTheme: savedTheme));
 }
 

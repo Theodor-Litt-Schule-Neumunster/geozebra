@@ -19,7 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _username = "";
   String _selectedTheme = "Light";
   bool _isEditingUsername = false;
-  final List<String> _themes = ["Light", "Light Color", "Dark", "Dark Color", "Purple"];
+  final List<String> _themes = ["Light", "Light Green", "Light Blue", "Dark", "Dark Color", "Purple"];
 
   @override
   void initState() {
@@ -37,8 +37,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       case "light":
         displayTheme = "Light";
         break;
-      case "lightColor":
-        displayTheme = "Light Color";
+      case "lightGreen":
+        displayTheme = "Light Green";
+        break;
+      case "lightBlue":
+        displayTheme = "Light Blue";
         break;
       case "dark":
         displayTheme = "Dark";
@@ -77,8 +80,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       case "Light":
         themeKey = "light";
         break;
-      case "Light Color":
-        themeKey = "lightColor";
+      case "Light Green":
+        themeKey = "lightGreen";
+        break;
+      case "Light Blue":
+        themeKey = "lightBlue";
         break;
       case "Dark":
         themeKey = "dark";
