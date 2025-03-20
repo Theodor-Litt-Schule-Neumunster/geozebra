@@ -113,7 +113,6 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
 
   Future<void> _loadSavedProgress() async {
     try {
-      // Load progress for this lesson
       final progress = await _lessonService.getLessonProgress(widget.lesson.lessonId);
       if (progress != null) {
         setState(() {
@@ -121,7 +120,6 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
         });
       }
 
-      // Load individual task completions
       final taskProgress = await _lessonService.getTasksProgressForLesson(widget.lesson.lessonId);
       
       if (taskProgress.isNotEmpty) {
@@ -140,7 +138,6 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
     try {
       final state = await _lessonService.getCalculatorState();
       if (state != null && state.isNotEmpty) {
-        // Pass the state to the WebView as a Base64 string
         _controller.runJavaScript("loadCalculatorState('$state');");
         print("Loaded calculator state in lesson");
       }
@@ -183,7 +180,6 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
     _taskCheckTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       _controller.runJavaScript("sendTaskStatusToFlutter();");
       
-      // Request state update less frequently to avoid performance issues
       if (timer.tick % 5 == 0) {
         _controller.runJavaScript("sendCalculatorStateToFlutter();");
       }
@@ -194,13 +190,11 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
     try {
       final Map<String, dynamic> status = jsonDecode(jsonStatus);
       
-      // Update the UI first
       setState(() {
         taskStatus.clear();
         taskStatus.addAll(status.map((key, value) => MapEntry(key, value == true)));
       });
 
-      // Calculate completion percentage
       final completionPercent = await _lessonService.calculateLessonCompletionPercent(
         widget.lesson.lessonId, 
         taskStatus
@@ -210,7 +204,6 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
         _completionPercent = completionPercent;
       });
 
-      // Save overall lesson progress
       await _lessonService.saveLessonProgress(
         widget.lesson.lessonId,
         widget.classId,
@@ -218,7 +211,6 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
         completionPercent
       );
 
-      // Save individual task progress
       for (var entry in taskStatus.entries) {
         await _lessonService.saveTaskProgress(
           entry.key,
@@ -233,7 +225,6 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
 
   void _scrollToSection(int index) {
     final key = _sectionKeys[index];
-    // Use Scrollable.ensureVisible() to jump to that GlobalKey
     Scrollable.ensureVisible(
       key.currentContext!,
       duration: const Duration(milliseconds: 300),
@@ -243,28 +234,30 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DefaultAppBar(
-        title: widget.lesson.lessonTitle,
-        subtitle: _completionPercent > 0 ? 'Fortschritt: $_completionPercent%' : null,
+    return SafeArea(
+      child: Scaffold(
+        appBar: DefaultAppBar(
+          title: widget.lesson.lessonTitle,
+          subtitle: _completionPercent > 0 ? 'Fortschritt: $_completionPercent%' : null,
+        ),
+        endDrawer: widget.lesson.showRechner
+            ? DefaultDrawer(lesson: widget.lesson, taskStatus: taskStatus)
+            : TextDrawer(
+                textSections: widget.lesson.textSections,
+                onTextSectionSelected: _scrollToSection,
+              ),
+        body: widget.lesson.showRechner
+            ? DefaultBody(
+                controller: _controller,
+                isLoading: isLoading,
+                fadeAnimation: _fadeAnimation,
+              )
+            : TextBody(
+                textSections: widget.lesson.textSections,
+                scrollController: _scrollController,
+                sectionKeys: _sectionKeys,
+              ),
       ),
-      endDrawer: widget.lesson.showRechner
-          ? DefaultDrawer(lesson: widget.lesson, taskStatus: taskStatus)
-          : TextDrawer(
-              textSections: widget.lesson.textSections,
-              onTextSectionSelected: _scrollToSection,
-            ),
-      body: widget.lesson.showRechner
-          ? DefaultBody(
-              controller: _controller,
-              isLoading: isLoading,
-              fadeAnimation: _fadeAnimation,
-            )
-          : TextBody(
-              textSections: widget.lesson.textSections,
-              scrollController: _scrollController,
-              sectionKeys: _sectionKeys,
-            ),
     );
   }
 }

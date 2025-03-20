@@ -132,7 +132,6 @@ class _RechnerScreenState extends State<RechnerScreen>
     _stateTrackingTimer?.cancel();
     _animationController.dispose();
     
-    // Save state one last time before disposing
     if (mounted) {
       _controller.runJavaScript("sendCalculatorStateToFlutter();");
     }
@@ -142,65 +141,61 @@ class _RechnerScreenState extends State<RechnerScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("GeoGebra")),
-      body: Stack(
-        children: [
-          WebViewWidget(controller: _controller),
-
-          if (isLoading)
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: Container(
-                color: Colors.white,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TweenAnimationBuilder<double>(
-                        duration: Duration(seconds: 1),
-                        tween: Tween(begin: 0, end: 1),
-                        builder: (context, value, child) {
-                          return Transform.scale(
-                            scale: value,
-                            child: child,
-                          );
-                        },
-                        child: Icon(Icons.calculate_rounded,
-                            size: 80, color: Colors.blueAccent),
-                      ),
-
-                      SizedBox(height: 20),
-
-                      TweenAnimationBuilder<int>(
-                        duration: Duration(seconds: 3),
-                        tween: IntTween(begin: 0, end: 3),
-                        builder: (context, value, child) {
-                          String dots = "." * (value % 4);
-                          return Text(
-                            "Loading GeoGebra$dots",
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          );
-                        },
-                        onEnd: () => setState(() {}),
-                      ),
-
-                      SizedBox(height: 20),
-
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 3,
-                          color: Colors.blueAccent,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(title: Text("GeoGebra")),
+        body: Stack(
+          children: [
+            WebViewWidget(controller: _controller),
+            if (isLoading)
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Container(
+                  color: Colors.white,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TweenAnimationBuilder<double>(
+                          duration: Duration(seconds: 1),
+                          tween: Tween(begin: 0, end: 1),
+                          builder: (context, value, child) {
+                            return Transform.scale(
+                              scale: value,
+                              child: child,
+                            );
+                          },
+                          child: Icon(Icons.calculate_rounded,
+                              size: 80, color: Colors.blueAccent),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 20),
+                        TweenAnimationBuilder<int>(
+                          duration: Duration(seconds: 3),
+                          tween: IntTween(begin: 0, end: 3),
+                          builder: (context, value, child) {
+                            String dots = "." * (value % 4);
+                            return Text(
+                              "Loading GeoGebra$dots",
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            );
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

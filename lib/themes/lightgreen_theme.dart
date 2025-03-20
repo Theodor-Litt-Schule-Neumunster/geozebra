@@ -16,7 +16,7 @@ class LightGreenTheme {
       colorScheme: ColorScheme(
         brightness: Brightness.light,
         primary: primaryColor,
-        onPrimary: Colors.white,
+        onPrimary: Colors.black,
         secondary: secondaryColor,
         onSecondary: Colors.white,
         error: errorColor,
@@ -26,8 +26,8 @@ class LightGreenTheme {
         surface: surfaceColor,
         onSurface: Colors.black87,
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Color.fromARGB(201, 44, 107, 47),
+      appBarTheme: AppBarTheme(
+        backgroundColor: primaryColor.withOpacity(0.8),
         foregroundColor: Colors.black,
         elevation: 0,
       ),

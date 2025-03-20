@@ -23,6 +23,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final LessonService _lessonService = LessonService();
   final lessonsProvider = LessonsProvider();
+  // Add a value notifier to track collapse state
+  final ValueNotifier<double> _collapsePercent = ValueNotifier<double>(1.0);
 
   List<ClassModel> enrolledClasses = [];
   List<ClassModel> bookmarkedClasses = [];
@@ -134,10 +136,64 @@ class _HomeScreenState extends State<HomeScreen> {
             snap: true,
             elevation: 2,
             backgroundColor: Theme.of(context).colorScheme.primary,
+
+            actions: [
+              ValueListenableBuilder<double>(
+                valueListenable: _collapsePercent,
+                builder: (context, value, child) {
+                  final Color iconColor = Color.lerp(
+                    Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                    Theme.of(context).colorScheme.onPrimary,
+                    value.clamp(0.1, 1.0),
+                  )!;
+                  
+                  return Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.search, color: iconColor),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SearchScreen(),
+                            ),
+                          ).then((result) {
+                            if (result == true) {
+                              setState(() {
+                                _checkEnrolledClasses();
+                                _checkBookmarkedClasses();
+                              });
+                            }
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.notifications, color: iconColor),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const NotificationScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+
             flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                final double collapsePercent = (constraints.maxHeight - kToolbarHeight) / 
-                    (120 - kToolbarHeight);
+                final double collapsePercent = (constraints.maxHeight - kToolbarHeight) / (120 - kToolbarHeight);
+          
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (_collapsePercent.value != collapsePercent) {
+                    _collapsePercent.value = collapsePercent;
+                  }
+                });
+                
                 final bool isCollapsed = collapsePercent < 0.5;
                 
                 return FlexibleSpaceBar(
@@ -146,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     bottom: isCollapsed ? 16.0 : 20.0,
                   ),
                   title: AnimatedOpacity(
-                    opacity: isCollapsed ? 0.0 : 1.0,
+                    opacity: collapsePercent.clamp(0.3, 1.0),
                     duration: const Duration(milliseconds: 250),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -155,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           'Moin!',
                           style: TextStyle(
-                            fontSize: isCollapsed ? 16 : (_savedName.isNotEmpty ? 20 : 26),
+                            fontSize: 14 + (isCollapsed ? 0 : 12 * collapsePercent),
                             fontWeight: FontWeight.w600,
                             color: Theme.of(context).colorScheme.onPrimary,
                           ),
@@ -164,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             _savedName,
                             style: TextStyle(
-                              fontSize: isCollapsed ? 12 : 14,
+                              fontSize: 12 + (isCollapsed ? 0 : 2 * collapsePercent),
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
                             ),
@@ -181,39 +237,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(width: 1),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.search, color: Theme.of(context).colorScheme.onPrimary),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const SearchScreen(),
-                                    ),
-                                  ).then((result) {
-                                    if (result == true) {
-                                      setState(() {
-                                        _checkEnrolledClasses();
-                                        _checkBookmarkedClasses();
-                                      });
-                                    }
-                                  });
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.notifications, color: Theme.of(context).colorScheme.onPrimary),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const NotificationScreen(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
@@ -221,8 +244,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
-            actions: [
-            ],
           ),
                     
 
@@ -236,14 +257,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        _buildFeatureCard(
-                          context,
-                          title: "Willkommen!",
-                          subtitle: "Tippe um loszulegen",
-                          icon: Icons.location_on,
-                          onTap: () {
-                          },
-                        ),
+                        // _buildFeatureCard(
+                        //   context,
+                        //   title: "Willkommen!",
+                        //   subtitle: "Tippe um loszulegen",
+                        //   icon: Icons.location_on,
+                        //   onTap: () {},
+                        // ),
                         _buildFeatureCard(
                           context,
                           title: "GeoGebra Rechner",
@@ -277,21 +297,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  Text(
-                    "Favoriten",
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  _buildFavoritesSection(context),
+                  _buildClassSection(context, "Favoriten", bookmarkedClasses),
 
-                  const SizedBox(height: 24),
 
-                  Text(
-                    "Fortsetzen",
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  _buildEnrolledSection(context),
-                  
-                  const SizedBox(height: 64),
+                  _buildClassSection(context, "Fortsetzen", enrolledClasses),
+
                   Center(
                     child: TextButton(
                       onPressed: () {
@@ -306,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Einstellungen",
                         style: TextStyle(
                           fontSize: 16,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                     ),
@@ -314,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -341,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
-                blurRadius: 5,
+                blurRadius: 2,
                 offset: const Offset(0, 3),
               )
             ],
@@ -371,113 +381,58 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildFavoritesSection(BuildContext context) {
-    if (bookmarkedClasses.isEmpty) {
-      return const Text("Hier werden deine Favoriten angezeigt.");
+  Widget _buildClassSection(BuildContext context, String title, List<ClassModel> classes) {
+    if (classes.isEmpty) {
+      return Text("Hier werden deine $title angezeigt.");
     }
-    return SizedBox(
-      height: 130,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: bookmarkedClasses.length,
-        itemBuilder: (context, index) {
-          final cls = bookmarkedClasses[index];
-          return Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ClassScreen(classModel: cls),
-                  ),
-                );
-              },
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                width: 180,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    )
-                  ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        // const SizedBox(height: 8),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: classes.length,
+          itemBuilder: (context, index) {
+            final cls = classes[index];
+            return Card(
+              elevation: 1,
+              margin: const EdgeInsets.symmetric(vertical: 4),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 16,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      cls.className,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    const SizedBox(height: 8),
-                    Expanded(
-                      child: Text(
-                        cls.classShortDescription,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                    ),
-                  ],
+                title: Text(
+                  cls.className,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
+                subtitle: Text(
+                  cls.classShortDescription,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ClassScreen(classModel: cls),
+                    ),
+                  );
+                },
               ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildEnrolledSection(BuildContext context) {
-    if (enrolledClasses.isEmpty) {
-      return const Text("Hier werden deine Kurse angezeigt.");
-    }
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: enrolledClasses.length,
-      itemBuilder: (context, index) {
-        final cls = enrolledClasses[index];
-        return Card(
-          elevation: 2,
-          margin: const EdgeInsets.symmetric(vertical: 1),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 16,
-            ),
-            title: Text(
-              cls.className,
-              style: Theme.of(context).textTheme.titleMedium,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-            subtitle: Text(
-              cls.classShortDescription,
-              style: Theme.of(context).textTheme.bodySmall,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ClassScreen(classModel: cls),
-                ),
-              );
-            },
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ],
     );
   }
 }

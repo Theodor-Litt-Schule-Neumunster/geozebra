@@ -3,7 +3,7 @@ import 'package:geozebra_app/models/theme_model.dart';
 
 class LightTheme {
   static ThemeData get theme {
-    const primaryColor = Color.fromARGB(255, 63, 134, 66);
+    const primaryColor = Color(0xFFF5F5F5);
     const secondaryColor = Color(0xFFFFA000);
     const surfaceColor = Color(0xFFF5F5F5);
     const backgroundColor = Color(0xFFFFFFFF);
@@ -16,9 +16,9 @@ class LightTheme {
       colorScheme: ColorScheme(
         brightness: Brightness.light,
         primary: primaryColor,
-        onPrimary: Colors.white,
+        onPrimary: Colors.black,
         secondary: secondaryColor,
-        onSecondary: Colors.white,
+        onSecondary: Colors.black,
         error: errorColor,
         onError: Colors.white,
         background: backgroundColor,
@@ -26,8 +26,8 @@ class LightTheme {
         surface: surfaceColor,
         onSurface: Colors.black87,
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Color.fromARGB(201, 44, 107, 47),
+      appBarTheme: AppBarTheme(
+        backgroundColor: primaryColor.withOpacity(0.5),
         foregroundColor: Colors.black,
         elevation: 0,
       ),

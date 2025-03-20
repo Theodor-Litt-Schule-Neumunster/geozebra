@@ -261,12 +261,10 @@
       }
     }
 
-    // Function to get the calculator state using Base64
     function getCalculatorState() {
       if (!ggbAPI) return null;
       
       try {
-        // Instead of directly returning, we'll use a callback for the Base64 encoding
         return new Promise((resolve) => {
           ggbAPI.getBase64((base64) => {
             resolve(base64);
@@ -278,7 +276,6 @@
       }
     }
 
-    // Function to load a saved calculator state using Base64
     function loadCalculatorState(base64State) {
       if (!ggbAPI || !base64State) return;
       
@@ -290,7 +287,6 @@
       }
     }
 
-    // Function to send calculator state to Flutter
     async function sendCalculatorStateToFlutter() {
       try {
         const state = await getCalculatorState();
@@ -312,7 +308,6 @@
       "appletOnLoad": function (api) {
         ggbAPI = api;
         setInterval(sendTaskStatusToFlutter, 1000);
-        // Schedule periodic state saving
         setInterval(sendCalculatorStateToFlutter, 5000);
       }
     }, true);

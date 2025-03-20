@@ -3,33 +3,52 @@ import 'package:geozebra_app/models/theme_model.dart';
 
 class DarkTheme {
   static ThemeData get theme {
+    const primaryColor = Color.fromARGB(255, 28, 28, 28);
+    const secondaryColor = Color(0xFFFFA000);
+    const surfaceColor = Color.fromARGB(255, 33, 33, 33);
+    const backgroundColor = Color.fromARGB(255, 18, 18, 18);
+    const errorColor = Color(0xFFCF6679);
+
     return ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Colors.black,
-      colorScheme: const ColorScheme.dark(
-        primary: Colors.black,
-        onPrimary: Colors.white70,
-        secondary: Colors.grey,
-        onSecondary: Color.fromARGB(221, 48, 48, 48),
-        surface: Color.fromARGB(255, 12, 12, 12),
-        onSurface: Colors.white70,
-        error: Color(0xFFCF6679),
+      primaryColor: primaryColor,
+      scaffoldBackgroundColor: backgroundColor,
+      colorScheme: ColorScheme(
+        brightness: Brightness.dark,
+        primary: primaryColor,
+        onPrimary: const Color.fromARGB(255, 243, 243, 243),
+        secondary: secondaryColor,
+        onSecondary: Colors.black,
+        error: errorColor,
         onError: Colors.black,
+        background: backgroundColor,
+        onBackground: Colors.white70,
+        surface: surfaceColor,
+        onSurface: Colors.white70,
       ),
-      scaffoldBackgroundColor: Colors.black,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.black,
+      appBarTheme: AppBarTheme(
+        backgroundColor: primaryColor.withOpacity(0.5),
+        foregroundColor: const Color.fromARGB(255, 243, 243, 243),
         elevation: 0,
-        titleTextStyle: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white70,
+      ),
+      cardTheme: CardTheme(
+        color: surfaceColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
         ),
-        iconTheme: IconThemeData(
-          color: Colors.white70,
-        ),
+        elevation: 2,
       ),
       textTheme: const TextTheme(
+        headlineSmall: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+        titleMedium: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
         bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.normal,
@@ -40,64 +59,45 @@ class DarkTheme {
           fontWeight: FontWeight.normal,
           color: Colors.white70,
         ),
-        titleLarge: TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-          color: Colors.white70,
-        ),
-        titleMedium: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white70,
+        bodySmall: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.normal,
+          color: Colors.white54,
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color.fromARGB(255, 33, 33, 33),
-        selectedItemColor: Colors.white70,
+        backgroundColor: surfaceColor,
+        selectedItemColor: secondaryColor,
         unselectedItemColor: Colors.white54,
         elevation: 5,
-        selectedIconTheme: IconThemeData(
-          size: 28,
-        ),
-        unselectedIconTheme: IconThemeData(
-          size: 24,
-        ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 37, 37, 37),
-          foregroundColor: Colors.white70,
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
       ),
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
-        fillColor: Color(0xFF212121),
+        fillColor: Color.fromARGB(255, 30, 30, 30),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.white24),
+          borderSide: BorderSide(color: Colors.white30),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.white60, width: 2),
+          borderSide: BorderSide(color: Colors.white70, width: 2),
         ),
-        labelStyle: TextStyle(color: Colors.white54),
+        labelStyle: TextStyle(color: Colors.white70),
         hintStyle: TextStyle(color: Colors.white38),
       ),
-      cardTheme: const CardTheme(
-        color: Color(0xFF212121),
-        elevation: 1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-        ),
-      ),
-
       extensions: [
         const TaskColors(
-          uncompletedTask: Color.fromARGB(255, 36, 36, 36),
-          completedTask: Color.fromARGB(255, 50, 58, 48),
+          uncompletedTask: Color.fromARGB(255, 60, 60, 60),
+          completedTask: Color.fromARGB(255, 45, 70, 45),
         ),
       ],
     );
