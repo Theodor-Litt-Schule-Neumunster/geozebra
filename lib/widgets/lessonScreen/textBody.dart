@@ -8,11 +8,11 @@ class TextBody extends StatelessWidget {
   final List<GlobalKey> sectionKeys;
 
   const TextBody({
-    Key? key,
+    super.key,
     required this.textSections,
     required this.scrollController,
     required this.sectionKeys,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

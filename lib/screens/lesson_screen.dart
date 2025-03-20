@@ -8,10 +8,12 @@ import 'package:geozebra_app/widgets/lessonScreen/defaultBody.dart';
 import 'package:geozebra_app/widgets/lessonScreen/defaultDrawer.dart';
 import 'package:geozebra_app/widgets/lessonScreen/textDrawer.dart';
 import 'package:geozebra_app/widgets/lessonScreen/textBody.dart';
+import 'package:geozebra_app/services/lessons_service.dart';
 
 class LessonScreen extends StatefulWidget {
   final Lesson lesson;
-  const LessonScreen({super.key, required this.lesson});
+  final String classId;
+  const LessonScreen({super.key, required this.lesson, required this.classId});
 
   @override
   State<LessonScreen> createState() => _LessonScreenState();
@@ -25,6 +27,8 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
   late Animation<double> _fadeAnimation;
   Map<String, bool> taskStatus = {};
   Timer? _taskCheckTimer;
+  final LessonService _lessonService = LessonService();
+  int _completionPercent = 0;
 
   late ScrollController _scrollController;
   final List<GlobalKey> _sectionKeys = [];
@@ -47,6 +51,8 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
       widget.lesson.textSections.map((_) => GlobalKey()).toList()
     );
 
+    _loadSavedProgress();
+
     Timer(Duration(seconds: 3), () {
       if (mounted) {
         setState(() {
@@ -68,6 +74,7 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
                   });
                 }
               });
+              _loadCalculatorState();
               sendAllTasksToWebView();
               _startTaskCheckLoop();
             } else {
@@ -80,6 +87,7 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
                       });
                     }
                   });
+                  _loadCalculatorState();
                   sendAllTasksToWebView();
                   _startTaskCheckLoop();
                 }
@@ -94,7 +102,62 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
           _updateTaskStatus(message.message);
         },
       )
+      ..addJavaScriptChannel(
+        "calculatorState",
+        onMessageReceived: (message) {
+          _saveCalculatorState(message.message);
+        },
+      )
       ..loadFlutterAsset("assets/html/rechner.html");
+  }
+
+  Future<void> _loadSavedProgress() async {
+    try {
+      // Load progress for this lesson
+      final progress = await _lessonService.getLessonProgress(widget.lesson.lessonId);
+      if (progress != null) {
+        setState(() {
+          _completionPercent = progress['completionPercent'] as int;
+        });
+      }
+
+      // Load individual task completions
+      final taskProgress = await _lessonService.getTasksProgressForLesson(widget.lesson.lessonId);
+      
+      if (taskProgress.isNotEmpty) {
+        setState(() {
+          for (var task in taskProgress) {
+            taskStatus[task['taskId'] as String] = task['isCompleted'] == 1;
+          }
+        });
+      }
+    } catch (e) {
+      print('Error loading lesson progress: $e');
+    }
+  }
+
+  Future<void> _loadCalculatorState() async {
+    try {
+      final state = await _lessonService.getCalculatorState();
+      if (state != null && state.isNotEmpty) {
+        // Pass the state to the WebView as a Base64 string
+        _controller.runJavaScript("loadCalculatorState('$state');");
+        print("Loaded calculator state in lesson");
+      }
+    } catch (e) {
+      print('Error loading calculator state: $e');
+    }
+  }
+
+  Future<void> _saveCalculatorState(String base64State) async {
+    if (base64State.isEmpty) return;
+    
+    try {
+      await _lessonService.saveCalculatorState(base64State);
+      print("Saved calculator state from lesson");
+    } catch (e) {
+      print('Error saving calculator state: $e');
+    }
   }
 
   @override
@@ -119,19 +182,50 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
   void _startTaskCheckLoop() {
     _taskCheckTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       _controller.runJavaScript("sendTaskStatusToFlutter();");
+      
+      // Request state update less frequently to avoid performance issues
+      if (timer.tick % 5 == 0) {
+        _controller.runJavaScript("sendCalculatorStateToFlutter();");
+      }
     });
   }
 
-  void _updateTaskStatus(String jsonStatus) {
+  Future<void> _updateTaskStatus(String jsonStatus) async {
     try {
       final Map<String, dynamic> status = jsonDecode(jsonStatus);
-
+      
+      // Update the UI first
       setState(() {
         taskStatus.clear();
-        taskStatus
-            .addAll(status.map((key, value) => MapEntry(key, value == true)));
+        taskStatus.addAll(status.map((key, value) => MapEntry(key, value == true)));
       });
 
+      // Calculate completion percentage
+      final completionPercent = await _lessonService.calculateLessonCompletionPercent(
+        widget.lesson.lessonId, 
+        taskStatus
+      );
+      
+      setState(() {
+        _completionPercent = completionPercent;
+      });
+
+      // Save overall lesson progress
+      await _lessonService.saveLessonProgress(
+        widget.lesson.lessonId,
+        widget.classId,
+        completionPercent == 100,
+        completionPercent
+      );
+
+      // Save individual task progress
+      for (var entry in taskStatus.entries) {
+        await _lessonService.saveTaskProgress(
+          entry.key,
+          widget.lesson.lessonId,
+          entry.value
+        );
+      }
     } catch (e) {
       print("Error parsing task status: $e");
     }
@@ -150,7 +244,10 @@ class _LessonScreenState extends State<LessonScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(title: widget.lesson.lessonTitle),
+      appBar: DefaultAppBar(
+        title: widget.lesson.lessonTitle,
+        subtitle: _completionPercent > 0 ? 'Fortschritt: $_completionPercent%' : null,
+      ),
       endDrawer: widget.lesson.showRechner
           ? DefaultDrawer(lesson: widget.lesson, taskStatus: taskStatus)
           : TextDrawer(

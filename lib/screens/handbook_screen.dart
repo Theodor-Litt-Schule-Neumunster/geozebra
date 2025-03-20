@@ -81,7 +81,7 @@ class TextSection {
 }
 
 class HandbookScreen extends StatefulWidget {
-  const HandbookScreen({Key? key}) : super(key: key);
+  const HandbookScreen({super.key});
 
   @override
   State<HandbookScreen> createState() => _HandbookScreenState();
@@ -119,7 +119,7 @@ class _HandbookScreenState extends State<HandbookScreen> {
     return Scaffold(
       appBar: DefaultAppBar(
         title: _handbookData?.handbookTitle ?? "GeoGebra-Handbuch",
-        showLeading: true,
+        automaticallyImplyLeading: true,
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())

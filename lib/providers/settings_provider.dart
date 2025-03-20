@@ -4,6 +4,7 @@ import 'package:geozebra_app/themes/light_theme.dart';
 import 'package:geozebra_app/themes/lightcolor_theme.dart';
 import 'package:geozebra_app/themes/dark_theme.dart';
 import 'package:geozebra_app/themes/darkcolor_theme.dart';
+import 'package:geozebra_app/themes/purple_theme.dart';
 
 import 'package:geozebra_app/services/settings_service.dart';
 
@@ -37,6 +38,10 @@ class SettingsProvider extends ChangeNotifier {
       _theme = DarkTheme.theme;
     } else if (themeKey == "darkColor") {
       _theme = DarkColorTheme.theme;
+    } else if (themeKey == "purple") {
+      _theme = LightPurpleTheme.theme;
+    } else {
+      _theme = LightTheme.theme;
     }
     notifyListeners();
   }

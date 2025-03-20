@@ -1,84 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:geozebra_app/screens/home_screen.dart';
+import 'package:geozebra_app/screens/profile_screen.dart';
+import 'package:geozebra_app/screens/progress_screen.dart';
 
-import "package:geozebra_app/screens/home_screen.dart";
-import "package:geozebra_app/screens/profile_screen.dart";
-
-class BottomBarWidget extends StatefulWidget {
+class BottomBarWidget extends StatelessWidget {
   final int currentIndex;
 
-  const BottomBarWidget({
-    super.key,
-    required this.currentIndex,
-  });
-
-  @override
-  State<BottomBarWidget> createState() => _BottomBarWidgetState();
-}
-
-// Not sure if it should be a Stateful Widget, improvements are welcome
-class _BottomBarWidgetState extends State<BottomBarWidget> {
-  void _onItemTapped(int index) {
-    if (index == widget.currentIndex) return;
-
-    Widget destinationScreen;
-
-    switch (index) {
-      case 0:
-        destinationScreen = const HomeScreen();
-        break;
-      case 1:
-        destinationScreen = const ProfileScreen();
-        break;
-      default:
-        return;
-    }
-
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            destinationScreen,
-        transitionDuration: const Duration(milliseconds: 150),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-      ),
-    );
-  }
+  const BottomBarWidget({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.surface,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(4),
-          topRight: Radius.circular(4),
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: (index) {
+        if (index == currentIndex) return;
+
+        switch (index) {
+          case 0:
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+            break;
+          case 1:
+            Navigator.pushReplacement(
+              context, 
+              MaterialPageRoute(builder: (context) => const ProgressScreen()),
+            );
+            break;
+          case 2:
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+            break;
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
         ),
-        child: BottomNavigationBar(
-          currentIndex: widget.currentIndex,
-          onTap: _onItemTapped,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          type: BottomNavigationBarType.fixed,
-          selectedIconTheme: const IconThemeData(
-            size: 24,
-          ),
-          unselectedIconTheme: const IconThemeData(
-            size: 20,
-          ),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "",
-            ),
-          ],
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bar_chart),
+          label: 'Fortschritt',
         ),
-      ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profil',
+        ),
+      ],
     );
   }
 }
