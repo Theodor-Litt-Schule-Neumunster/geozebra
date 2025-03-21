@@ -45,7 +45,7 @@ class DarkColorTheme {
           color: Colors.white, // Headings in white
         ),
         titleMedium: TextStyle(
-          fontSize: 18,
+          fontSize: 16, // Updated from 18 to 16
           fontWeight: FontWeight.bold,
           color: Colors.white, // Subheadings in white
         )

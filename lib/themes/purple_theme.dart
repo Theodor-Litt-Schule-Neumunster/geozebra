@@ -18,7 +18,7 @@ class LightPurpleTheme {
       scaffoldBackgroundColor: const Color(0xFFF3E5F5), // Heller lila Hintergrund
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xFF7B1FA2), // Dunkleres Lila für AppBar
-        elevation: 3,
+        elevation: 0, // Changed from 3 to 0
         titleTextStyle: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -30,11 +30,11 @@ class LightPurpleTheme {
       ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
-          fontSize: 18,
+          fontSize: 16, // Changed from 18 to 16
           color: Colors.black87,
         ),
         bodyMedium: TextStyle(
-          fontSize: 16,
+          fontSize: 14, // Changed from 16 to 14
           color: Colors.black87,
         ),
         titleLarge: TextStyle(
