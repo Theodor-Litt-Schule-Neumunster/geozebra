@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
 import 'package:geozebra_app/services/lessons_service.dart';
@@ -26,6 +27,11 @@ class _RechnerScreenState extends State<RechnerScreen>
   void initState() {
     super.initState();
 
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.blueAccent,
+      statusBarIconBrightness: Brightness.light,
+    ));
+
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 600),
@@ -48,7 +54,6 @@ class _RechnerScreenState extends State<RechnerScreen>
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (url) async {
-            // Start fade-out animation if both conditions are met
             if (minLoadingTimePassed) {
               _animationController.forward().then((_) {
                 if (mounted) {
@@ -85,6 +90,7 @@ class _RechnerScreenState extends State<RechnerScreen>
       )
       ..loadFlutterAsset("assets/html/rechner.html");
   }
+
 
   Future<void> _loadCalculatorState() async {
     try {

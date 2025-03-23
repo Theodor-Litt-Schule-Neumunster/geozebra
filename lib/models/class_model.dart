@@ -21,15 +21,6 @@ class Task {
       condition: json['taskCondition'] ?? {},
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'taskId': id,
-      'taskDescription': description,
-      'taskShortDescription': shortDescription,
-      'taskCondition': condition,
-    };
-  }
 }
 
 class TextSection {
@@ -49,14 +40,6 @@ class TextSection {
       subHeader: json['subHeader'],
       content: json['content'],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'header': header,
-      "subHeader": subHeader,
-      'content': content,
-    };
   }
 }
 
@@ -99,16 +82,6 @@ class Lesson {
           : [],
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'lessonId': lessonId,
-      'lessonTitle': lessonTitle,
-      'description': description,
-      'shortDescription': shortDescription,
-      'tasks': tasks.map((task) => task.toJson()).toList(),
-    };
-  }
 }
 
 class ClassModel {
@@ -137,14 +110,5 @@ class ClassModel {
           .toList(),
     );
 
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'classTitle': className,
-      'classDescription': classDescription,
-      'classShortDescription': classShortDescription,
-      'lessons': lessons.map((lesson) => lesson.toJson()).toList(),
-    };
   }
 }
