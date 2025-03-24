@@ -106,15 +106,9 @@
     {
       "chapterId": "04_quellen",
       "chapterTitle": "Kapitel 4: Quellen",
-      "description": "Weiterführende Informationen und Quellenangaben.",
+      "description": "Basierend auf dem Mathe Projekt 'Goegebra Handbuch' (Version 1.2) von Leon und Finn Heinitz, 2018,\nsowie dessen Überarbeitung von \n   Lindita Bojaxhinci,\n   Freya Fischer,\n   Aysel Gininska,\n   Mia Reimers,\n   Lena Sievert \n   und Jannik Zrim, 2024.\n \nImplementierung in die GeoZebra App durch Christopher P. Bach, 2025.",
       "shortDescription": "Quellenverzeichnis",
-      "textSections": [
-        {
-          "header": "Quellen",
-          "subHeader": "",
-          "content": "https://wiki.geogebra.org/de/Kategorie:Befehle"
-        }
-      ]
+      "textSections": []
     }
   ]
 }
