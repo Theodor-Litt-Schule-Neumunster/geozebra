@@ -44,6 +44,8 @@ dependencies:
   flutter_html: ^3.0.0-beta.2
   path: ^1.8.3
   video_player: ^2.5.1
+  flutter_launcher_icons: ^0.14.3
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
