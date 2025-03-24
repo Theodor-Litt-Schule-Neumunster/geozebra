@@ -6,10 +6,10 @@ class TextDrawer extends StatefulWidget {
   final Function(int) onTextSectionSelected;
 
   const TextDrawer({
-    Key? key,
+    super.key,
     required this.textSections,
     required this.onTextSectionSelected,
-  }) : super(key: key);
+  });
 
   @override
   State<TextDrawer> createState() => _TextDrawerState();

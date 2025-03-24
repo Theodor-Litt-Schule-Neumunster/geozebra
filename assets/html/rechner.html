@@ -261,6 +261,43 @@
       }
     }
 
+    function getCalculatorState() {
+      if (!ggbAPI) return null;
+      
+      try {
+        return new Promise((resolve) => {
+          ggbAPI.getBase64((base64) => {
+            resolve(base64);
+          });
+        });
+      } catch (e) {
+        console.error("Error getting calculator state:", e);
+        return Promise.resolve(null);
+      }
+    }
+
+    function loadCalculatorState(base64State) {
+      if (!ggbAPI || !base64State) return;
+      
+      try {
+        ggbAPI.setBase64(base64State);
+        console.log("Calculator state restored successfully");
+      } catch (e) {
+        console.error("Error loading calculator state:", e);
+      }
+    }
+
+    async function sendCalculatorStateToFlutter() {
+      try {
+        const state = await getCalculatorState();
+        if (state && window.calculatorState) {
+          window.calculatorState.postMessage(state);
+        }
+      } catch (e) {
+        console.error("Error sending calculator state to Flutter:", e);
+      }
+    }
+
     var ggbApp = new GGBApplet({
       "appName": "graphing",
       "width": window.innerWidth,
@@ -271,6 +308,7 @@
       "appletOnLoad": function (api) {
         ggbAPI = api;
         setInterval(sendTaskStatusToFlutter, 1000);
+        setInterval(sendCalculatorStateToFlutter, 5000);
       }
     }, true);
 

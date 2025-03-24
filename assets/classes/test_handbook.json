@@ -1,0 +1,114 @@
+{
+  "handbookId": "geogebraHandbuchV12",
+  "handbookTitle": "Geogebra Handbuch (Version 1.2)",
+  "handbookDescription": "Geogebra-Handbuch zur Unterstützung bei den Themen Analysis, Lineare Algebra und Stochastik. Implementiert auf der Basis des Mathematik-Projektes 2018, sowie dessen überarbeitung 2024. Weitere Details in dem Kapitel Quellen.",
+  "handbookShortDescription": "Geogebra-Handbuch",
+  "chapters": [
+    {
+      "chapterId": "01_grundlagen",
+      "chapterTitle": "Kapitel 1: Grundlagen",
+      "description": "Wichtige Grundfunktionen in GeoGebra. Erstellung und Berechnung von einfachen Funktionen sowie Verwendung von Schiebereglern.",
+      "shortDescription": "Grundlagen von GeoGebra",
+      "textSections": [
+        {
+          "header": "Erstellen einer Funktion in GeoGebra",
+          "subHeader": "",
+          "content": "**Eine Funktion, die auch als Grafik** dargestellt werden soll, wird folgendermaßen erstellt.\n\nIm folgenden Video wird es erklärt:\n(video:https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/0.mp4)\n\n**Schritt 1**: Klick in das Eingabefenster\n\n(image:assets/handbookImages/img_1_1_1.PNG)\n\n**Schritt 2**: Eingabe der Funktion. Die Funktion wird nun in der Grafik angezeigt.\n\n(image:assets/handbookImages/img_1_1_2.PNG)"
+        },
+        {
+          "header": "Erstellung eines Schiebereglers",
+          "subHeader": "",
+          "content": "Um die Parameter in einer Funktion zu verändern und die Veränderung graphisch darzustellen, wird häufig ein Schieberegler verwendet.\n\nIm folgenden Video wird es gezeigt:\n(video:https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/6ca62784-dc72-4462-ada7-0670f52e8d0c.mp4)\n\n**Schritt 1**: Durch das Auswählen des Schiebereglers im Menü der Werkzeuge lässt sich dieser an einer beliebigen Position im Koordinatensystem platzieren.\n\n(image:assets/handbookImages/img_1_2_2.PNG)\n(image:assets/handbookImages/img_1_2_1.PNG)\n\n**Schritt 2**: Nun können Sie Änderungen an dem Schieberegler vornehmen.\n\n(image:assets/handbookImages/img_1_2_3.PNG)\n\n**Schritt 3**: Anschließend können Sie einen Punkt oder eine Funktion mit dieser Variable anlegen.\n\n(image:assets/handbookImages/img_1_2_4.PNG)"
+        },
+        {
+          "header": "Eine Funktion ausrechnen",
+          "subHeader": "",
+          "content": "(video:https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/c6cdd21a-f9f8-4f5e-a26f-fc58f36bc384.mp4)\n\nKlicken Sie in das Eingabefeld des Grafikrechners. Nun können Sie die Funktion mit dem gewünschten x-Wert eingeben, und das Ergebnis erscheint.\n\n(image:assets/handbookImages/img_1_3_1.PNG)"
+        },
+        {
+          "header": "Die wichtigsten Basics",
+          "subHeader": "",
+          "content": "(video:https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/40044f08-7e9f-4e58-9dc0-144014fef82c.mov)\n\n**Wie gibt man Brüche im CAS richtig ein?**\n\n**Schritt 1**: Um einen Bruch darzustellen, wird sowohl die Shift-Taste als auch der Schrägstrich auf der Tastatur gedrückt.\n\n(image: assets/handbookImages/img_1_3_2.PNG)\n\nIm nächsten Schritt können die gewünschten Zahlen eingetippt werden, und der Bruch entsteht.\n\n(image:assets/handbookImages/img_1_3_3.PNG)\n\n**Wie gebe ich eine Dezimalzahl richtig ein?**\n\nIn GeoGebra wird statt eines Kommas ein Punkt verwendet, um eine Dezimalzahl anzugeben.\n\n(image:assets/handbookImages/img_1_3_4.PNG)\n\nHierfür wird eine beliebige Funktion angegeben. Achten Sie darauf, dass Sie einen Punkt statt eines Kommas verwenden, und schon wird die Dezimalzahl in der Funktion als Punkt definiert.\n\n**Wie gibt man Exponenten in einer Funktion ein?**\n\n(image:assets/handbookImages/img_1_3_5.PNG)\n\nDie Kombination aus der oben markierten Taste und einer beliebigen, von Ihnen gewählten Zahl erzeugt eine individuelle Funktion.\n\nJe nachdem, ob Sie eine quadratische, kubische oder eine andere Funktion erzeugen möchten, müssen Sie die Hochzahl entsprechend anpassen (z. B. eine 2 für eine quadratische oder eine 3 für eine kubische Funktion)."
+        }
+      ]
+    },
+    {
+      "chapterId": "02_analysis_part1",
+      "chapterTitle": "Kapitel 2: Ableitungen und Gleichungen",
+      "description": "Wichtige Eingabefunktionen für die Analysis in GeoGebra, insbesondere Ableitungen und das Lösen von Gleichungen.",
+      "shortDescription": "Analysis: Ableitungen & Gleichungen",
+      "textSections": [
+        {
+          "header": "Ableitungen",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/f384a911-e42e-4689-9de4-b621ff72c2b4.mov)\n\nMithilfe einer Ableitung kann man die Steigung einer Funktion an jedem beliebigen Punkt bestimmen.\n\n**Schritt 1**: Eine beliebige Funktion wird angelegt.\n\n(image: assets/handbookImages/img_2_1_1.PNG)\n\n**Schritt 2**: Eingabe der Ableitung [Ableitung(Funktion)].\n\n(image: assets/handbookImages/img_2_1_2.PNG)\n\n**Schritt 3**: Funktion eingeben & Ergebnis erhalten.\n\n(image: assets/handbookImages/img_2_1_3.PNG)"
+        },
+        {
+          "header": "Lösen einer Gleichung",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/bcb91cc7-c7eb-4b98-9cb1-9752e9ee15d2.mov)\n\n**Schritt 1**: Eine beliebige Funktion wird angelegt.\n\n(image: assets/handbookImages/img_2_1_4.PNG)\n\n**Schritt 2**: Eingabe des Löse-Befehls [Löse(Gleichung)].\n\n(image: assets/handbookImages/img_2_1_5.PNG)\n\n**Schritt 3**: Funktion eingeben & Ergebnis erhalten.\n\n(image: assets/handbookImages/img_2_1_6.PNG)\n\n**Tipp**: Für ein gerundetes Ergebnis können Sie einfach das Rundungszeichen neben dem Ergebnis anklicken."
+        },
+        {
+          "header": "Lösen einer Gleichung anhand einer Variable",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/cb306d6c-6496-482b-b90c-339dd3ee80eb.mp4)\n\n**Schritt 1**: CAS-Ansicht in GeoGebra öffnen.\n\n(image: assets/handbookImages/img_2_1_7.PNG)\n\n**Schritt 2**: Eingabe des Löse-Befehls [Löse(Gleichung, Variable)].\n\n(image: assets/handbookImages/img_2_1_8.PNG)\n\n**Schritt 3**: Funktion und Variable einsetzen. GeoGebra löst dann die Gleichung.\n\n(image: assets/handbookImages/img_2_1_9.PNG)"
+        },
+        {
+          "header": "Lösung von Gleichungssystemen",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/48fcdd7e-c002-43d6-a69d-1220241d08a2.mov)\n\n**Schritt 1**: CAS-Ansicht in GeoGebra öffnen.\n\n(image: assets/handbookImages/img_2_1_10.PNG)\n\n**Schritt 2**: Eingabe des Löse-Befehls [Löse(Liste von Gleichungen, Liste von Variablen)].\n\n(image: assets/handbookImages/img_2_1_11.PNG)\n\n**Schritt 3**: Funktion sowie Variablen in den Löse-Befehl einsetzen.\n\n(image: assets/handbookImages/img_2_1_12.PNG)\n\nGeoGebra löst dann die eingegebenen Gleichungen mit Hilfe Ihrer Variablen, z. B. x und y."
+        }
+      ]
+    },
+    {
+      "chapterId": "02_analysis_part2",
+      "chapterTitle": "Kapitel 3: Integrale und weitere Funktionen",
+      "description": "Weitere wichtige Befehle für die Analysis in GeoGebra, darunter Integrale, Extremstellen und das Bestimmen von Nullstellen.",
+      "shortDescription": "Analysis: Integrale & mehr",
+      "textSections": [
+        {
+          "header": "unbestimmtes Integral",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/a6e1f284-a56c-4b31-b359-29afbd68b25d.mov)\n\nDurch die Eingabe der Integralfunktion wird das unbestimmte Integral einer angegebenen Funktion berechnet.\n\n**Schritt 1**: CAS-Ansicht in GeoGebra öffnen.\n\n(image: assets/handbookImages/img_2_1_13.PNG)\n\n**Schritt 2**: Eingabe der Integralfunktion [Integral(Funktion)].\n\n(image: assets/handbookImages/img_2_1_14.PNG)\n\n**Schritt 3**: Eingabe der Funktion. Das Integral wird berechnet.\n\n(image: assets/handbookImages/img_2_1_15.PNG)"
+        },
+        {
+          "header": "bestimmtes Integral",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/402db755-6edf-4772-9a1d-e6582f708961.mp4)\n\n**Schritt 1**: Stammfunktion, z. B. f(x), anlegen.\n\n(image: assets/handbookImages/img_2_1_16.PNG)\n\n**Schritt 2**: Eingabe der Integralfunktion [Integral(Funktion, Startwert, Endwert)].\n\n(image: assets/handbookImages/img_2_1_17.PNG)\n\n**Schritt 3**: Eingabe der Funktion sowie des Start- und Endwerts in den Befehl. Der Flächeninhalt zwischen der x-Achse und der Funktion wird berechnet.\n\n(image: assets/handbookImages/img_2_1_18.PNG)"
+        },
+        {
+          "header": "manuelle Punktbestimmung",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/e29da2ec-0655-4001-a302-9fdda0f7cd07.mov)\n\nMithilfe des Punkt-Buttons ist es möglich, beliebige Punkte in der Grafik zu setzen.\n\n(image: assets/handbookImages/img_2_1_19.PNG)\n\nDurch Klicken in das Grafikfeld erscheint oben links in der Menüleiste unter anderem ein Button mit einem großen A.\n\n(image: assets/handbookImages/img_2_1_20.PNG)\n\nDieser wird angeklickt, und es kann der gewünschte Punkt in der Grafik gesetzt werden.\n\n(image: assets/handbookImages/img_2_1_21.PNG)"
+        },
+        {
+          "header": "Schnittpunkt",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/3bd8c180-8f8a-42bb-8f45-2cede0b9f9e7.mov)\n\nMithilfe des Schneide-Buttons kann ermittelt werden, an welchen Punkten sich zwei Funktionen schneiden.\n\n(image: assets/handbookImages/img_2_1_22.PNG)\n\nDurch Klicken in das Grafikfeld erscheint oben links in der Menüleiste unter anderem ein Button mit einem großen A.\n\n(image: assets/handbookImages/img_2_1_23.PNG)\n\nDurch Klicken auf diesen Button erscheint der Schnittpunkt-Button an vierter Stelle.\n\nDieser wird angeklickt. Beide Funktionen müssen nun einzeln angeklickt werden, um die Schnittpunkte zu bestimmen.\n\n(image: assets/handbookImages/img_2_1_24.PNG)"
+        },
+        {
+          "header": "Extremum",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/2104a02a-9a49-4c12-9d7a-505821e28d7b.mov)\n\nMithilfe des Extremum-Buttons kann ermittelt werden, an welchen Punkten eine Funktion Hoch- bzw. Tiefpunkte besitzt.\n\nDurch Klicken in das Grafikfeld erscheint oben links in der Menüleiste unter anderem ein Button mit einem großen A.\n\n(image: assets/handbookImages/img_2_1_25.PNG)\n\nDurch Klicken auf diesen Button erscheint der Extremum-Button an siebter Stelle.\n\n(image: assets/handbookImages/img_2_1_26.PNG)\n\nDieser wird angeklickt. Die Funktion muss nun an einem beliebigen Punkt angeklickt werden, um die Extremstellen zu bestimmen.\n\n(image: assets/handbookImages/img_2_1_27.PNG)"
+        },
+        {
+          "header": "Nullstellen Bestimmung",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/0.mov)\n\nUm die Nullstellen zu bestimmen, muss man als Erstes eine Funktion im Grafikfenster eingeben und sich darstellen lassen.\n\n(image: assets/handbookImages/img_2_1_28.PNG)\n\nDanach klickt man in der Symbolleiste auf das Symbol, welches einen Punkt mit einem hochgestellten A zeigt.\n\nNun öffnet sich eine weitere Symbolleiste. In dieser wählt man den Punkt „Nullstellen“.\n\n(image: assets/handbookImages/img_2_1_29.PNG)\n\nJetzt muss man nur noch den Graphen anklicken, und es werden die Nullstellen angezeigt. Außerdem werden die Nullstellen unter der Funktion mit den dazugehörigen Koordinaten dargestellt.\n\n(image: assets/handbookImages/img_2_1_30.PNG)"
+        },
+        {
+          "header": "Streckenfunktion",
+          "subHeader": "",
+          "content": "(video: https://github.com/Theodor-Litt-Schule-Neumunster/GeoGebra-Lernpfad/blob/main/media/0.mp4)\n\nDie Funktion „Strecke“ wird genutzt, um den Abstand zwischen zwei Punkten zu bestimmen. Dazu muss man als Erstes die gewünschte Funktion im Grafikfenster eingeben und sich darstellen lassen.\n\nNun klickt man in der Symbolleiste auf das Symbol, das eine Gerade mit zwei Punkten zeigt.\n\n(image: assets/handbookImages/img_2_1_31.PNG)\n\nEs öffnet sich eine weitere Symbolleiste, in der man auf „Strecke“ klickt.\n\n(image: assets/handbookImages/img_2_1_32.PNG)\n\nZum Schluss klickt man auf den Graphen und wählt zwei Punkte aus, deren Abstand man wissen möchte. Unter der Funktion werden die Punkte mit ihren Koordinaten sowie die Strecke angezeigt.\n\n(image: assets/handbookImages/img_2_1_33.PNG)"
+        }
+      ]
+    },
+    {
+      "chapterId": "04_quellen",
+      "chapterTitle": "Kapitel 4: Quellen",
+      "description": "Basierend auf dem Mathe Projekt 'Goegebra Handbuch' (Version 1.2) von Leon und Finn Heinitz, 2018,\nsowie dessen Überarbeitung von \n   Lindita Bojaxhinci,\n   Freya Fischer,\n   Aysel Gininska,\n   Mia Reimers,\n   Lena Sievert \n   und Jannik Zrim, 2024.\n \nImplementierung in die GeoZebra App durch Christopher P. Bach, 2025.",
+      "shortDescription": "Quellenverzeichnis",
+      "textSections": []
+    }
+  ]
+}

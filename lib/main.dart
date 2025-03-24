@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:geozebra_app/screens/home_screen.dart';
 import 'package:geozebra_app/providers/settings_provider.dart';
@@ -10,13 +11,14 @@ import 'package:geozebra_app/services/settings_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String savedTheme = await SettingsService().getValue<String>("theme", "light");
-
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  
+  
   runApp(MyApp(savedTheme: savedTheme));
 }
 
 class MyApp extends StatelessWidget {
   final String savedTheme;
-
   const MyApp({super.key, required this.savedTheme});
 
   @override
@@ -28,6 +30,19 @@ class MyApp extends StatelessWidget {
 
       child: Consumer<SettingsProvider>(
         builder: (context, themeProvider, child) {
+            SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+            systemNavigationBarColor: themeProvider.theme.brightness == Brightness.dark 
+              ? Colors.black 
+              : Colors.white,
+            systemNavigationBarIconBrightness: themeProvider.theme.brightness == Brightness.dark 
+              ? Brightness.light 
+              : Brightness.dark,
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: themeProvider.theme.brightness == Brightness.dark 
+              ? Brightness.light 
+              : Brightness.dark,
+            ));
+          
           return MaterialApp(
             title: "GeoZebra",
             debugShowCheckedModeBanner: false,

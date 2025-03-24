@@ -7,7 +7,7 @@ import 'lesson_screen.dart';
 class ClassScreen extends StatefulWidget {
   final ClassModel classModel;
 
-  const ClassScreen({Key? key, required this.classModel}) : super(key: key);
+  const ClassScreen({super.key, required this.classModel});
 
   @override
   _ClassScreenState createState() => _ClassScreenState();
@@ -16,17 +16,36 @@ class ClassScreen extends StatefulWidget {
 class _ClassScreenState extends State<ClassScreen> {
   final LessonService _lessonService = LessonService();
   bool _isEnrolled = false;
+  Map<String, int> _lessonProgress = {};
 
   @override
   void initState() {
     super.initState();
     _checkEnrollmentStatus();
+    _loadLessonProgress();
   }
 
   Future<void> _checkEnrollmentStatus() async {
     final enrolledClasses = await _lessonService.getEnrolledClasses();
     setState(() {
       _isEnrolled = enrolledClasses.contains(widget.classModel.classId);
+    });
+  }
+
+  Future<void> _loadLessonProgress() async {
+    // Get progress for all lessons in this class
+    final allProgress = await _lessonService.getAllLessonsProgress();
+
+    Map<String, int> progress = {};
+    // Filter progress entries that belong to this class
+    for (var entry in allProgress) {
+      if (entry['classId'] == widget.classModel.classId) {
+        progress[entry['lessonId']] = entry['completionPercent'];
+      }
+    }
+
+    setState(() {
+      _lessonProgress = progress;
     });
   }
 
@@ -207,6 +226,9 @@ class _ClassScreenState extends State<ClassScreen> {
               itemCount: widget.classModel.lessons.length,
               itemBuilder: (context, index) {
                 final lesson = widget.classModel.lessons[index];
+                // Get progress for this lesson if available
+                final progress = _lessonProgress[lesson.lessonId] ?? 0;
+
                 return Card(
                   elevation: 2,
                   margin: const EdgeInsets.only(bottom: 12),
@@ -222,19 +244,37 @@ class _ClassScreenState extends State<ClassScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    subtitle: Text(
-                      lesson.shortDescription,
-                      style: Theme.of(context).textTheme.bodySmall,
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(lesson.shortDescription),
+                        if (progress > 0)
+                          LinearProgressIndicator(
+                            value: progress / 100,
+                            backgroundColor: Colors.grey[300],
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                      ],
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+                    trailing: progress > 0
+                        ? Text('$progress%')
+                        : null,
                     onTap: () {
                       if (_isEnrolled) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LessonScreen(lesson: lesson),
+                            builder: (context) => LessonScreen(
+                              lesson: lesson,
+                              classId: widget.classModel.classId,
+                            ),
                           ),
-                        );
+                        ).then((_) {
+                          // Reload progress when we return from lesson screen
+                          _loadLessonProgress();
+                        });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

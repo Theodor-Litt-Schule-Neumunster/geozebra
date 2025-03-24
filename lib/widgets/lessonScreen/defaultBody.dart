@@ -7,11 +7,11 @@ class DefaultBody extends StatelessWidget {
   final Animation<double> fadeAnimation;
 
   const DefaultBody({
-    Key? key,
+    super.key,
     required this.controller,
     required this.isLoading,
     required this.fadeAnimation,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -18,7 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // Removed the dropdown since we only have one user account for now, could be added in later
       appBar: DefaultAppBar(
         title: "Übersicht",
-        showLeading: false,
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

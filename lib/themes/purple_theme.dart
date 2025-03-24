@@ -1,41 +1,40 @@
 import 'package:flutter/material.dart';
 
-class LightColorTheme {
+class LightPurpleTheme {
   static ThemeData get theme {
     return ThemeData(
       brightness: Brightness.light,
-      primaryColor: const Color.fromARGB(255, 0, 143, 219),
+      primaryColor: const Color(0xFF9C27B0), // Lila Hauptfarbe
       colorScheme: const ColorScheme.light(
-        primary: Color.fromARGB(255, 0, 141, 218),
-        onPrimary: Colors.black, // Text/icon color on primary color
-        secondary: Color(0xFF90E0EF), // Light cyan for secondary color
-        onSecondary: Colors.black, // Text/icon color on secondary
-        surface: Color(0xFFEFF6FF), // Very light blue for background
-        onSurface: Colors.black, // Text color on background
-        error: Color(0xFFEF476F), // Vibrant red for errors
-        onError: Colors.white, // Text/icon color on error
-        
+        primary: Color(0xFF9C27B0), // Lila Primärfarbe
+        onPrimary: Colors.white, // Text/Icon-Farbe auf Primärfarbe
+        secondary: Color(0xFFE1BEE7), // Helles Lila für Sekundärfarbe
+        onSecondary: Colors.black, // Text/Icon-Farbe auf Sekundärfarbe
+        surface: Color(0xFFF3E5F5), // Sehr helles Lila für Hintergrund
+        onSurface: Colors.black, // Textfarbe auf Hintergrund
+        error: Color(0xFFD32F2F), // Kräftiges Rot für Fehler
+        onError: Colors.white, // Text/Icon-Farbe auf Fehlerfarbe
       ),
-      scaffoldBackgroundColor: const Color(0xFFEFF6FF), // Light blue background
+      scaffoldBackgroundColor: const Color(0xFFF3E5F5), // Heller lila Hintergrund
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF0077B6), // Deep blue for app bar
-        elevation: 3, // Slight shadow for app bar
+        backgroundColor: Color(0xFF7B1FA2), // Dunkleres Lila für AppBar
+        elevation: 0, // Changed from 3 to 0
         titleTextStyle: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
         iconTheme: IconThemeData(
-          color: Colors.white, // App bar icons
+          color: Colors.white, // AppBar Icons
         ),
       ),
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
-          fontSize: 18,
+          fontSize: 16, // Changed from 18 to 16
           color: Colors.black87,
         ),
         bodyMedium: TextStyle(
-          fontSize: 16,
+          fontSize: 14, // Changed from 16 to 14
           color: Colors.black87,
         ),
         titleLarge: TextStyle(
@@ -46,10 +45,10 @@ class LightColorTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF0077B6), // Deep blue
-          foregroundColor: Colors.white, // Text color
+          backgroundColor: const Color(0xFF7B1FA2), // Dunkleres Lila
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Slightly rounded corners
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
       ),
@@ -58,13 +57,13 @@ class LightColorTheme {
         fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: Color(0xFF0077B6)), // Border color
+          borderSide: BorderSide(color: Color(0xFF9C27B0)), // Lila Randfarbe
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: Color(0xFF0077B6), width: 2), // Focused border
+          borderSide: BorderSide(color: Color(0xFF7B1FA2), width: 2), // Stärkerer Rand bei Fokus
         ),
-        labelStyle: TextStyle(color: Color(0xFF0077B6)),
+        labelStyle: TextStyle(color: Color(0xFF7B1FA2)),
         hintStyle: TextStyle(color: Colors.black54),
       ),
       cardTheme: const CardTheme(
