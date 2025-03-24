@@ -13,6 +13,7 @@ void main() async {
   String savedTheme = await SettingsService().getValue<String>("theme", "light");
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   
+  
   runApp(MyApp(savedTheme: savedTheme));
 }
 
