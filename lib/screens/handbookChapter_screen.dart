@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geozebra_app/widgets/defaultappbar_widget.dart';
 import 'package:geozebra_app/models/handbook_model.dart';
 import 'package:geozebra_app/widgets/videoplayer_widget.dart';
-
+import 'package:geozebra_app/widgets/fullscreenimage_widget.dart';
 
 class HandbookChapterScreen extends StatelessWidget {
   final HandbookChapter chapter;
@@ -137,11 +137,20 @@ class HandbookChapterScreen extends StatelessWidget {
         widgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                path,
-                fit: BoxFit.contain,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => FullscreenImageViewer(
+                    imagePath: path,
+                  ),
+                ));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  path,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),
